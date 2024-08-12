@@ -71,7 +71,7 @@
             <!-- 첫 번째 큰 박스 -->
             <div id="OneBorder"; style="border:1px solid #dbdbdb; border-radius: 1px; width: 350px; text-align: center;">
                 <div style="margin-bottom: 45px"></div>
-                <a href="/"><img src="./image/logo_b.png" alt="killstagram"></a>
+                <a href="/"><img src="./image/logo_b.png" alt="instagram"></a>
                 <div style="margin-bottom: 45px"></div>
                 <!-- id, password, 로그인 -->
                 <div class="form-group">
