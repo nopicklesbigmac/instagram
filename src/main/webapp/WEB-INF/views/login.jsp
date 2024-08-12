@@ -58,12 +58,12 @@
 
 <body>
 <!-- 본격적인 로그인 폼 -->
-<div class="container" style="margin: auto; margin-top: 48px">
-    <div class="container" style="width: 100%; display: flex; flex-direction: row;">
+<div class="container" style="margin: auto; margin-top: 80px">
+    <div class="container" style="width: 816px; display: flex; flex-direction: row;">
         <div>
             <!-- 휴대폰 이미지 -->
-            <div style="position: relative">
-                <img src="/image/login/mobile.png" style="margin-right: 20px">
+            <div style="position: relative;">
+                <img src="/image/login/mobile.png" style=" margin-right: 40px">
                 <img src="/image/login/mobile_images/HUFS.jpg" style="position: absolute; top: 100px; left: 111px; width:250px; height: 400px;">
             </div>
         </div>
