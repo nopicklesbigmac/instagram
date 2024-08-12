@@ -8,10 +8,10 @@
 		<version>2.7.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>test_kill</artifactId>
+	<groupId>com.proj</groupId>
+	<artifactId>instagram</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>test_kill</name>
+	<name>instagram</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
