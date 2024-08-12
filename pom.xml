@@ -23,7 +23,7 @@
 	<scm>
 		<connection/>
 		<developerConnection/>
-		<tag/> <!--  이런 개ㅇㅇ -->
+		<tag/> <!--  이런 개ㅇㅇ  --><!-- 확인요 -->
 		<url/>
 	</scm><!-- Hi2 -->
 	<properties>
