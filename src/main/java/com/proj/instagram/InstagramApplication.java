@@ -1,13 +1,13 @@
-package com.example.demo;
+package com.proj.instagram;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TestKillApplication {
+public class InstagramApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TestKillApplication.class, args);
+		SpringApplication.run(InstagramApplication.class, args);
 	}
 
 }
