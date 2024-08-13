@@ -12,11 +12,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
  	<script type="text/javascript">
  	 var num = 0;
-     $(document).ready(function() {
-   setInterval(function() {
-     img_return()
-   }, 1000);
- });
+ 	document.addEventListener('DOMContentLoaded', function() {
+ 	    setInterval(function() {
+ 	        img_return()
+ 	    }, 1000);
+ 	});
      
      function img_return() {
        num++;

@@ -2,13 +2,14 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
 <head>
-    <title>가입하기 • Kimstagram</title>
+    <title>가입하기 • instagram</title>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="/js/join.js"></script>
+   	
     <style>
         body {
             display: flex;
@@ -53,11 +54,11 @@
 <body>
     <!-- 첫 번째 큰 박스 -->
     <div id="OneBorder"; style="border:1px solid #dbdbdb; border-radius: 1px; width: 350px; text-align: center; padding: 40px; margin-bottom: 10px;">
-        <a href="/"><img src="/image/logo_b.png" alt="kimstagram"></a>
+        <a href="/"><img src="/image/instalogo.png" alt="instagram"></a>
         <div style="margin-bottom: 25px"></div>
         <span style="color: #737373; font-weight: bold; font-size: 16px;">친구들의 사진과 동영상을 보려면 가입하세요.</span>
         <div style="margin-bottom: 16px"></div>
-        <a href="https://kimdevstudio.com"><img src="/image/join/facebook.png" id="facebookJoin" onmouseup="index.facebookJoinMouseUp()" onmousedown="index.facebookJoinClick()"/></a>
+        <a href=""><img src="/image/join/facebook.png" id="facebookJoin" onmouseup="index.facebookJoinMouseUp()" onmousedown="index.facebookJoinClick()"/></a>
 
         <div style="text-align: center; margin-top: 26px; margin-bottom: 26px; position: relative;">
             <hr />
@@ -72,10 +73,10 @@
             <input id="password" type="password" class="form-control InputForm" placeholder="비밀번호" style="margin-bottom: 12px;">
 
             <div style="margin-bottom: 12px">
-                <span style="font-size: 12px; color: #737373">저희 서비스를 이용하는 사람이 회원님의 연락처 정보를 Kimstagram에 업로드했을 수도 있습니다. <a href="https://kimdevstudio.com" style="text-decoration: none; color: #00376b">더 알아보기</a></span>
+                <span style="font-size: 12px; color: #737373">저희 서비스를 이용하는 사람이 회원님의 연락처 정보를 instagram에 업로드했을 수도 있습니다. <a href="" style="text-decoration: none; color: #00376b">더 알아보기</a></span>
             </div>
 
-            <button id="btn-join" class="btn btn-primary Join" style="width: 268px; height: 32px;" disabled><span id="joinText">가입</span></button>
+           <button id="btn-join" class="btn btn-primary Join" style="width: 268px; height: 32px;" disabled><span id="joinText">가입</span></button>
         </div>
     </div>
 
@@ -99,5 +100,3 @@
 <footer>
     <%@ include file="../layout/footer.jsp"%>
 </footer>
-
-<script src="/js/join.js"></script>
