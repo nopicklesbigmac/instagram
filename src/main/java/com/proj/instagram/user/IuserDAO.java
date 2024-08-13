@@ -1,5 +1,10 @@
 package com.proj.instagram.user;
 
-public interface IuserDAO {
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
+public interface IuserDAO {
+	userDTO selectuser(String email);
+	
+	void join (userDTO user);
 }

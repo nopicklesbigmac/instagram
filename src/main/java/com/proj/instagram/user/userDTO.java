@@ -1,5 +1,16 @@
 package com.proj.instagram.user;
 
+
+
+/*
+CREATE TABLE ins_user
+(
+email varchar(255),
+name varchar(255),
+username varchar(255),
+password varchar(255)
+);
+*/
 public class userDTO {
 	public String email;
 	public String name;

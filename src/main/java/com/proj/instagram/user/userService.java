@@ -1,5 +1,5 @@
 package com.proj.instagram.user;
 
-public class MemberService {
+public class userService {
 
 }

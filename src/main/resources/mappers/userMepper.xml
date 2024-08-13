@@ -2,7 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.proj.instagram.user.IuserDAO">
-
+	<select id="selectuser" parameterType="String" resultType="userDTO">
+		SELECT * FROM ins_user WHERE email=#{email}
+	</select>
+	
+	<insert id="join" parameterType="userDTO">
+		INSERT INTO ins_user VALUES(#{email}, #{name}, #{username}, #{password})
+	</insert>
 <!-- 	
 	<select id="isExistId" parameterType="String" resultType="int">
 		SELECT count(*) FROM login WHERE id=#{id}
