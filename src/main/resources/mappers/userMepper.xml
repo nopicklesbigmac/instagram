@@ -3,6 +3,7 @@
 
 <mapper namespace="com.proj.instagram.user.IuserDAO">
 
+<!-- 	
 	<select id="isExistId" parameterType="String" resultType="int">
 		SELECT count(*) FROM login WHERE id=#{id}
 	</select>
@@ -21,5 +22,6 @@
 		</selectKey>
 		INSERT INTO post VALUES(#{no}, #{zipcode}, #{addr1}, #{addr2}, #{id} )
 	</insert>
+ -->
 
 </mapper>
