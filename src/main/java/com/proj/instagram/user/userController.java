@@ -23,6 +23,7 @@ public class userController {
     	Map<String, Object> result = new HashMap<String, Object>();
 		if(userDao.selectuser(user.getEmail())==null) {
 			userDao.join(user);
+			result.put("code", "1111");
 		}else{
 	    	 result.put("code", "0000");
 		}
