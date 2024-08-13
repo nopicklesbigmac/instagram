@@ -11,7 +11,30 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
  	<script type="text/javascript">
- 	
+ 	 var num = 0;
+     $(document).ready(function() {
+   setInterval(function() {
+     img_return()
+   }, 1000);
+ });
+     
+     function img_return() {
+       num++;
+       if(num % 4 == 0){
+    	   document.getElementById("introimg").src="/image/login/mobile_images/screenshot1.png";
+       }
+       else if ( num % 4 == 1 ) {
+    	   document.getElementById("introimg").src="/image/login/mobile_images/screenshot2.png";
+       }
+       else if ( num % 4 == 2 ) {
+    	   document.getElementById("introimg").src="/image/login/mobile_images/screenshot3.png";
+       }
+       else{
+    	   document.getElementById("introimg").src="/image/login/mobile_images/screenshot4.png";
+       }
+         
+ }
+
 	</script>
     <style>
         body {
@@ -64,9 +87,9 @@
     <div class="container" style="width: 816px; display: flex; flex-direction: row;">
         <div>
             <!-- 휴대폰 이미지 -->
-            <div style="position: relative;" onload="showImage()">
+            <div style="position: relative;" >
                 <img src="/image/login/mobile.png" style=" margin-right: 40px">
-                <img src="/image/login/mobile_images/screenshot1.png" style="position: absolute; top: 23px; left: 111px; width:250px; height: 538.83px;">
+                <img id="introimg" src="/image/login/mobile_images/screenshot1.png" style="position: absolute; top: 23px; left: 111px; width:250px; height: 538.83px;">
             </div>
         </div>
         <div>
