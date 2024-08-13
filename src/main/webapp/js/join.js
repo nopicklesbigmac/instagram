@@ -53,8 +53,6 @@ let index = {
             existingMessage.remove();
         }
 
-        
-		    alert($("#email").val());
 		    $.ajax({
 	                type : "POST",            // HTTP method type(GET, POST) 형식이다.
 	                url : "/joinProc",      // 컨트롤러에서 대기중인 URL 주소이다.
