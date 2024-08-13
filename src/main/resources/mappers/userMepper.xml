@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.proj.instagram.user.IuserDAO">
+
+	<select id="isExistId" parameterType="String" resultType="int">
+		SELECT count(*) FROM login WHERE id=#{id}
+	</select>
+	
+	<insert id="insertLogin" parameterType="LoginDTO">
+		INSERT INTO login VALUES(#{id}, #{pw})
+	</insert>
+	
+	<insert id="insertMember" parameterType="MemberDTO">
+		INSERT INTO member VALUES(#{id}, #{gender}, #{email})
+	</insert>
+	
+	<insert id="insertPost" parameterType="PostDTO">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			SELECT nvl(max(no), 0)+1 FROM post
+		</selectKey>
+		INSERT INTO post VALUES(#{no}, #{zipcode}, #{addr1}, #{addr2}, #{id} )
+	</insert>
+
+</mapper>

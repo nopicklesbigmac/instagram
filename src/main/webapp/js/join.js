@@ -41,45 +41,34 @@ let index = {
 
     join: function() {
         // 기존 메시지 삭제
-        var existingMessage = document.getElementById('ErrorMessage');
-        if (existingMessage) {
-            existingMessage.remove();
-        }
-
-        let data = {
+        var params = {
             email: $("#email").val(),
             name: $("#name").val(),
             username: $("#username").val(),
             password: $("#password").val()
         }
-
-        // 메시지 추가
-        var ErrorMessageSpan = document.createElement('span');
-        if (isNaN(data.email) && !data.email.includes('@')) { // 이메일에 @가 포함되지 않은 경우
-            ErrorMessageSpan.id = 'ErrorMessage';
-            ErrorMessageSpan.textContent = 'Enter a valid email address.';
-            ErrorMessageSpan.style.color = '#ff4857';
-            ErrorMessageSpan.style.fontSize = '14px';
-        //} else if (!(/[A-Z]/.test(data.password) && /[0-9]/.test(data.password) && /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(data.password))) {
-        } else if (data.password.length < 6) {
-            ErrorMessageSpan.id = 'ErrorMessage';
-            ErrorMessageSpan.textContent = '이 비밀번호는 추측하기가 너무 쉽습니다.새로운 비밀번호를 만드세요.';
-            ErrorMessageSpan.style.color = '#ff4857';
-            ErrorMessageSpan.style.fontSize = '14px';
-        } else { // 모든 조건 만족 시 회원가입 로직 실행
-            $.ajax({
-                type: "POST",
-                url: "/auth/joinProc",
-                data: JSON.stringify(data),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json"
-            }).done(function (resp){
-                alert("회원가입이 완료되었습니다.");
-                location.href = "/";
-            }).fail(function(error){ // 응답의 결과가 실패한 경우. error은 응답받은 데이터가 JSON일 경우 들어가는 것.
-                alert(JSON.stringify(error));
-            });
+    
+        var existingMessage = document.getElementById('ErrorMessage');
+        if (existingMessage) {
+            existingMessage.remove();
         }
+
+        
+		    alert($("#email").val());
+		    $.ajax({
+	                type : "POST",            // HTTP method type(GET, POST) 형식이다.
+	                url : "/joinProc",      // 컨트롤러에서 대기중인 URL 주소이다.
+	                data : params,            // Json 형식의 데이터이다.
+	                success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+	                    // 응답코드 > 0000
+	                    alert(res.code);
+	                },
+	                error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+	                    alert("통신 실패.")
+	                }
+	            });
+        // 메시지 추가
+        
 
         // 메시지를 표시할 요소 찾기
         var firstBigBox = document.getElementById('OneBorder');
