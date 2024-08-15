@@ -11,28 +11,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
-public class userController {
-	@Autowired
-	private IuserDAO userDao;
-    
+public class UserController {
+	@Autowired private IUserDAO userDao;
+	@Autowired private IUserService userService;
 
     @PostMapping("/joinProc")
     @ResponseBody
-    public  Map<String, Object> joinProc( userDTO user) {
-    	System.out.println("  1 1 1 ");
+    public  Map<String, Object> joinProc( UserDTO user) {
     	Map<String, Object> result = new HashMap<String, Object>();
-		if(userDao.selectuser(user.getEmail())==null) {
-			userDao.join(user);
-			result.put("code", "1111");
-		}else{
-	    	 result.put("code", "0000");
-		}
+    	result = userService.joinProc(user,result);
     	
-		System.out.println(user.getName()); 
-		System.out.println(user.getEmail());
-		System.out.println(user.getUsername());
-		System.out.println(user.getPassword());
-		 
 
         return result;
         
