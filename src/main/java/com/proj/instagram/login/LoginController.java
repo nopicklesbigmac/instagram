@@ -1,21 +1,28 @@
 package com.proj.instagram.login;
 
+import com.proj.instagram.user.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.proj.instagram.user.IuserDAO;
-import com.proj.instagram.user.userDTO;
-
-import org.springframework.ui.Model;
-
-@RestController // RESTful 컨트롤러임을 명시
+@RestController
 public class LoginController {
 
-    @Autowired
-    private IuserDAO iuserDAO; // 로그인 서비스 주입
+    private final LoginService loginService;
 
-//	@PostMapping(value = "loginProc") 
-//	public String loginProc(userDTO email, Model model) {
-//		String msg = iuserDAO.selectuser(email);
-//	}
+    @Autowired
+    public LoginController(LoginService loginService) {
+        this.loginService = loginService;
+    }
+
+    @PostMapping("/loginProc") // URL이 JavaScript의 AJAX URL과 일치하는지 확인
+    public String login(@RequestParam String email, @RequestParam String password) {
+        UserDTO user = loginService.login(email, password);
+        if (user != null) {
+            return "success";
+        } else {
+            return "fail";
+        }
+    }
 }
