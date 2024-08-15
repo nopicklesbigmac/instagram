@@ -11,7 +11,7 @@ username varchar(255),
 password varchar(255)
 );
 */
-public class userDTO {
+public class UserDTO {
 	public String email;
 	public String name;
 	public String username;

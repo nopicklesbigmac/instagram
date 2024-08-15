@@ -3,8 +3,8 @@ package com.proj.instagram.user;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface IuserDAO {
-	userDTO selectuser(String email);
+public interface IUserDAO {
+	UserDTO selectuser(String email);
 	
-	void join (userDTO user);
+	void join (UserDTO user);
 }
