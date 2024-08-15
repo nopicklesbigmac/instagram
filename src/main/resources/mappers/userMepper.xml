@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.proj.instagram.user.IUserDAO">
+
 	<select id="selectuser" parameterType="String" resultType="UserDTO">
 		SELECT * FROM ins_user WHERE email=#{email} or username=#{email}
 	</select>
