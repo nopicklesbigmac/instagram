@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UserController {
 	@Autowired private IUserDAO userDao;
 	@Autowired private IUserService userService;
-
+ 
     @PostMapping("/joinProc")
     @ResponseBody
     public  Map<String, Object> joinProc( UserDTO user) {
