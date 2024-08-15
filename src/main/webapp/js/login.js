@@ -1,86 +1,86 @@
 let index = {
     init: function() {
-        // username 및 password 입력 필드에 input 이벤트 리스너 추가
-        document.getElementById('email').addEventListener('input', index.validateInputs);
+        document.getElementById('username').addEventListener('input', index.validateInputs);
         document.getElementById('password').addEventListener('input', index.validateInputs);
 
-        // 로그인 버튼 클릭 시 login 함수 호출
         $("#btn-login").on("click", () => {
             this.login();
         });
     },
 
+    // 챗GPT야 고마워
     validateInputs: function() {
-        // 입력된 username과 password 값을 가져옴
-        var usrValue = document.getElementById('email').value;
+        var usrValue = document.getElementById('username').value;
         var passwordValue = document.getElementById('password').value;
         var loginButton = document.getElementById('btn-login');
         var loginText = document.getElementById('loginText');
 
-        // username이 1자 이상이고 password가 6자 이상일 때만 로그인 버튼 활성화
+        // 길이가 6글자 이상인 경우에만 버튼 활성화
         loginButton.disabled = usrValue.length < 1 || passwordValue.length < 6;
 
-        // 버튼이 활성화되면 텍스트 색상을 변경
+        // 버튼이 활성화되었을 때 텍스트 색상 변경
         if (!loginButton.disabled) {
-            loginText.style.color = '#ffffff'; // 활성화된 텍스트 색상
+            loginText.style.color = '#ffffff'; // 원하는 활성화 텍스트 색상으로 변경
         } else {
-            loginText.style.color = ''; // 기본 텍스트 색상 (CSS에서 정의된 색상)
+            loginText.style.color = ''; // 기본 텍스트 색상으로 변경 (스타일 시트에서 정의한 값)
         }
     },
 
     facebookClick: function() {
-        // 페이스북 버튼 클릭 시 이미지를 변경
         var imageElement = document.getElementById("facebookButton");
         imageElement.src = "/image/login/log_fc2.png";
     },
 
     login: function() {
-        // 기존에 표시된 에러 메시지가 있으면 삭제
+        // 기존 메시지 삭제
         var existingMessage = document.getElementById('ErrorMessage');
         if (existingMessage) {
             existingMessage.remove();
         }
 
-        // 입력된 username과 password 값을 가져와서 data 객체로 생성
-        let data = {
-            email: $("#email").val(),
+        let params = {
+            email: $("#username").val(),
             password: $("#password").val()
         };
-        
-        let params = {
-		    email: $("#email").val(),
-            password: $("#password").val()
-			}
 
-        // 서버에 로그인 요청을 보내기 위해 AJAX 호출
-        $.ajax({
-            type: "POST", // POST 요청
-            url: "/loginProc", // 로그인 처리 URL
-            data: params,  // 데이터를 JSON 형식으로 변환하여 전송
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            success: function(response) { // 서버 응답이 성공일 경우
-                if(response.status === "success") {
-                    window.location.href = "/home/index"; // 로그인 성공 시 홈 화면으로 이동
-                } else if(response.status === "fail") {
-                    alert("로그인 실패: " + response.message); // 실패 메시지 표시
-                }
-            },
-            error: function(error) { // 서버 응답이 실패일 경우
-                console.log(JSON.stringify(error)); // 에러 로그 출력
-                alert("로그인 실패. 다시 시도해주세요."); // 에러 메시지 표시
+         $.ajax({
+            type: "POST",
+            url: "/loginProc",
+            data: params
+        }).done(function(resp, status, xhr) {
+ 			if (resp.startsWith("/")) {
+        	// 서버에서 받은 URL로 리다이렉트
+        		var url = resp.substring(9); // "redirect:" 부분을 제거하고 실제 URL만 남김
+        		console.log("console1" + url);
+        		location.href = url;
+            } else { // 로그인에 실패한 경우
+                var ErrorMessageSpan = document.createElement('span');
+                ErrorMessageSpan.id = 'ErrorMessage';
+                ErrorMessageSpan.textContent = '잘못된 비밀번호입니다. 다시 확인하세요.';
+                ErrorMessageSpan.style.color = '#ff4857';
+                ErrorMessageSpan.style.fontSize = '14px';
+                document.getElementById('ErrorMessageBox').appendChild(ErrorMessageSpan);
             }
+        }).fail(function(error) { // 로그인에 실패한 경우
+            var ErrorMessageSpan = document.createElement('span');
+            ErrorMessageSpan.id = 'ErrorMessage';
+            ErrorMessageSpan.textContent = '세션 에러';
+            //ErrorMessageSpan.textContent = '잘못된 비밀번호입니다. 다시 확인하세요.';
+            ErrorMessageSpan.style.color = '#ff4857';
+            ErrorMessageSpan.style.fontSize = '14px';
+            document.getElementById('ErrorMessageBox').appendChild(ErrorMessageSpan);
+            console.log(JSON.stringify(error));
         });
     }
 }
 
 function keyHandler(event) {
-    var usrValue = document.getElementById('email').value;
+    var usrValue = document.getElementById('username').value;
     var passwordValue = document.getElementById('password').value;
-    if (usrValue.length >= 1 && passwordValue.length >= 6 && event.key === 'Enter') {
-        event.preventDefault(); // 기본 Enter 키 동작 방지
-        index.login(); // 로그인 함수 호출
+    if (usrValue.length >= 1 && passwordValue.length >= 6 && event.key == 'Enter') { // Enter 키를 누르는 경우
+        event.preventDefault(); // 기본 Enter 키 동작을 막는다.
+        index.login();
     }
 }
 
-// 초기화 함수 호출
 index.init();
