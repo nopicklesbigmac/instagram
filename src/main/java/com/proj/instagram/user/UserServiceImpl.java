@@ -19,6 +19,6 @@ public class UserServiceImpl implements IUserService{
 	    	 result.put("code", "0000");
 		}
 		return result;
-
+ 
 	}
 }

@@ -9,7 +9,7 @@ email varchar(255),
 name varchar(255),
 username varchar(255),
 password varchar(255)
-);
+); 
 */
 public class UserDTO {
 	public String email;
