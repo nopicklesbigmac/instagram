@@ -4,7 +4,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface IUserDAO {
-	UserDTO selectuser(String email);
+	UserDTO selectemail(String email);
+	
+	UserDTO selectuser(String username);
 	 
 	void join (UserDTO user);
 }

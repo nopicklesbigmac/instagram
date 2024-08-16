@@ -12,7 +12,7 @@ public class UserServiceImpl implements IUserService{
 	
 	@Override
 	public Map<String, Object> joinProc( UserDTO user,Map<String, Object> result) {
-		if(userDao.selectuser(user.getEmail())==null) {
+		if(userDao.selectemail(user.getEmail())==null) {
 			userDao.join(user);
 			result.put("code", "1111");
 		}else{

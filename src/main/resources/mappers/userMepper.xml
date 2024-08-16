@@ -3,8 +3,12 @@
 
 <mapper namespace="com.proj.instagram.user.IUserDAO">
 
+	<select id="selectemail" parameterType="String" resultType="UserDTO">
+		SELECT * FROM ins_user WHERE email=#{email}
+	</select>
+	
 	<select id="selectuser" parameterType="String" resultType="UserDTO">
-		SELECT * FROM ins_user WHERE email=#{email} or username=#{email}
+		SELECT * FROM ins_user WHERE username=#{username}
 	</select>
 	
 	<insert id="join" parameterType="UserDTO">
