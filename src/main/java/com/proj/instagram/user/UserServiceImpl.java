@@ -12,13 +12,23 @@ public class UserServiceImpl implements IUserService{
 	
 	@Override
 	public Map<String, Object> joinProc( UserDTO user,Map<String, Object> result) {
-		if(userDao.selectemail(user.getEmail())==null) {
+		if(userDao.selectemail(user.getEmail())!=null) {
+			result.put("code", "2222");
+		}
+		else if(userDao.selectuser(user.getUsername())!=null) {result.put("code", "3333");}
+		else if(userDao.selectemail(user.getEmail())==null){
 			userDao.join(user);
 			result.put("code", "1111");
-		}else{
-	    	 result.put("code", "0000");
 		}
 		return result;
  
+	}
+
+	@Override
+	public boolean usercheck(UserDTO user) {
+		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+		boolean result = user.getEmail().matches(emailRegex); 
+		//True = email / False = username
+		return result;
 	}
 }

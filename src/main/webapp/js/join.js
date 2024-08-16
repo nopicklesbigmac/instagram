@@ -79,12 +79,25 @@ let index = {
 	                data : params,            // Json 형식의 데이터이다.
 	                success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
 	                    // 응답코드 > 0000
-	                    var re_msg = "0000";
-	                    var re_msg2 = "1111";
-	                    if(res.code==re_msg){
+	                    var re_msg = "1111";
+	                    var re_msg2 = "2222";
+	                    var re_msg3 = "3333";
+	               
+	                    if(res.code==re_msg2){
 							alert("이미있는 이메일");
-						}else if(res.code==re_msg2){
+							ErrorMessageSpan.id = 'ErrorMessage';
+							ErrorMessageSpan.textContent = '이미있는 이메일';
+							ErrorMessageSpan.style.color = '#ff4857';
+							ErrorMessageSpan.style.fontSize = '14px';
+						}else if(res.code==re_msg3){
+							alert("이미있는 유저네임");
+							ErrorMessageSpan.id = 'ErrorMessage';
+							ErrorMessageSpan.textContent = '이미있는 유저네임';
+							ErrorMessageSpan.style.color = '#ff4857';
+							ErrorMessageSpan.style.fontSize = '14px';
+						}else if(res.code==re_msg){
 							alert("가입성공");
+							
 							location.href = "/";
 						}
 						

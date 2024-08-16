@@ -8,7 +8,7 @@
 	</select>
 	
 	<select id="selectuser" parameterType="String" resultType="UserDTO">
-		SELECT * FROM ins_user WHERE username=#{username}
+		SELECT * FROM ins_user WHERE username=#{user_name}
 	</select>
 	
 	<insert id="join" parameterType="UserDTO">
