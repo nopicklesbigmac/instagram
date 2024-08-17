@@ -80,8 +80,13 @@ let index = {
 	                contentType: "application/json; charset=utf-8", // Content-Type 설정
 	                success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
 	                    if(res.code==true){
-							alert("가입성공");
-							location.href = "/";
+							swal({
+							title : "가입 성공!",
+						    icon  : "success",
+						    closeOnClickOutside : false
+							}).then(function(){
+								location.href = "/";
+							});
 						}else{
 							ErrorMessageSpan.id = 'ErrorMessage';
 							ErrorMessageSpan.textContent = res.code;
