@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
@@ -17,12 +18,9 @@ public class UserController {
  
     @PostMapping("/joinProc")
     @ResponseBody
-    public  Map<String, Object> joinProc( UserDTO user) {
-    	Map<String, Object> result = new HashMap<String, Object>();
-    	result = userService.joinProc(user,result);
-    	
-
-        return result;
-        
+    public  Map<String, Object> joinProc(@RequestBody UserDTO user) {
+		Map<String, Object> result = new HashMap<String, Object>(); 
+		result = userService.joinProc(user,result); 
+		return result;
     }
 }
