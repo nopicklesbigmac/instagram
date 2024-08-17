@@ -93,8 +93,6 @@ let index = {
 							ErrorMessageSpan.style.color = '#ff4857';
 							ErrorMessageSpan.style.fontSize = '14px';
 						}
-						
-	                    
 	                },
 	                error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
 	                    alert("통신 실패.")
