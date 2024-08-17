@@ -25,7 +25,7 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public boolean usercheck(UserDTO user) {
+	public boolean idcheck(UserDTO user) {
 		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 		boolean result = user.getEmail().matches(emailRegex);
 		// True = email / False = username

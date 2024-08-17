@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class UserController {
-	@Autowired private IUserDAO userDao;
 	@Autowired private IUserService userService;
  
     @PostMapping("/joinProc")
