@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <head>
+<%-- 
     <%@ include file="../../layout/indexHeader.jsp"%>
     <%@ include file="../getPrincipal.jsp"%>
-
+ --%>
     <style>
         body {
             padding: 10px 0px;
@@ -137,7 +138,6 @@
                     <script>
                         var messageDiv = document.getElementById('chatMessages');
 
-                        var newMsg = document.createElement('div');
                         if ('${message.who}' === '${whoisme}') {
                             newMsg.className = "myMsg";
                         } else {
@@ -162,7 +162,7 @@
     </div>
 </body>
 
-
+<!-- 
 <script>
     ///////////////////////////////////////////////////////////////////
     // 소켓 설정
@@ -257,3 +257,4 @@
         }
     }
 </script>
+ -->

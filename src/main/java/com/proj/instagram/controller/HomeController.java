@@ -35,5 +35,11 @@ public class HomeController {
     public String join() {
         return "views/join";
     }
+    //dm
+    @GetMapping("/dm")
+    public String dm() {
+        return "home/dm";
+    }
+
 
 }
