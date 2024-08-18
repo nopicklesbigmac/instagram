@@ -29,7 +29,7 @@
             아이디 설정
         </div>
         <div style="margin-bottom: 20px">
-            kimstagram에서 사용할 아이디를 입력해 주세요.
+            instagram에서 사용할 아이디를 입력해 주세요.
         </div>
         <input id="input" style="width: 300px; margin-bottom: 10px">
         <div id="button" onclick="setUsername('${oriusername}')">
