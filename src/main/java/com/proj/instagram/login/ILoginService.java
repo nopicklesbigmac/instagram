@@ -1,7 +1,9 @@
 package com.proj.instagram.login;
 
+import com.proj.instagram.user.UserDTO;
+
 public interface ILoginService {
 	
-	String loginProc(String email, String password);
+	String loginProc(UserDTO login);
 
 }

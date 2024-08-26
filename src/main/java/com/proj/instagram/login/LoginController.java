@@ -1,34 +1,36 @@
 package com.proj.instagram.login;
 
-import com.proj.instagram.user.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller  // RestController가 아닌 Controller 사용
+import com.proj.instagram.user.UserDTO;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Controller
 public class LoginController {
 
     @Autowired
-    private LoginServicelmpl loginService;
+    private ILoginService loginService;
 
     @PostMapping("/loginProc")
-    public String login(@RequestParam String email, @RequestParam String password, Model model) {
+    @ResponseBody
+    public Map<String, String> login(@RequestBody UserDTO login) {
         // 로그인 서비스 호출하여 사용자 정보 확인
-        System.out.println("controller");
-        UserDTO user = loginService.loginProc(email, password);
+        String result = loginService.loginProc(login);
 
-        if (user != null) {
-            System.out.println("controller2:" + user);
-            // 로그인 성공 시 home/index.jsp 뷰로 이동
-            return "redirect:/home/index"; 
+        Map<String, String> response = new HashMap<>();
+        if ("success".equals(result)) {
+            response.put("status", "success");
+            response.put("redirectUrl", "/home/index?formpath=home");
         } else {
-            // 로그인 실패 시 "fail" 메시지와 함께 로그인 페이지로 돌아감
-        	System.out.println("controller3:" + user);
-//            model.addAttribute("errorMessage", "Invalid email or password.");
-//            return "login";  // login.jsp로 돌아감
-        	return "fail";
+            response.put("status", "fail");
         }
+        return response;
+    
     }
 }

@@ -43,36 +43,37 @@ let index = {
             password: $("#password").val()
         };
 
-         $.ajax({
-            type: "POST",
-            url: "/loginProc",
-            data: params
-        }).done(function(resp, status, xhr) {
- 			if (resp.startsWith("/")) {
-        	// 서버에서 받은 URL로 리다이렉트
-        		var url = resp.substring(9); // "redirect:" 부분을 제거하고 실제 URL만 남김
-        		console.log("console1" + url);
-        		location.href = url;
-            } else { // 로그인에 실패한 경우
-                var ErrorMessageSpan = document.createElement('span');
-                ErrorMessageSpan.id = 'ErrorMessage';
-                ErrorMessageSpan.textContent = '잘못된 비밀번호입니다. 다시 확인하세요.';
-                ErrorMessageSpan.style.color = '#ff4857';
-                ErrorMessageSpan.style.fontSize = '14px';
-                document.getElementById('ErrorMessageBox').appendChild(ErrorMessageSpan);
-            }
-        }).fail(function(error) { // 로그인에 실패한 경우
-            var ErrorMessageSpan = document.createElement('span');
-            ErrorMessageSpan.id = 'ErrorMessage';
-            ErrorMessageSpan.textContent = '세션 에러';
-            //ErrorMessageSpan.textContent = '잘못된 비밀번호입니다. 다시 확인하세요.';
-            ErrorMessageSpan.style.color = '#ff4857';
-            ErrorMessageSpan.style.fontSize = '14px';
-            document.getElementById('ErrorMessageBox').appendChild(ErrorMessageSpan);
-            console.log(JSON.stringify(error));
-        });
-    }
+		 $.ajax({
+		    type: "POST",
+		    url: "/loginProc",
+		    data: JSON.stringify(params),
+		    contentType: "application/json", // contentType 추가
+		    success: function(resp) {
+		        if (resp.status === "success") {
+		            //location.href = "/view/home/index.jsp";
+		            window.location.href = resp.redirectUrl || "/home/index";
+		        } else if (resp.status === "fail") {
+		            var ErrorMessageSpan = document.createElement('span');
+		            ErrorMessageSpan.id = 'ErrorMessage';
+		            ErrorMessageSpan.textContent = '잘못된 비밀번호입니다. 다시 확인하세요.';
+		            ErrorMessageSpan.style.color = '#ff4857';
+		            ErrorMessageSpan.style.fontSize = '14px';
+		            document.getElementById('ErrorMessageBox').appendChild(ErrorMessageSpan);
+		        }
+		    },
+		    error: function(XMLHttpRequest, textStatus, errorThrown) {
+		        var ErrorMessageSpan = document.createElement('span');
+		        ErrorMessageSpan.id = 'ErrorMessage';
+		        ErrorMessageSpan.textContent = '서버 오류가 발생했습니다. 나중에 다시 시도해 주세요.';
+		        ErrorMessageSpan.style.color = '#ff4857';
+		        ErrorMessageSpan.style.fontSize = '14px';
+		        document.getElementById('ErrorMessageBox').appendChild(ErrorMessageSpan);
+		        console.error("Error details:", textStatus, errorThrown);
+		    }
+		});
 }
+}
+
 
 function keyHandler(event) {
     var usrValue = document.getElementById('username').value;

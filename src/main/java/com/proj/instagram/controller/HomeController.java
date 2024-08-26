@@ -15,9 +15,15 @@ public class HomeController {
     }
     
 //     필요에 따라 주석 처리된 부분을 복원하거나 제거합니다.
-     @RequestMapping(value = "index")
-     public void index(String formpath, Model model) {
+//     @RequestMapping(value = "index")
+//     public void index(String formpath, Model model) {
+//         model.addAttribute("formpath", formpath);
+//     }
+     
+     @RequestMapping(value = "/home/index")
+     public String index(String formpath, Model model) {
          model.addAttribute("formpath", formpath);
+         return "home/index"; // 실제로 /WEB-INF/view/home/index.jsp 파일에 매핑
      }
     
     // layout 폴더 파일
