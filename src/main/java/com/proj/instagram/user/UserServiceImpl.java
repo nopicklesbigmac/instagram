@@ -3,7 +3,6 @@ package com.proj.instagram.user;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,7 +10,7 @@ public class UserServiceImpl implements IUserService {
 	@Autowired
 	private IUserDAO userDao;
 	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	
 
 	@Override
 	public Map<String, Object> joinProc(UserDTO user, Map<String, Object> result) {
@@ -39,6 +38,7 @@ public class UserServiceImpl implements IUserService {
 	
 	
 	/*
+	private BCryptPasswordEncoder passwordEncoder;
 	//사용자가 입력한 비밀번호가 저장된 비밀번호와 일치하는지 검증
 	public boolean checkPassword(String rawPassword, String encodedPassword) {
 	    return passwordEncoder.matches(rawPassword, encodedPassword);
