@@ -382,7 +382,8 @@
             <div id="index_accountBox">
                 <c:forEach var="accounts" items="${NoFollowingAccounts}">
                     <script>
-                        addDivs('${accounts.id}', '${accounts.username}', '${accounts.name}', '${accounts.use_profile_img}');
+                       <!-- addDivs('${accounts.id}', '${accounts.username}', '${accounts.name}', '${accounts.use_profile_img}'); -->
+                       addDivs('${accounts.id}', '${accounts.username}', '${accounts.name}');
                     </script>
                 </c:forEach>
             </div>

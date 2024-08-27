@@ -51,7 +51,8 @@ let index = {
 		    success: function(resp) {
 		        if (resp.status === "success") {
 		            //location.href = "/view/home/index.jsp";
-		            window.location.href = resp.redirectUrl || "/home/index";
+		            //window.location.href = resp.redirectUrl || "/views/home/index";
+		            window.location.href = resp.redirectUrl; // 서버에서 제공한 URL로 리다이렉트
 		        } else if (resp.status === "fail") {
 		            var ErrorMessageSpan = document.createElement('span');
 		            ErrorMessageSpan.id = 'ErrorMessage';

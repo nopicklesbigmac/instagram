@@ -11,6 +11,7 @@ public class HomeController {
 	@GetMapping(value = "/")
 	public String index(Model model) {
 		model.addAttribute("formpath", "main");
+		System.out.println("HomeController login" + model);
 		return "views/login";
 	}
 
@@ -20,13 +21,23 @@ public class HomeController {
 //         model.addAttribute("formpath", formpath);
 //     }
 
-	@RequestMapping(value = "/home/index") 
-	public String index(String formpath, Model model) {
-		model.addAttribute("formpath", formpath); 
-		return "home/index";
-	}
+//	@RequestMapping(value = "/views/home/index") 
+//	public void index(String formpath, Model model) {
+//		System.out.println("HomeController index" + model);
+//		model.addAttribute("formpath", formpath); 
+//	}
 	 // 실제로 /WEB-INF/view/home/index.jsp 파일에 매핑 }
 	 
+	
+	
+	   @RequestMapping(value = "/views/home/index")
+	    public String index(String formpath, Model model) {
+	        model.addAttribute("formpath", formpath);
+	        return "views/home/index"; // 뷰 이름만 반환
+	    }
+	
+	
+	
     // layout 폴더 파일
 	@GetMapping(value = "/header")
 	public String header() {

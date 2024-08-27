@@ -26,7 +26,7 @@ public class LoginController {
         Map<String, String> response = new HashMap<>();
         if ("success".equals(result)) {
             response.put("status", "success");
-            response.put("redirectUrl", "/home/index?formpath=home");
+            response.put("redirectUrl", "/views/home/index"); // 리다이렉트 URL
         } else {
             response.put("status", "fail");
         }
