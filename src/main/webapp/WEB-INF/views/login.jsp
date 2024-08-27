@@ -89,7 +89,7 @@
             <!-- 휴대폰 이미지 -->
             <div style="position: relative;" >
                 <img src="/image/login/mobile.png" style=" margin-right: 40px">
-                <img id="introimg" src="/image/login/mobile_images/screenshot1.png" style="position: absolute; top: 23px; left: 111px; width:250px; height: 538.83px;">
+                <img id="introimg" src="/image/login/mobile_images/screenshot1.png" style="position: absolute; top: 27px; left: 111px; width:250px; height: 538.83px;">
             </div>
         </div>
         <div>
