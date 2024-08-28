@@ -30,7 +30,9 @@ $("#home").on("click", function() {
 $("#write").on("click", function() {
     location.href = "/write";
 })
-
+$("#dm").on("click", function() {
+    location.href = "/dm";
+})
 $("#profile").on("click", function() {
     location.href = "/profile/" + principal.username;
 })

@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <head>
-<%-- 
+
     <%@ include file="../../layout/indexHeader.jsp"%>
     <%@ include file="../getPrincipal.jsp"%>
- --%>
+    <%@ include file="../../layout/menu.jsp"%>
     <style>
         body {
             padding: 10px 0px;
@@ -162,7 +162,7 @@
     </div>
 </body>
 
-<!-- 
+
 <script>
     ///////////////////////////////////////////////////////////////////
     // 소켓 설정
@@ -257,4 +257,3 @@
         }
     }
 </script>
- -->
