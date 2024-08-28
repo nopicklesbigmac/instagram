@@ -30,7 +30,7 @@ public class HomeController {
 	 
 	
 	
-	   @RequestMapping(value = "/views/home/index")
+	   @RequestMapping(value = "/index")
 	    public String index(String formpath, Model model) {
 	        model.addAttribute("formpath", formpath);
 	        return "views/home/index"; // 뷰 이름만 반환
@@ -57,12 +57,8 @@ public class HomeController {
 	// dm
 	@GetMapping("/dm")
 	public String dm() {
-		return "home/dm";
+		return "views/home/dm";
 	}
 
-	@GetMapping(value = "/index")
-	public String index2() {
-		return "index";
-	}
 
 }
