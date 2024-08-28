@@ -1,3 +1,4 @@
+/*
 let checkToken = {
     check: function() {
         $.ajax({
@@ -23,3 +24,4 @@ let checkToken = {
 }
 
 checkToken.check();
+*/
