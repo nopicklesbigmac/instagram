@@ -24,6 +24,21 @@ public class UserServiceImpl implements IUserService {
 		return result;
 
 	}
+	
+	@Override
+	public Map<String, Object> passProc(UserDTO user, Map<String, Object> result) {
+		if (userDao.selectemail(user.getEmail()) != null) {
+			String password = userDao.selectemail(user.getEmail()).getPassword();
+			result.put("pass", password);
+			result.put("code", true);
+		}else {
+			result.put("code", false);
+		}
+		
+		
+		return result;
+
+	}
 
 	@Override
 	public boolean idcheck(UserDTO user) {

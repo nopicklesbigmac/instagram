@@ -5,11 +5,13 @@
 
 <head>
     <title>instagram</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
  	<script type="text/javascript">
  	 var num = 0;
      $(document).ready(function() {
@@ -17,7 +19,7 @@
      img_return()
    }, 1000);
  });
-     
+
      function img_return() {
        num++;
        if(num % 4 == 0){
@@ -117,7 +119,7 @@
 
                     <!-- 비밀번호 찾기 -->
                     <div style="margin-bottom: 19px">
-                        <a href="https://kimdevstudio.com" style="text-decoration: none; color: #00376b;"><span style="font-size: 12px" onmousedown="this.style.color='#7f9bb5'" onmouseup="this.style.color='#00376b'">비밀번호를 잊으셨나요?</span></a>
+                        <span id="btn-pass"style="text-decoration: none; color: #00376b;"><span style="font-size: 12px" onmousedown="this.style.color='#7f9bb5'" onmouseup="this.style.color='#00376b'">비밀번호를 잊으셨나요?</span></span>
                     </div>
                 </div>
             </div>

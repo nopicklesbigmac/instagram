@@ -22,4 +22,11 @@ public class UserController {
 		result = userService.joinProc(user,result); 
 		return result;
     }
+    @PostMapping("/passProc")
+    @ResponseBody
+    public  Map<String, Object> passProc(@RequestBody UserDTO user) {
+		Map<String, Object> result = new HashMap<String, Object>(); 
+		result = userService.passProc(user,result); 
+		return result;
+    }
 }
