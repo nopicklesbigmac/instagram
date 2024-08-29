@@ -107,7 +107,14 @@ $("#btn-pass").on("click", () => {
                 });
 
                 // 이후 처리되는 내용.
-                if (getName != null) {
+                if(getName==""||getName==null){
+					Swal.fire({
+                    	title: "이메일을 입력해주세요.",
+                        icon: 'warning',
+                        confirmButtonColor: '#d33',
+                    });
+				}
+                else {
                     let params2 = {
                         email: getName
                     };
@@ -125,11 +132,12 @@ $("#btn-pass").on("click", () => {
                                     confirmButtonColor: '#3085d6',
                                 });
                             } else {
-                                Swal.fire({
-                                    title: "없는 이메일입니다.",
-                                    icon: 'warning',
-                                    confirmButtonColor: '#d33',
-                                });
+								Swal.fire({
+	                               title: "없는 이메일입니다.",
+	                               icon: 'warning',
+	                               confirmButtonColor: '#d33',
+	                            });
+
                             }
                         },
                         error: function (XMLHttpRequest, textStatus, errorThrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
