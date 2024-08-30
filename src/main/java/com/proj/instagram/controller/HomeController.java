@@ -53,11 +53,35 @@ public class HomeController {
 	public String join() {
 		return "views/join";
 	}
-
+	
+	// insta
+	@GetMapping("/insta")
+	public String rels() {
+		return "views/home/index";
+	}
+	
+	// find
+	@GetMapping("/find")
+	public String find() {
+		return "views/home/find";
+	}
+	
+	// rels
+	@GetMapping("/profile")
+	public String profile() {
+		return "views/home/profile";
+	}
+	
 	// dm
 	@GetMapping("/dm")
 	public String dm() {
 		return "views/home/dm";
+	}
+	
+	// heart
+	@GetMapping("/write")
+	public String write() {
+		return "views/home/write";
 	}
 
 
