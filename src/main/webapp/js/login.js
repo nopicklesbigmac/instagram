@@ -85,4 +85,73 @@ function keyHandler(event) {
     }
 }
 
+$("#btn-pass").on("click", () => {
+    swal.fire({
+        title: "비밀번호 찾기!",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6', // confirm 버튼 색깔 지정
+        cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+        confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+        cancelButtonText: '취소',
+        reverseButtons: false,
+    }).then(result => {
+        if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+            (async () => {
+                const { value: getName } = await Swal.fire({
+                    title: '비밀번호 찾기',
+                    text: '이메일을 입력해주세요.',
+                    input: 'text',
+                    inputPlaceholder: 'Email',
+                    confirmButtonColor: '#3085d6',
+                });
+
+                // 이후 처리되는 내용.
+                if(getName==""||getName==null){
+					Swal.fire({
+                    	title: "이메일을 입력해주세요.",
+                        icon: 'warning',
+                        confirmButtonColor: '#d33',
+                    });
+				}
+                else {
+                    let params2 = {
+                        email: getName
+                    };
+                    $.ajax({
+                        type: "POST", // HTTP method type(GET, POST) 형식이다.
+                        url: "/passProc", // 컨트롤러에서 대기중인 URL 주소이다.
+                        data: JSON.stringify(params2), // Json 형식의 데이터이다.
+                        contentType: "application/json; charset=utf-8", // Content-Type 설정
+                        success: function (res) { // 비동기통신의 성공일경우 success콜백으로 들어옵니다.
+                            if (res.code == true) {
+                                swal.fire({
+                                    title: "비밀번호 찾기",
+                                    text: "비밀번호는 [ " + res.pass + " ]입니다.",
+                                    icon: "success",
+                                    confirmButtonColor: '#3085d6',
+                                });
+                            } else {
+								Swal.fire({
+	                               title: "없는 이메일입니다.",
+	                               icon: 'warning',
+	                               confirmButtonColor: '#d33',
+	                            });
+
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+                            alert("통신 실패.");
+                        }
+                    });
+                }
+            })();
+        }
+    });
+});
+
+
+
+
+
 index.init();
