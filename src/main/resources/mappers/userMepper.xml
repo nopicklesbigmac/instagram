@@ -4,15 +4,18 @@
 <mapper namespace="com.proj.instagram.user.IUserDAO">
 
 	<select id="selectemail" parameterType="String" resultType="UserDTO">
-		SELECT * FROM ins_user WHERE email=#{email}
+		SELECT * FROM insta_user WHERE email=#{email}
 	</select>
 	
 	<select id="selectuser" parameterType="String" resultType="UserDTO">
-		SELECT * FROM ins_user WHERE username=#{user_name}
+		SELECT * FROM insta_user WHERE username=#{user_name}
 	</select>
 	
 	<insert id="join" parameterType="UserDTO">
-		INSERT INTO ins_user VALUES(#{email}, #{name}, #{username}, #{password})
+		INSERT INTO insta_user 
+		(email, name, username, password)
+		VALUES
+		(#{email}, #{name}, #{username}, #{password})
 	</insert>
 <!-- 	
 	<select id="isExistId" parameterType="String" resultType="int">

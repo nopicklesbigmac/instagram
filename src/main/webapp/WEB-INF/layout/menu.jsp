@@ -48,7 +48,7 @@
     </div>
 
     <div id="profile" style="cursor: pointer; margin-top: 8px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;" onmouseover="MenuMouseOver('profile')" onmouseleave="MenuMouseLeave('profile')">
-      <img id="profilebutton" id="mini_profile" width="24px" height="24px" style="border-radius: 50%">
+      <img id="profilebutton" id="mini_profile" width="24px" height="24px" style="border-radius: 50%" src="/image/profile/default.jpg">
     </div>
 
     <div id="setting" style="cursor: pointer; margin-top: 301px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;" onmouseover="MenuMouseOver('setting')" onmouseleave="MenuMouseLeave('setting')" onmousedown="MenuMouseDown('setting')">

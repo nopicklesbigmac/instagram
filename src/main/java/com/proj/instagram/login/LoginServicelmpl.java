@@ -40,9 +40,10 @@ public class LoginServicelmpl implements ILoginService{
          // 세션 정보 로그 출력
             System.out.println("Session ID: " + session.getId());
             System.out.println("Session Attributes: ");
-            session.getAttributeNames().asIterator().forEachRemaining(name -> {
-                System.out.println(name + ": " + session.getAttribute(name));
-            });
+			/*
+			 session.getAttributeNames().asIterator().forEachRemaining(name -> {
+			 System.out.println(name + ": " + session.getAttribute(name)); });
+			 */
             return "success";
         } else {
             // 비밀번호가 일치하지 않거나 사용자 정보가 없는 경우 실패 반환

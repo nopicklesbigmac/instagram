@@ -16,7 +16,21 @@ public class UserDTO {
 	public String name;
 	public String username;
 	public String password;
+	public String use_profile_img;
+	public String created_at;
 	
+	public String getUse_profile_img() {
+		return use_profile_img;
+	}
+	public void setUse_profile_img(String use_profile_img) {
+		this.use_profile_img = use_profile_img;
+	}
+	public String getCreated_at() {
+		return created_at;
+	}
+	public void setCreated_at(String created_at) {
+		this.created_at = created_at;
+	}
 	public String getEmail() {
 		return email;
 	}
