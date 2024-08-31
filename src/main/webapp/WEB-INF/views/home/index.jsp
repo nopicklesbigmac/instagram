@@ -301,7 +301,7 @@
             margin-left: auto;
             margin-top: 6px;
         }
-
+ 
         #likedUser_followButton {
             width: 82px;
             height: 32px;

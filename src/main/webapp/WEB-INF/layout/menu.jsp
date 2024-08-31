@@ -12,7 +12,7 @@
     border: 1px solid #dbdbdb;
   }
 </style>
-
+ 
 <body>
   <div id="menu">
     <a href="/insta" style="cursor: pointer; margin-top: 12px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">

@@ -53,7 +53,7 @@ public class HomeController {
 	public String join() {
 	    return "views/join"; // /WEB-INF/views/join.jsp
 	}
-
+ 
 	@GetMapping("/insta")
 	public String insta() {
 	    return "views/home/index"; // /WEB-INF/views/home/index.jsp

@@ -12,7 +12,7 @@ function fetchPrincipal(callback) {
 
 function getFollowings() {
     var principal;
-
+ 
     $.ajax({
         type: "GET",
         url: "/getPrincipal",

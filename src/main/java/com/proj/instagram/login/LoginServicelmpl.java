@@ -35,7 +35,7 @@ public class LoginServicelmpl implements ILoginService{
             session.setAttribute("Following", 1);
             session.setAttribute("Follower", 10);
             session.setAttribute("Profile_img", "/image/recommend.png");
-            
+             
          // 세션 정보 로그 출력
             System.out.println("Session ID: " + session.getId());
             System.out.println("Session Attributes: ");
