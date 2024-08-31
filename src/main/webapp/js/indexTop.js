@@ -1,3 +1,15 @@
+function fetchPrincipal(callback) {
+    $.ajax({
+        type: "GET",
+        url: "/getPrincipal",
+        headers: { 'Authorization': localStorage.getItem('Authorization') },
+        contentType: "application/json; charset=utf-8"
+    }).done(callback).fail(function (error) {
+        console.error("Error fetching principal information:", error);
+    });
+}
+
+
 function getFollowings() {
     var principal;
 
@@ -120,9 +132,11 @@ function addDivs(id, username, name, use_profile_img) {
 
     var profileImg = document.createElement("img");
     profileImg.id = "index_profileImg";
-    profileImg.src = use_profile_img === '1'
-        ? "/dynamicImage/profile/" + username + "/profile.jpg"
-        : "/dynamicImage/profile/default.jpg";
+    profileImg.src = use_profile_img // 수정
+    ? use_profile_img // 수정: 세션에서 전달받은 이미지 URL 사용
+    //profileImg.src = use_profile_img === '1'
+    //    ? "/dynamicImage/profile/" + username + "/profile.jpg"
+       : "/image/recommend.png";
     profileImg.addEventListener("click", function () {
         onclickProfile(username);
     });
@@ -201,7 +215,8 @@ function addPosts() {
                 indexpost.style.alignItems = "center";
 
                     // indexpost_userInfo
-                    const indexpost_userInfo = document.createElement("indexpost_userInfo");
+                    //const indexpost_userInfo = document.createElement("indexpost_userInfo");
+                    const indexpost_userInfo = document.createElement("div"); // 수정
                     indexpost_userInfo.id = "indexpost_userInfo";
                     indexpost_userInfo.style.width = "468px";
                     indexpost_userInfo.style.display = "flex";

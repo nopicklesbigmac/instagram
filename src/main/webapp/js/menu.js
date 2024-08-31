@@ -31,7 +31,7 @@ $("#write").on("click", function() {
     location.href = "/write";
 })
 $("#dm").on("click", function() {
-    location.href = "/dm";
+    location.href = "/views/home/dm";
 })
 $("#profile").on("click", function() {
     location.href = "/profile/" + principal.username;

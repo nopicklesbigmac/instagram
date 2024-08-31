@@ -383,10 +383,37 @@
 
             <div id="index_accountBox">
                 <c:forEach var="accounts" items="${NoFollowingAccounts}">
-                    <script>
-                       <!-- addDivs('${accounts.id}', '${accounts.username}', '${accounts.name}', '${accounts.use_profile_img}'); -->
+                     <!-- <script>
+                      addDivs('${accounts.id}', '${accounts.username}', '${accounts.name}', '${accounts.use_profile_img}');
                        addDivs('${accounts.id}', '${accounts.username}', '${accounts.name}');
-                    </script>
+                    </script> -->
+                    
+                    
+                    <%
+					    // 세션에서 사용자 정보 가져오기
+					    String sessionId = (String) session.getAttribute("email");
+					    String sessionUsername = (String) session.getAttribute("username");
+					    String sessionName = (String) session.getAttribute("name");
+					    String sessionProfileImg = (String) session.getAttribute("Profile_img");
+					%>
+					
+					<script>
+					    // JavaScript에서 세션 정보를 사용하기 위해 JSP 변수를 JS 변수에 할당
+					    var sessionEmail = "<%= sessionId %>";
+					    var sessionUsername = "<%= sessionUsername %>";
+					    var sessionName = "<%= sessionName %>";
+					    var sessionProfileImg = "<%= sessionProfileImg %>";
+					    
+					    console.log("Session Email: " + sessionEmail);
+					    console.log("Session Username: " + sessionUsername);
+					    console.log("Session Name: " + sessionName);
+					    console.log("Session Profile Image: " + sessionProfileImg);
+					
+					    // addDivs 함수에 세션 정보를 넘겨 호출
+					    addDivs(sessionEmail, sessionUsername, sessionName, sessionProfileImg);
+					</script>
+
+
                 </c:forEach>
             </div>
             <script>

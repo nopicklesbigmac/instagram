@@ -51,38 +51,39 @@ public class HomeController {
 
 	@GetMapping("/join")
 	public String join() {
-		return "views/join";
+	    return "views/join"; // /WEB-INF/views/join.jsp
 	}
-	
-	// insta
+
 	@GetMapping("/insta")
-	public String rels() {
-		return "views/home/index";
+	public String insta() {
+	    return "views/home/index"; // /WEB-INF/views/home/index.jsp
 	}
 	
-	// find
+	@GetMapping("/home")
+	public String home() {
+	    return "views/home/index"; // /WEB-INF/views/home/index.jsp
+	}
+
 	@GetMapping("/find")
 	public String find() {
-		return "views/home/find";
+	    return "views/home/find"; // /WEB-INF/views/home/find.jsp
 	}
-	
-	// rels
+
 	@GetMapping("/profile")
 	public String profile() {
-		return "views/home/profile";
+	    return "views/home/profile"; // /WEB-INF/views/home/profile.jsp
 	}
-	
-	// dm
+
 	@GetMapping("/dm")
 	public String dm() {
-		return "views/home/dm";
+	    return "views/home/dm"; // /WEB-INF/views/home/dm.jsp
 	}
-	
-	// heart
+
 	@GetMapping("/write")
 	public String write() {
-		return "views/home/write";
+	    return "views/home/write"; // /WEB-INF/views/home/write.jsp
 	}
+
 
 
 }

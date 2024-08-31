@@ -29,13 +29,12 @@ public class LoginServicelmpl implements ILoginService{
             System.out.println("Servicelmpl2: " + user);
             System.out.println("loginPW : " + login.getPassword());
             System.out.println("DAOPW : " + user.getPassword());
-            session.setAttribute("id", user.getEmail());
-            session.setAttribute("username", user.getUsername());
+            session.setAttribute("email", user.getEmail());
             session.setAttribute("name", user.getName());
-            session.setAttribute("Following", 0);
-            session.setAttribute("Follower", 0);
-            session.setAttribute("Profile_img", "instalogo.png");
-            session.setAttribute("comment", "");
+            session.setAttribute("username", user.getUsername());
+            session.setAttribute("Following", 1);
+            session.setAttribute("Follower", 10);
+            session.setAttribute("Profile_img", "/image/recommend.png");
             
          // 세션 정보 로그 출력
             System.out.println("Session ID: " + session.getId());

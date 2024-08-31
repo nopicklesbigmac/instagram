@@ -15,6 +15,52 @@
 
 <body>
   <div id="menu">
+    <a href="/insta" style="cursor: pointer; margin-top: 12px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+      <img id="instabutton" src="/image/menu/insta.png">
+    </a>
+
+    <a href="/home" style="cursor: pointer; margin-top: 32px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+      <img id="homebutton" src="/image/menu/home.png">
+    </a>
+
+    <a href="/find" style="cursor: pointer; margin-top: 8px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+      <img id="findbutton" src="/image/menu/find.png">
+    </a>
+
+    <a href="/compass" style="cursor: pointer; margin-top: 8px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+      <img id="compassbutton" src="/image/menu/compass.png">
+    </a>
+
+    <a href="/rels" style="cursor: pointer; margin-top: 8px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+      <img id="relsbutton" src="/image/menu/rels.png">
+    </a>
+
+    <a href="/dm" style="cursor: pointer; margin-top: 8px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+      <img id="dmbutton" src="/image/menu/dm.png">
+    </a>
+
+    <a href="/heart" style="cursor: pointer; margin-top: 8px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+      <img id="heartbutton" src="/image/menu/heart.png">
+    </a>
+
+    <a href="/write" style="cursor: pointer; margin-top: 8px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+      <img id="writebutton" src="/image/menu/write.png">
+    </a>
+
+    <a href="/profile" style="cursor: pointer; margin-top: 8px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+      <img id="profilebutton" id="mini_profile" width="24px" height="24px" style="border-radius: 50%" src="/image/profile/default.jpg">
+    </a>
+
+    <a href="/setting" style="cursor: pointer; margin-top: 301px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+      <img id="settingbutton" src="/image/menu/setting.png">
+    </a>
+  </div>
+</body>
+ 
+
+<!-- 
+<body>
+  <div id="menu">
     <div id="insta" style="cursor: pointer; margin-top: 12px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;" onmouseover="MenuMouseOver('insta')" onmouseleave="MenuMouseLeave('insta')" onmousedown="MenuMouseDown('insta')">
       <img id="instabutton" src="/image/menu/insta.png">
     </div>
@@ -56,5 +102,5 @@
     </div>
   </div>
 </body>
-
+ -->
 <script src="/js/menu.js"></script>
