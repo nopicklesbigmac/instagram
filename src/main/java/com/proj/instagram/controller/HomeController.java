@@ -1,9 +1,13 @@
 package com.proj.instagram.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.proj.instagram.user.UserDTO;
 
 @Controller
 public class HomeController {
@@ -70,7 +74,15 @@ public class HomeController {
 	}
 
 	@GetMapping("/profile")
-	public String profile() {
+	public String profile(Model model, HttpSession session) {
+		// 세션에서 로그인된 사용자 정보 가져오기
+        UserDTO user = (UserDTO) session.getAttribute("user");
+        // 세션에 사용자가 있는지 확인
+        if (user == null) {
+            return "redirect:/login";
+        }
+        // JSP로 사용자 정보 전달
+        model.addAttribute("user", user);
 	    return "views/home/profile"; // /WEB-INF/views/home/profile.jsp
 	}
 

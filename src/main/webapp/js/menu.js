@@ -15,6 +15,8 @@ function MenuMouseDown(name) {
     document.getElementById(name+"button").style.heightth = '20px';
 }
 
+var username = '<%= session.getAttribute("username") %>';
+
 $("#find").on("click", function() {
     location.href = "/find";
 })
@@ -31,8 +33,8 @@ $("#write").on("click", function() {
     location.href = "/write";
 })
 $("#dm").on("click", function() {
-    location.href = "/views/home/dm";
+    location.href = "/dm";
 })
 $("#profile").on("click", function() {
-    location.href = "/profile/" + principal.username;
+    location.href = "/profile/" + useremail;
 })

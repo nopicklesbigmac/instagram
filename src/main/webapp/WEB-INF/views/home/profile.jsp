@@ -92,82 +92,60 @@
 <body style="margin-left: 74px">
     <div id="profilePage" style="padding-top: 30px; padding-left: 20px; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;">
         <!-- 위쪽 프로필 설명들 -->
+        
+        <div id="debug-info" style="background-color: #f9f9f9; padding: 10px; margin-bottom: 20px;">
+            <h3>Debug Info:</h3>
+            <p>Session Email: <%= session.getAttribute("email") %></p>
+            <p>User Email: ${user.email}</p>
+            <p>Comparison Result: ${sessionScope.email eq user.email}</p>
+        </div>
+        
         <div id="profile-upperbox" style="display: flex">
             <div id="profile_img_div" style="padding-right: 44px">
-                <c:choose>
-                    <c:when test="${user.use_profile_img eq 1}">
-                        <img src="/dynamicImage/profile/${user.username}/profile.jpg" width="150px" height="150px" style="border-radius: 50%; border: 2px solid #dbdbdb">
-                    </c:when>
-                    <c:otherwise>
-                        <img src="/dynamicImage/profile/default.jpg" width="150px" height="150px">
-                    </c:otherwise>
-                </c:choose>
+                <!-- <img src="<%= session.getAttribute("Profile_img") %>" width="150px" height="150px" style="border-radius: 50%; border: 2px solid #dbdbdb"> <!-- 수정 --> -->
+                <img src="${sessionScope.Profile_img}" width="150px" height="150px" style="border-radius: 50%; border: 2px solid #dbdbdb"> <!-- 수정 --> 
             </div>
 
             <div id="name_div">
                 <div id="name_div_line1" style="display: flex; align-items: center;">
-                    <span id="nameBox" style="font-size: 20px;">${user.username}</span>
-                    <div id="isMyProfile${user.id}" style="display: flex; align-items: center;">
-                        <script>
-                            $.ajax({
-                                type: "GET",
-                                url: "/getPrincipal",
-                                headers: {'Authorization':localStorage.getItem('Authorization'),
-                                    'Refresh-Token':localStorage.getItem('Refresh-Token')},
-                                contentType: "application/json; charset=utf-8",
-                            }).done(function(resp) {
-                                var id = ${user.id};
-                                principal = resp;
-                                    if(principal.username == "${user.username}") {
-                                    $('#isMyProfile${user.id}').append('<button id="editProfile" class="profileButton" style="width: 104px; height: 32px; margin-left: 16px" onclick="editProfile()">프로필 편집</button>');
-                                    $('#isMyProfile${user.id}').append('<button id="viewStory" class="profileButton" style="width: 150px; height: 32px; margin-left: 4px">보관된 스토리 보기</button>');
-                                    $('#isMyProfile${user.id}').append('<div id="optionButton" style="width: 40px; height: 40px; margin-left: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center;" onclick="showOptionPopup()"><img src="/image/profile/option.png"></div>');
-                                } else {
-                                    $('#isMyProfile${user.id}').append('<div id="followOrUnfollow"></div>')
-                                    $('#isMyProfile${user.id}').append('<button id="messageButton" class="profileButton" style="width: 120px; height: 32px; margin-left: 8px" onclick="sendDm(${user.id})">메시지 보내기</button>');
-                                    $('#isMyProfile${user.id}').append('<button id="recommendButton" class="profileButton" style="width: 34px; height: 32px; margin-left: 8px"><img src="/dynamicImage/profile/recommend.png"></button>');
-                                    $('#isMyProfile${user.id}').append('<button id="useroptionButton" style="background-color: white; border: 0px; width: 32px; height: 32px; margin-left: 16px"><img src="/image/profile/useroption.png"></button>');
-                                    let data = {
-                                        fromaccountId: principal.id,
-                                        toaccountId: ${user.id}
-                                    }
-                                    $.ajax({
-                                        type: "GET",
-                                        url: "/getFollowInfo",
-                                        data: data, // GET 요청은 JSON으로 보내지 않고 그대로 보낸다.
-                                        contentType: "application/json; charset=utf-8",
-                                    }).done(function (resp) {
-                                        if (resp === 1) { // 팔로우 되어 있는 경우
-                                            $('#followOrUnfollow').append('<button id="unfollowButton${user.id}" class="profileButton" style="width: 82px; height: 32px; margin-left: 20px; font-size: 14px" onclick="onclickUnfollow(principal.id, ${user.id})">팔로잉</button>');
-                                        } else if (resp === 0) { // 팔로우 안 되어 있는 경우
-                                            $('#followOrUnfollow').append('<button id="followButton${user.id}" class="followButton" style="width: 82px; height: 32px; margin-left: 20px" onclick="onclickFollow(principal.id, ${user.id})">팔로우</button>');
-                                        }
-                                    })
-                                }
-                            });
-                        </script>
+                    <span id="nameBox" style="font-size: 20px;"><%= session.getAttribute("username") %></span> <!-- 수정 -->
+                    <div id="isMyProfile" style="display: flex; align-items: center;">
+                        <!-- 사용자의 프로필인지 확인 -->
+                        <c:if test="${sessionScope.email eq user.email}"> <!-- 자신의 프로필일 때 -->
+                            <button id="editProfile" class="profileButton" style="width: 104px; height: 32px; margin-left: 16px" onclick="editProfile()">프로필 편집</button>
+                            <button id="viewStory" class="profileButton" style="width: 150px; height: 32px; margin-left: 4px">보관된 스토리 보기</button>
+                            <div id="optionButton" style="width: 40px; height: 40px; margin-left: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center;" onclick="showOptionPopup()">
+                                <img src="/image/profile/option.png">
+                            </div>
+                        </c:if>
+                        <c:if test="${sessionScope.email ne user.email}"> <!-- 다른 사람의 프로필일 때 -->
+                            <div id="followOrUnfollow"></div>
+                            <button id="messageButton" class="profileButton" style="width: 120px; height: 32px; margin-left: 8px" onclick="sendDm(${user.email})">메시지 보내기</button>
+                            <button id="recommendButton" class="profileButton" style="width: 34px; height: 32px; margin-left: 8px">
+                                <img src="/dynamicImage/profile/recommend.png">
+                            </button>
+                            <button id="useroptionButton" style="background-color: white; border: 0px; width: 32px; height: 32px; margin-left: 16px">
+                                <img src="/image/profile/useroption.png">
+                            </button>
+                        </c:if>
                     </div>
-
-
-
                 </div>
 
                 <div style="margin-bottom: 16px"></div>
 
                 <div id="name_div_line2" style="margin-bottom: 20px">
                     게시물 <span style="font-weight: bold; margin-right: 30px">${posts.size()}</span>
-                    팔로워 <span style="font-weight: bold; margin-right: 30px">${user.follower}</span>
-                    팔로우 <span style="font-weight: bold;">${user.following}</span>
+                    팔로워 <span style="font-weight: bold; margin-right: 30px"><%= session.getAttribute("Follower") %></span> <!-- 수정 -->
+                    팔로우 <span style="font-weight: bold;"><%= session.getAttribute("Following") %></span> <!-- 수정 -->
                 </div>
 
                 <div id="name_div_line3" style="margin-bottom: 50px">
-                    <span style="font-size: 14px; font-weight: bold; margin-bottom: 10px; display: block">${user.name}</span>
-                    <span style="font-size: 14px;">${user.comment}</span>
+                    <span style="font-size: 14px; font-weight: bold; margin-bottom: 10px; display: block"><%= session.getAttribute("name") %></span> <!-- 수정 -->
+                    <span style="font-size: 14px;">${sessionScope.comment}</span>
                 </div>
             </div>
         </div>
-
-        <div id="profile_middlebox" style="border-top: 1px solid #dbdbdb; width: 90%; padding-left: 30px; padding-right: 50px; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+ 		<div id="profile_middlebox" style="border-top: 1px solid #dbdbdb; width: 90%; padding-left: 30px; padding-right: 50px; display: flex; flex-direction: row; justify-content: center; align-items: center;">
             <div id="postsButton" class="middleboxButton" style="cursor: pointer; text-align: center; padding-top: 16px">
                 <span style="font-size: 12px; font-weight: bold; color: #737373">게시물</span>
             </div>
@@ -178,8 +156,8 @@
                 <span style="font-size: 12px; font-weight: bold; color: #737373">태그됨</span>
             </div>
         </div>
-
-        <div id="profile_postbox" style="width: 90%; height: 100%; padding-left: 30px; padding-right: 50px; display: flex; justify-content: center;">
+        <!-- 프로필 포스트 박스 -->
+       <div id="profile_postbox" style="width: 90%; height: 100%; padding-left: 30px; padding-right: 50px; display: flex; justify-content: center;">
             <c:choose>
                 <c:when test="${posts.size() eq 0}">
                     <div id="NoPostsBox" style="margin-top: 50px; display: flex; flex-direction: column; align-items: center; text-align: center;">
@@ -214,6 +192,5 @@
         </div>
     </div>
 </body>
-
 
 <script src="/js/profile.js"></script>

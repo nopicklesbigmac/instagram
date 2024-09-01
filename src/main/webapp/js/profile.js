@@ -1,14 +1,31 @@
+
 function gotoPost(url) {
+    // JavaScript 함수 내에서 세션 값을 사용할 수 있습니다.
+    console.log("User email: " + sessionEmail); // 예시로 콘솔에 출력
     location.href = url;
 }
 
 function editProfile() {
-    location.href = "/accounts/edit"
+    console.log("Username: " + sessionUsername);
+    location.href = "/accounts/edit";
 }
 
-function showOptionPopup() {
-    document.getElementById("optionPopupBackground").style.display = 'block';
+// 예를 들어, 사용자 프로필 이미지를 표시하는 경우
+function showUserProfile() {
+    document.getElementById("profileImg").src = sessionProfileImg;
 }
+
+//function gotoPost(url) {
+//    location.href = url;
+//}
+
+//function editProfile() {
+//    location.href = "/accounts/edit"
+//}
+
+//function showOptionPopup() {
+//    document.getElementById("optionPopupBackground").style.display = 'block';
+//}
 
 function optionLogout() {
     location.href = "/logout";

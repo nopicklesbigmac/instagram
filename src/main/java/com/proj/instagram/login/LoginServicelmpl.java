@@ -26,23 +26,14 @@ public class LoginServicelmpl implements ILoginService{
 
         // 사용자 정보가 존재하고 비밀번호가 일치하는 경우 사용자 객체 반환
         if (user != null && login.getPassword().equals(user.getPassword())) {
-            System.out.println("Servicelmpl2: " + user);
-            System.out.println("loginPW : " + login.getPassword());
-            System.out.println("DAOPW : " + user.getPassword());
             session.setAttribute("email", user.getEmail());
             session.setAttribute("name", user.getName());
             session.setAttribute("username", user.getUsername());
-            session.setAttribute("Following", 1);
-            session.setAttribute("Follower", 10);
-            session.setAttribute("Profile_img", "/image/recommend.png");
-             
-         // 세션 정보 로그 출력
-            System.out.println("Session ID: " + session.getId());
-            System.out.println("Session Attributes: ");
-			/*
-			 session.getAttributeNames().asIterator().forEachRemaining(name -> {
-			 System.out.println(name + ": " + session.getAttribute(name)); });
-			 */
+            session.setAttribute("Following", 40);
+            session.setAttribute("Follower", 100);
+            session.setAttribute("Profile_img", "/image/profile/insta.png");
+            session.setAttribute("comment", " comment test");
+            session.setAttribute("user", user);
             return "success";
         } else {
             // 비밀번호가 일치하지 않거나 사용자 정보가 없는 경우 실패 반환
