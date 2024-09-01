@@ -32,7 +32,7 @@ public class LoginServicelmpl implements ILoginService{
             session.setAttribute("Following", 40);
             session.setAttribute("Follower", 100);
             session.setAttribute("Profile_img", "/image/profile/insta.png");
-            session.setAttribute("comment", " comment test");
+            session.setAttribute("comment", user.getComments());
             session.setAttribute("user", user);
             return "success";
         } else {
