@@ -92,18 +92,24 @@
 <body style="margin-left: 74px">
     <div id="profilePage" style="padding-top: 30px; padding-left: 20px; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;">
         <!-- 위쪽 프로필 설명들 -->
-        
+     <!--    
         <div id="debug-info" style="background-color: #f9f9f9; padding: 10px; margin-bottom: 20px;">
             <h3>Debug Info:</h3>
             <p>Session Email: <%= session.getAttribute("email") %></p>
             <p>User Email: ${user.email}</p>
             <p>Comparison Result: ${sessionScope.email eq user.email}</p>
         </div>
-        
+         -->
         <div id="profile-upperbox" style="display: flex">
             <div id="profile_img_div" style="padding-right: 44px">
-                <!-- <img src="<%= session.getAttribute("Profile_img") %>" width="150px" height="150px" style="border-radius: 50%; border: 2px solid #dbdbdb"> <!-- 수정 --> -->
-                <img src="${sessionScope.Profile_img}" width="150px" height="150px" style="border-radius: 50%; border: 2px solid #dbdbdb"> <!-- 수정 --> 
+            <c:choose>
+                <c:when test="${user.use_profile_img != null}">
+                    <img src="/dynamicImage/profile/${user.username}/profile.jpg" width="150px" height="150px" style="border-radius: 50%; border: 2px solid #dbdbdb">
+                </c:when>
+                <c:otherwise>
+                    <img src="/image/profile/default.jpg" width="150px" height="150px">
+                </c:otherwise>
+            </c:choose>
             </div>
 
             <div id="name_div">
