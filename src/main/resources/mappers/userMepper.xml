@@ -17,6 +17,13 @@
 		VALUES
 		(#{email}, #{name}, #{username}, #{password})
 	</insert>
+	
+    <update id="updateUser">
+        UPDATE insta_user
+        SET comments = #{comments},
+            profile_img = #{profileImage}
+        WHERE email = #{email}
+    </update>
 <!-- 	
 	<select id="isExistId" parameterType="String" resultType="int">
 		SELECT count(*) FROM login WHERE id=#{id}

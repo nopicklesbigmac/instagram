@@ -24,7 +24,7 @@ public class UserDTO {
         return comments;
     }
 
-    public void setComment(String comments) {
+    public void setComments(String comments) {
         this.comments = comments;
     }
 	

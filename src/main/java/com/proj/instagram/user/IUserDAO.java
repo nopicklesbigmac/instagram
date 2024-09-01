@@ -9,5 +9,7 @@ public interface IUserDAO {
 	UserDTO selectuser(String user_name);
 	 
 	void join (UserDTO user);
+	
+    void updateUser(UserDTO user);
 }
  

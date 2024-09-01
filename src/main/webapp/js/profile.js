@@ -4,11 +4,15 @@ function gotoPost(url) {
     console.log("User email: " + sessionEmail); // 예시로 콘솔에 출력
     location.href = url;
 }
-
 function editProfile() {
-    console.log("Username: " + sessionUsername);
-    location.href = "/accounts/edit";
+    console.log("Redirecting to profile edit page");
+    location.href = "/editProfile"; // 컨트롤러에서 정의한 URL
 }
+
+//function editProfile() {
+//    console.log("Username: " + sessionEmail);
+//    location.href = "/editProfileProc";
+//}
 
 // 예를 들어, 사용자 프로필 이미지를 표시하는 경우
 function showUserProfile() {
