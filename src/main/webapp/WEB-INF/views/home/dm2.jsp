@@ -1,9 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
-
+ <%@ include file="../../layout/menu.jsp"%>
   <head>
+         
 <!--   
   	<script type="text/javascript">
   	async function chatSave(data, selectedUserId) {
@@ -16,7 +17,7 @@
   		}).then(function(res) {
   			return res.text();
   		}).then(function(res) {
-  			//alert("Ã¤ÆÃ¼º°ø");
+  			//alert("ì±„íŒ…ì„±ê³µ");
   		});
 
 
@@ -39,7 +40,8 @@ body {
   font-family: "Raleway", sans-serif;
   /* background-color: #accedc; */
   background-color: white;
-  margin: 50px 0px;
+  margin: 0px 0px;
+   margin-left: 90px;
 }
 .main-section small {
   font-size: 12px;
@@ -50,10 +52,10 @@ body {
 }
 .main-section {
   border: 1px solid #e6e6e6;
-  margin: 80px auto;
+  margin: 0px auto;
   margin-bottom: 160px;
-  margin-top: 120px;
-  width: 960px;
+  margin-top: 0px;
+  width: 98%;
   background-color: #fff;
   /* margin: auto; */
 }
@@ -106,7 +108,7 @@ body {
 .left-section {
   width: calc(30% - 1px);
   float: left;
-  height: 500px;
+  height: 850px;
   border-right: 1px solid #e6e6e6;
   background-color: #fff;
   z-index: 1;
@@ -201,7 +203,7 @@ body {
 .right-section {
   width: 70%;
   float: left;
-  height: 500px;
+  height: 850px;
   background-color: #f6f6f6;
   position: relative;
 }
@@ -349,8 +351,8 @@ body {
   opacity: 0;
 }
 
-/* »çÀÌµå¹Ù ¼Ó¼º */
-/* ½ºÅ©·Ñ¹Ù¾øÀÌ ½ºÅ©·ÑÇÏ±â ±¸Çö */
+/* ì‚¬ì´ë“œë°” ì†ì„± */
+/* ìŠ¤í¬ë¡¤ë°”ì—†ì´ ìŠ¤í¬ë¡¤í•˜ê¸° êµ¬í˜„ */
 #forscrolls {
   overflow-y: auto;
   -ms-overflow-style: none;
@@ -414,15 +416,15 @@ body {
             <li>
               <div class="chatList">
                 <div class="img">
-                  <!--Á¢¼ÓÁß Ç¥½Ã <i class="fa fa-circle"></i> -->
+                  <!--ì ‘ì†ì¤‘ í‘œì‹œ <i class="fa fa-circle"></i> -->
                   <img
                     src="/image/profile/default.jpg"
                   />
                 </div>
                 <div class="desc">
                   <small class="time">05:30 am</small>
-                  <h5>ÀÌ»óÇù</h5>
-                  <small>½Ã¹ß dm ¤¸¤¤ ¾î·Á¿î...</small>
+                  <h5>ì´ìƒí˜‘</h5>
+                  <small>ì‹œë°œ dm ã…ˆã„´ ì–´ë ¤ìš´...</small>
                 </div>
               </div>
             </li>
@@ -438,7 +440,7 @@ body {
                     src="/image/profile/default.jpg"
                   />
                   <div class="msg-desc">
-                   ¤¾¤·
+                   ã…ã…‡
                   </div>
                   <small>05:25 am</small>
                 </div>
@@ -449,7 +451,7 @@ body {
                     src="/image/profile/default.jpg"
                   />
                   <div class="msg-desc">
-                   ¤¾¤·
+                   ã…ã…‡
                   </div>
                   <small>05:25 am</small>
                 </div>
@@ -461,7 +463,7 @@ body {
                     src="/image/profile/default.jpg"
                   />
                   <div class="msg-desc">
-                   ÇÒ¸¸ÇÔ?
+                   í• ë§Œí•¨?
                   </div>
                   <small>05:25 am</small>
                 </div>
