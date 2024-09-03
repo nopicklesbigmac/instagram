@@ -18,13 +18,20 @@
 		(#{email}, #{name}, #{username}, #{password})
 	</insert>
 	
+	<update id="updateUser">
+    UPDATE insta_user
+    SET comments = #{comments, jdbcType=VARCHAR},
+        use_profile_img = #{use_profile_img, jdbcType=VARCHAR}
+    WHERE email = #{email, jdbcType=VARCHAR}
+	</update>
+<!--	
     <update id="updateUser">
         UPDATE insta_user
         SET comments = #{comments},
-            profile_img = #{profileImage}
+            use_profile_img = #{use_profile_img}
         WHERE email = #{email}
     </update>
-<!-- 	
+ 	
 	<select id="isExistId" parameterType="String" resultType="int">
 		SELECT count(*) FROM login WHERE id=#{id}
 	</select>

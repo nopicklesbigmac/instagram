@@ -171,14 +171,21 @@
 </head>
 
 <body>
+<form id="editProfileForm" action="/editProfile" method="POST" enctype="multipart/form-data">
     <div id="Contents" style="width: 100%; height: 100%; padding: 50px;">
         <div id="editProfileLable">프로필 편집</div>
 
         <div id="profile_info">
             <div id="profile_image"></div>
             <div id="profile_usernameBox">
+            <!-- 
                 <span id="profile_username"></span>
                 <span id="profile_name"></span>
+             
+             -->
+             
+                <span id="profile_username">${user.username}</span>
+                <span id="profile_name">${user.name}</span>
             </div>
             <input type="file" accept="image/*" id="imageFile" style="display: none" onchange="changeImage(event)">
             <label for="imageFile" class="profile_changeImgButton">
@@ -189,15 +196,16 @@
         <div id="profile_comment">
             <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px"> 소개</div>
             <div id="commentBox" style="position: relative">
-                <textarea id="commentInput" placeholder="소개" oninput="checkMaxLength()"></textarea>
+                <textarea id="commentInput" name="comments" placeholder="소개" oninput="checkMaxLength()">${user.comments}</textarea>
                 <div id="charCount">0 / 150</div>
             </div>
         </div>
 
         <div id="Savearea">
-            <div id="profile_save" onclick="profile_save()">제출</div>
+             <button type="submit" id="profile_save">제출</button>
         </div>
     </div>
+</form>
 </body>
 
 

@@ -19,19 +19,28 @@ public class ProfileServiceImpl implements IProfileService {
     private static final String PROFILE_IMAGE_PATH = "/path/to/save/images/";
 
     @Override
-    public boolean updateProfile(UserDTO user, String comment, MultipartFile profileImage) {
+    public boolean updateProfile(UserDTO user, String comments, MultipartFile use_profile_img) {
         try {
             // 사용자 댓글 업데이트
-            user.setComments(comment);
-
+        	user.setComments(comments);
             // 프로필 이미지 처리
-            if (profileImage != null && !profileImage.isEmpty()) {
-                String imagePath = PROFILE_IMAGE_PATH + user.getUsername() + "/profile.jpg";
+            if (use_profile_img != null && !use_profile_img.isEmpty()) {
+                // 이메일을 기반으로 사용자 폴더 생성
+                String userFolderPath = "/path/to/save/images/" + user.getUsername(); // email을 폴더 이름으로 사용
+                File userFolder = new File(userFolderPath);
+                if (!userFolder.exists()) {
+                    userFolder.mkdirs(); // 폴더가 없으면 생성
+                }
+
+                // 이미지 파일 경로 설정
+                String imagePath = userFolderPath + "/profile.jpg";
                 File imageFile = new File(imagePath);
-                // 디렉토리 생성
-                imageFile.getParentFile().mkdirs();
+                
                 // 파일 저장
-                profileImage.transferTo(imageFile);
+                use_profile_img.transferTo(imageFile);
+                System.out.println("use_img" + use_profile_img);
+
+                // 경로를 DB에 저장하기 위한 필드 업데이트
                 user.setUse_profile_img(imagePath);
             }
 

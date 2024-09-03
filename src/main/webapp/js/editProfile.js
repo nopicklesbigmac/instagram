@@ -13,18 +13,18 @@ function  init() {
         principal = resp;
 
         // 프로필 이미지 불러오기
-        var imageBox = document.getElementById('profile_image');
-        var profileImage = document.createElement('img');
-        profileImage.style.width = '56px';
-        profileImage.style.height = '56px';
-        profileImage.style.borderRadius = '50%';
-        profileImage.style.border = '1px solid #dbdbdb';
+        var imageBox = document.getElementById('use_profile_img');
+        var use_profile_img = document.createElement('img');
+        use_profile_img.style.width = '56px';
+        use_profile_img.style.height = '56px';
+        use_profile_img.style.borderRadius = '50%';
+        use_profile_img.style.border = '1px solid #dbdbdb';
         if(principal.use_profile_img == 1) {
-            profileImage.src = "/dynamicImage/profile/" + principal.username + "/profile.jpg";
+            use_profile_img.src = "/dynamicImage/profile/" + principal.username + "/profile.jpg";
         } else {
-            profileImage.src = "/dynamicImage/profile/default.jpg";
+            use_profile_img.src = "/dynamicImage/profile/default.jpg";
         }
-        imageBox.appendChild(profileImage);
+        imageBox.appendChild(use_profile_img);
 
         // 닉네임과 이름 불러오기
         document.getElementById('profile_username').innerText = principal.username;
@@ -48,7 +48,7 @@ function checkMaxLength() {
 }
 
 function changeImage() {
-    var profileBox = document.getElementById('profile_image');
+    var profileBox = document.getElementById('use_profile_img');
     var files = event.target.files;
 
     for (var i=0; i<files.length; i++) {
@@ -70,34 +70,22 @@ function changeImage() {
 }
 
 function profile_save() {
+    let data = new FormData();
+    data.append('email', principal.email);
+    data.append('comments', document.getElementById('commentInput').value); // comment 값을 추가합니다
+    data.append('use_profile_img', document.getElementById('imageFile').files[0]); // 프로필 이미지를 추가합니다
 
     $.ajax({
-        type: "GET",
-        url: "/getPrincipal",
-        headers: {'Authorization':localStorage.getItem('Authorization'),
-            'Refresh-Token':localStorage.getItem('Refresh-Token')},
-        contentType: "application/json; charset=utf-8",
+        type: "POST",
+        url: "/editProfile",
+        data: data,
+        contentType: false,
+        processData: false,
     }).done(function(resp) {
-
-        let data = new FormData();
-        data.append('accountId', principal.id);
-        data.append('comment', document.getElementById('commentInput').value);
-        data.append('picture', oriImages, 'profile');
-
-        principal = resp;
-        $.ajax({
-            type: "PUT",
-            url: "/profile/editProfile",
-            data: data,
-            contentType: false,
-            processData: false
-        }).done(function (resp){
-            alert("편집이 완료되었습니다.");
-            location.href = "/profile/" + principal.username;
-        }).fail(function(error){
-            alert(JSON.stringify(error));
-        });
-
+        alert("편집이 완료되었습니다.");
+        location.reload();
+    }).fail(function(error) {
+        alert(JSON.stringify(error));
     });
 }
 

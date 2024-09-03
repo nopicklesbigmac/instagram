@@ -147,7 +147,7 @@
 
                 <div id="name_div_line3" style="margin-bottom: 50px">
                     <span style="font-size: 14px; font-weight: bold; margin-bottom: 10px; display: block"><%= session.getAttribute("name") %></span> <!-- 수정 -->
-                    <span style="font-size: 14px;">${sessionScope.comment}</span>
+                    <span style="font-size: 14px;">${user.comments}</span>
                 </div>
             </div>
         </div>
