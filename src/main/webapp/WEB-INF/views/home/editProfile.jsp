@@ -170,28 +170,25 @@
     </style>
 </head>
 
-<body>
+<body onload="init()">
 <form id="editProfileForm" action="/editProfile" method="POST" enctype="multipart/form-data">
     <div id="Contents" style="width: 100%; height: 100%; padding: 50px;">
         <div id="editProfileLable">프로필 편집</div>
 
         <div id="profile_info">
-            <div id="profile_image"></div>
-            <div id="profile_usernameBox">
-            <!-- 
-                <span id="profile_username"></span>
-                <span id="profile_name"></span>
-             
-             -->
-             
-                <span id="profile_username">${user.username}</span>
-                <span id="profile_name">${user.name}</span>
-            </div>
-            <input type="file" accept="image/*" id="imageFile" style="display: none" onchange="changeImage(event)">
-            <label for="imageFile" class="profile_changeImgButton">
-                사진 변경
-            </label>
-        </div>
+		    <div id="profile_image">
+		        <img id="use_profile_img" name="profile_img" src="${user.use_profile_img}" style="width: 56px; height: 56px; border-radius: 50%; border: 1px solid #dbdbdb;">
+		    </div>
+		    <div id="profile_usernameBox">
+		        <span id="profile_username">${user.username}</span>
+		        <span id="profile_name">${user.name}</span>
+		    </div>
+		    <input type="file" accept="image/*" id="imageFile" name="use_profile_img" style="display: none" onchange="changeImage(event)">
+		    <label for="imageFile" class="profile_changeImgButton">
+		        사진 변경
+		    </label>
+		</div>
+
 
         <div id="profile_comment">
             <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px"> 소개</div>

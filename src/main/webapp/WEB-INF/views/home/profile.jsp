@@ -102,14 +102,14 @@
          -->
         <div id="profile-upperbox" style="display: flex">
             <div id="profile_img_div" style="padding-right: 44px">
-            <c:choose>
-                <c:when test="${user.use_profile_img != null}">
-                    <img src="/dynamicImage/profile/${user.username}/profile.jpg" width="150px" height="150px" style="border-radius: 50%; border: 2px solid #dbdbdb">
-                </c:when>
-                <c:otherwise>
-                    <img src="/image/profile/default.jpg" width="150px" height="150px">
-                </c:otherwise>
-            </c:choose>
+				<c:choose>
+				    <c:when test="${user.use_profile_img != null && !user.use_profile_img.isEmpty()}">
+				        <img src="${pageContext.request.contextPath}/image/profile/${user.username}/profile.jpg" width="150px" height="150px" style="border-radius: 50%; border: 2px solid #dbdbdb">
+				    </c:when>
+				    <c:otherwise>
+				        <img src="/image/profile/default.jpg" width="150px" height="150px">
+				    </c:otherwise>
+				</c:choose>
             </div>
 
             <div id="name_div">

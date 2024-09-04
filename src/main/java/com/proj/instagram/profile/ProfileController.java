@@ -42,9 +42,10 @@ public class ProfileController {
         if (user == null) {
             return "redirect:/login";
         }
-
+     // 프로필 이미지 URL을 추가로 모델에 포함
+        String profileImageUrl = profileService.getProfileImagePath(user.getUsername());
         model.addAttribute("user", user);
-        System.out.println("ProfileController : editProfile");
+        model.addAttribute("profileImageUrl", profileImageUrl);
         return "views/home/editProfile";
     }
 
@@ -53,6 +54,8 @@ public class ProfileController {
     	@RequestParam(value = "comments", defaultValue = "") String comments,
         @RequestParam(value = "use_profile_img", required = false) MultipartFile use_profile_img,
         HttpSession session, Model model) {
+    	
+    	System.out.println("updateProfile 메서드 호출됨"); // 추가된 로그
 
         UserDTO user = (UserDTO) session.getAttribute("user");
 
@@ -62,6 +65,15 @@ public class ProfileController {
         }
      // 로그 출력
         System.out.println("Received comments: " + comments);
+        
+
+        if (use_profile_img != null) {
+            System.out.println("파일 이름: " + use_profile_img.getOriginalFilename());
+            System.out.println("파일 크기: " + use_profile_img.getSize());
+        } else {
+            System.out.println("파일이 전송되지 않았습니다.");
+        }
+        
         boolean updateSuccess = profileService.updateProfile(user, comments, use_profile_img);
 
         if (updateSuccess) {

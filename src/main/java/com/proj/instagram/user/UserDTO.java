@@ -29,12 +29,14 @@ public class UserDTO {
     }
 	
 	
-	public String getUse_profile_img() {
-		return use_profile_img;
-	}
-	public void setUse_profile_img(String use_profile_img) {
-		this.use_profile_img = use_profile_img;
-	}
+    public String getUse_profile_img() {
+        return use_profile_img;
+    }
+
+    public void setUse_profile_img(String use_profile_img) {
+        this.use_profile_img = use_profile_img;
+    }
+    
 	public String getCreated_at() {
 		return created_at;
 	}

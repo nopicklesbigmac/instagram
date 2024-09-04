@@ -11,5 +11,6 @@ public interface IUserDAO {
 	void join (UserDTO user);
 	
     void updateUser(UserDTO user);
+    UserDTO getUserByEmail(String email);
 }
  
