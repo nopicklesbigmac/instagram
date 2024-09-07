@@ -226,12 +226,14 @@ body {
 }
 
 .message ul li.msg-left .msg-desc {
+	float: left;
 	margin-left: 70px;
 	font-size: 15px;
 	background: #efefef;
 	padding: 7px 12px;
 	border-radius: 10px 10px 10px 10px;
 	position: relative;
+	
 }
 
 .message ul li.msg-left .msg-desc:before {
@@ -247,6 +249,9 @@ body {
 	margin-left: 70px;
 	float: left;
 	color: #c1c1c1;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
 }
 
 .message ul li.msg-right {
@@ -300,6 +305,7 @@ body {
 	width: 100%;
 	padding: 0px;
 	margin: 15px 0px;
+	margin-bottom: 50px;
 }
 
 .message ul li.msg-day small {
@@ -390,4 +396,8 @@ body {
 .chatting-main {
 	margin-top: 85px;
 	/* height: 790px; */
+}
+.msg-ul{
+	position: relative;
+	top: 50px;
 }

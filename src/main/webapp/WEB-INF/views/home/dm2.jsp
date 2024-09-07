@@ -88,30 +88,33 @@
 			</div>
 			<div class="right-section">
 				<div class="message mCustomScrollbar" data-mcs-theme="minimal-dark">
-					<ul>
+					<ul class="msg-ul">
 						
 						<li class="msg-right">
 							<div class="msg-left-sub">
 								<img src="/image/profile/default.jpg" />
 								<div class="msg-desc">ㅎㅇ</div>
-								<small>1/05:25 am</small>
+								<small>05:21 am</small>
 							</div>
 						</li>
 						<li class="msg-day"><small>Wednesday</small></li>
+
 						<li class="msg-left">
 							<div class="msg-left-sub">
 								<img src="/image/profile/default.jpg" />
+								
 								<div class="msg-desc">할만함?</div>
-								<small>2/05:25 am</small>
+								<small>05:22 am</small>
 							</div>
 						</li>
+						
 						<li class="msg-right">
 							<div class="msg-left-sub">
 								<img src="/image/profile/default.jpg" />
 								<div class="msg-desc">Lorem ipsum dolor sit amet,
 									consectetur adipisicing elit, sed do eiusmod tempor incididunt
 									ut labore et dolore magna aliqua.</div>
-								<small>3/05:25 am</small>
+								<small>05:23 am</small>
 							</div>
 						</li>
 						<li class="msg-left">
@@ -119,7 +122,7 @@
 								<img src="/image/profile/default.jpg" />
 								<div class="msg-desc">Lorem ipsum dolor sit amet,
 									consectetur adipisicing elit</div>
-								<small>4/05:25 am</small>
+								<small>05:24 am</small>
 							</div>
 						</li>
 						<li class="msg-right">
@@ -128,7 +131,7 @@
 								<div class="msg-desc">Lorem ipsum dolor sit amet,
 									consectetur adipisicing elit, sed do eiusmod tempor incididunt
 									ut labore et dolore magna aliqua.</div>
-								<small>5/05:25 am</small>
+								<small>05:25 am</small>
 							</div>
 						</li>
 					</ul>
