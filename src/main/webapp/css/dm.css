@@ -244,7 +244,7 @@ body {
 }
 
 .message ul li.msg-left small {
-	margin-left:70px;
+	margin-left: 70px;
 	float: left;
 	color: #c1c1c1;
 }
@@ -290,9 +290,10 @@ body {
 	margin-left: 560px;
 	float: right;
 	color: #c1c1c1;
-	  position: absolute;
-	  bottom: 0px;
-	}
+	position: absolute;
+	bottom: 0px;
+	right: 70px;
+}
 
 .message ul li.msg-day {
 	border-top: 1px solid #ebebeb;
