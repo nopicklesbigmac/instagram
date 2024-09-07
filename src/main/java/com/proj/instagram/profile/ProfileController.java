@@ -49,31 +49,28 @@ public class ProfileController {
         return "views/home/editProfile";
     }
 
-    @PostMapping("/editProfile") // URL을 editProfile로 변경
+    @PostMapping("/editProfile")
     public String updateProfile(
-    	@RequestParam(value = "comments", defaultValue = "") String comments,
-        @RequestParam(value = "use_profile_img", required = false) MultipartFile use_profile_img,
-        HttpSession session, Model model) {
-    	
-    	System.out.println("updateProfile 메서드 호출됨"); // 추가된 로그
+            @RequestParam(value = "comments", defaultValue = "") String comments,
+            @RequestParam(value = "use_profile_img", required = false) MultipartFile use_profile_img,
+            HttpSession session, Model model) {
 
         UserDTO user = (UserDTO) session.getAttribute("user");
 
         if (user == null) {
-            System.out.println("ProfileController : updateProfile");
-            return "redirect:/login"; // 로그인하지 않은 경우 로그인 페이지로 리다이렉트
+            return "redirect:/login";
         }
-     // 로그 출력
+
+        // 로그 확인
         System.out.println("Received comments: " + comments);
         
-
-        if (use_profile_img != null) {
+        if (use_profile_img != null && !use_profile_img.isEmpty()) {
             System.out.println("파일 이름: " + use_profile_img.getOriginalFilename());
             System.out.println("파일 크기: " + use_profile_img.getSize());
         } else {
             System.out.println("파일이 전송되지 않았습니다.");
         }
-        
+
         boolean updateSuccess = profileService.updateProfile(user, comments, use_profile_img);
 
         if (updateSuccess) {
@@ -84,8 +81,8 @@ public class ProfileController {
             model.addAttribute("message", "프로필 업데이트 중 오류가 발생했습니다.");
         }
 
-        // 업데이트 후 사용자 정보와 함께 프로필 페이지로 리다이렉트
         return "redirect:/profile";
     }
+
 
 }

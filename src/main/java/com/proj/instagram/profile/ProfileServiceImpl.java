@@ -26,22 +26,25 @@ public class ProfileServiceImpl implements IProfileService {
 
             // 프로필 이미지 처리
             if (use_profile_img != null && !use_profile_img.isEmpty()) {
-                // 이메일을 기반으로 사용자 폴더 생성
-                String userFolderPath = PROFILE_IMAGE_PATH + user.getUsername(); // 유저명을 폴더 이름으로 사용
+                // 사용자 폴더 생성
+                String userFolderPath = PROFILE_IMAGE_PATH + user.getUsername();
                 File userFolder = new File(userFolderPath);
                 if (!userFolder.exists()) {
                     userFolder.mkdirs(); // 폴더가 없으면 생성
                 }
 
-                // 이미지 파일 경로 설정
+                // 이전 프로필 이미지 삭제 (덮어쓰기)
+                File oldImage = new File(userFolderPath + "/profile.jpg");
+                if (oldImage.exists()) {
+                    oldImage.delete();
+                }
+
+                // 새로운 이미지 저장
                 String imagePath = userFolderPath + "/profile.jpg";
                 File imageFile = new File(imagePath);
-                
-                // 파일 저장
                 use_profile_img.transferTo(imageFile);
-                System.out.println("use_img" + use_profile_img);
-                System.out.println("파일 저장됨: " + imagePath); // 경로 확인
-                // 경로를 DB에 저장하기 위한 필드 업데이트
+
+                // 이미지 경로 설정
                 user.setUse_profile_img(imagePath);
             }
 
@@ -54,8 +57,10 @@ public class ProfileServiceImpl implements IProfileService {
             return false;
         }
     }
+
     @Override
     public String getProfileImagePath(String username) {
         return "/dynamicImage/profile/" + username + "/profile.jpg";
     }
+
 }

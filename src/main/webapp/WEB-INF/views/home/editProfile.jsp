@@ -177,7 +177,7 @@
 
         <div id="profile_info">
 		    <div id="profile_image">
-		        <img id="use_profile_img" name="profile_img" src="${user.use_profile_img}" style="width: 56px; height: 56px; border-radius: 50%; border: 1px solid #dbdbdb;">
+		        <img id="use_profile_img" name="profile_img" src="${profileImageUrl}" style="width: 56px; height: 56px; border-radius: 50%; border: 1px solid #dbdbdb;">
 		    </div>
 		    <div id="profile_usernameBox">
 		        <span id="profile_username">${user.username}</span>
@@ -188,7 +188,6 @@
 		        사진 변경
 		    </label>
 		</div>
-
 
         <div id="profile_comment">
             <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px"> 소개</div>
@@ -204,6 +203,5 @@
     </div>
 </form>
 </body>
-
 
 <script src="/js/editProfile.js"></script>
