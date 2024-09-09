@@ -86,18 +86,7 @@ public class HomeController {
 //	    return "views/home/profile"; // /WEB-INF/views/home/profile.jsp
 //	}
 
-	@GetMapping("/dm")
-	public String dm() {
-	    return "views/home/dm"; // /WEB-INF/views/home/dm.jsp
-	}
-	@GetMapping("/dm2")
-	public String dm2() {
-	    return "views/home/dm2"; // /WEB-INF/views/home/dm.jsp
-	}
-	@GetMapping("/dm3")
-	public String dm3() {
-	    return "views/home/dm3"; // /WEB-INF/views/home/dm.jsp
-	}
+
 	@GetMapping("/write")
 	public String write() {
 	    return "views/home/write"; // /WEB-INF/views/home/write.jsp
