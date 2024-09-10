@@ -170,38 +170,40 @@
     </style>
 </head>
 
-<body onload="init()">
-<form id="editProfileForm" action="/editProfile" method="POST" enctype="multipart/form-data">
+<body>
     <div id="Contents" style="width: 100%; height: 100%; padding: 50px;">
-        <div id="editProfileLable">프로필 편집</div>
+        <div id="editProfileLabel">프로필 편집</div>
 
         <div id="profile_info">
-		    <div id="profile_image">
-		        <img id="use_profile_img" name="profile_img" src="${profileImageUrl}" style="width: 56px; height: 56px; border-radius: 50%; border: 1px solid #dbdbdb;">
-		    </div>
-		    <div id="profile_usernameBox">
-		        <span id="profile_username">${user.username}</span>
-		        <span id="profile_name">${user.name}</span>
-		    </div>
-		    <input type="file" accept="image/*" id="imageFile" name="use_profile_img" style="display: none" onchange="changeImage(event)">
-		    <label for="imageFile" class="profile_changeImgButton">
-		        사진 변경
-		    </label>
-		</div>
+            <div id="profile_image"></div>
+            <div id="profile_usernameBox">
+                <span id="profile_username"></span>
+                <span id="profile_name"></span>
+            </div>
+            <!-- 파일 선택 입력과 관련된 부분을 폼 요소에 포함시킵니다. -->
+            <form id="editProfileForm" enctype="multipart/form-data" style="display: none;">
+                <input type="file" accept="image/*" name="picture" id="imageFile" onchange="changeImage(event)">
+                <input type="text" name="comment" id="commentInput" placeholder="소개">
+            </form>
+            <label for="imageFile" class="profile_changeImgButton">
+                사진 변경
+            </label>
+        </div>
 
         <div id="profile_comment">
             <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px"> 소개</div>
             <div id="commentBox" style="position: relative">
-                <textarea id="commentInput" name="comments" placeholder="소개" oninput="checkMaxLength()">${user.comments}</textarea>
+                <textarea id="commentInput" placeholder="소개" oninput="checkMaxLength()">${user.comments}</textarea>
                 <div id="charCount">0 / 150</div>
             </div>
         </div>
 
         <div id="Savearea">
-             <button type="submit" id="profile_save">제출</button>
+            <div id="profile_save" onclick="submitForm()">제출</div>
         </div>
     </div>
-</form>
 </body>
+
+
 
 <script src="/js/editProfile.js"></script>

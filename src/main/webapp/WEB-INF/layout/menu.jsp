@@ -47,9 +47,9 @@
       <img id="writebutton" src="/image/menu/write.png">
     </a>
 
-    <a href="/profile" style="cursor: pointer; margin-top: 8px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-      <img id="profilebutton" id="mini_profile" width="24px" height="24px" style="border-radius: 50%" src="/image/profile/default.jpg">
-    </a>
+	<a href="/profile/${user.email}" style="cursor: pointer; margin-top: 8px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+	    <img id="profilebutton" width="24px" height="24px" style="border-radius: 50%" src="/image/profile/default.jpg">
+	</a>
 
     <a href="/setting" style="cursor: pointer; margin-top: 301px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
       <img id="settingbutton" src="/image/menu/setting.png">
