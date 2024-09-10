@@ -1,92 +1,87 @@
-function gotoProfile(username) {
-    location.href = "/profile/" + username;
+function gotoProfile(user_name) {
+    location.href = "/profile/" + user_name;
 }
 
 function keyHandler(event) {
-    if (event.key == 'Enter') { // Enter 키를 누르는 경우
-        event.preventDefault(); // 기본 Enter 키 동작을 막는다.
-        findUsers(); // 'send' Div 클릭 시 작동하는 함수
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        findUsers();
     }
 }
 
-function findUsers () {
+function findUsers() {
     var usernameInput = document.getElementById('findInput').value;
     if (usernameInput === "") {
         alert("유저네임을 입력해주세요.");
     } else {
-        let data = {
-           username: usernameInput
-        }
         $.ajax({
             type: "GET",
             url: "/findUser",
-            data: data,
-            contentType: "application/json; charset=utf-8",
-        }).done(function(accounts) {
+            data: { username: usernameInput },
+            success: function (accounts) {
+                var usersDiv = document.getElementById('usersDiv');
+                usersDiv.innerHTML = "";
 
-            var usersDiv = document.getElementById('usersDiv');
-            usersDiv.innerHTML = "";
+                accounts.forEach(function (account) {
+                    const userDiv = document.createElement("div");
+                    userDiv.className = "user";
+                    userDiv.onclick = function () {
+                        gotoProfile(account.user_name); // 'username'을 'user_name'으로 수정
+                    }
 
-            accounts.forEach(function(account) {
+                    const userContent = document.createElement("div");
+                    userContent.id = "user_content"; // HTML 요소의 ID는 고유해야 합니다.
+                    userContent.style.display = "flex";
+                    userContent.style.flexDirection = "row";
 
-                const users = document.createElement("div");
-                users.id = "users";
-                users.onclick = function () {
-                    gotoProfile(account.username);
-                }
+                    const userProfileImg = document.createElement("img");
+                    userProfileImg.className = "user_profile_img";
+                    if (account.use_profile_img === "1") {
+                        userProfileImg.src = "/dynamicImage/profile/" + account.user_name + "/profile.jpg"; // 'username'을 'user_name'으로 수정
+                    } else {
+                        userProfileImg.src = "/dynamicImage/profile/default.jpg";
+                    }
+                    userContent.appendChild(userProfileImg);
 
-                    const users_contents = document.createElement("div");
-                    users_contents.id = "users_contents";
-                    users_contents.style.display = "flex";
-                    users_contents.style.flexDirection = "row";
+                    const userInfo = document.createElement("div");
+                    userInfo.className = "user_info";
+                    userInfo.style.display = "flex";
+                    userInfo.style.flexDirection = "column";
 
-                        const users_profileImg = document.createElement("img");
-                        users_profileImg.id = "users_profileImg";
-                        if (account.use_profile_img === 1) {
-                            users_profileImg.src = "/dynamicImage/profile/" + account.username + "/profile.jpg";
-                        } else {
-                            users_profileImg.src = "/dynamicImage/profile/default.jpg";
-                        }
-                        users_contents.appendChild(users_profileImg);
+                    const userUsername = document.createElement("span");
+                    userUsername.className = "user_username";
+                    userUsername.style.fontSize = "14px";
+                    userUsername.style.fontWeight = "bold";
+                    userUsername.style.marginBottom = "-2px";
+                    userUsername.innerText = account.user_name; // 'username'을 'user_name'으로 수정
+                    userInfo.appendChild(userUsername);
 
-                        const users_namesInfo = document.createElement("div");
-                        users_namesInfo.id = "users_namesInfo";
-                        users_namesInfo.style.display = "flex";
-                        users_namesInfo.style.flexDirection = "column";
+                    const userName = document.createElement("span");
+                    userName.className = "user_name";
+                    userName.style.fontSize = "14px";
+                    userName.style.color = "#737373";
+                    userName.innerText = account.name;
+                    userInfo.appendChild(userName);
 
-                            const users_username = document.createElement("span");
-                            users_username.id = "users_username";
-                            users_username.style.fontSize = "14px";
-                            users_username.style.fontWeight = "bold";
-                            users_username.style.marginBottom = "-2px";
-                            users_username.innerText = account.username;
-                            users_namesInfo.appendChild(users_username);
+                    userContent.appendChild(userInfo);
 
-                            const users_name = document.createElement("span");
-                            users_name.id = "users_name";
-                            users_name.style.fontSize = "14px";
-                            users_name.style.color = "#737373";
-                            users_name.innerText = account.name;
-                            users_namesInfo.appendChild(users_name);
+                    const userFollowers = document.createElement('div');
+                    userFollowers.className = "user_followers";
+                    userFollowers.style.fontSize = "14px";
+                    userFollowers.style.color = "#737373";
+                    userFollowers.style.paddingTop = "19px";
+                    userFollowers.style.marginLeft = "4px";
+                    userFollowers.innerText = "• 팔로워 " + account.follower + "명";
+                    userContent.appendChild(userFollowers);
 
-                        users_contents.appendChild(users_namesInfo);
-
-                        const users_followers = document.createElement('div');
-                        users_followers.id = "users_followers";
-                        users_followers.style.fontSize = "14px";
-                        users_followers.style.color = "#737373";
-                        users_followers.style.paddingTop = "19px";
-                        users_followers.style.marginLeft = "4px";
-                        users_followers.innerText = "• 팔로워 " + account.follower + "명";
-                        users_contents.appendChild(users_followers);
-
-                    users.appendChild(users_contents);
-
-                usersDiv.appendChild(users);
-            });
-        }).fail(function (error) {
-            alert("에러 발생 (콘솔 확인)");
-            console.log(error);
+                    userDiv.appendChild(userContent);
+                    usersDiv.appendChild(userDiv);
+                });
+            },
+            error: function (error) {
+                alert("에러 발생 (콘솔 확인)");
+                console.log(error);
+            }
         });
     }
 }

@@ -5,7 +5,7 @@ import com.proj.instagram.user.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 
@@ -15,14 +15,20 @@ public class ProfileServiceImpl implements IProfileService {
     @Autowired
     private IUserDAO userDAO;
     
-    private static final String PROFILE_IMAGE_PATH = "C:/javas/test_kill/src/main/webapp/image/profile/";
+    @Autowired
+    private ServletContext servletContext;
+
 
     @Override
     public boolean updateProfile(UserDTO user, String comment, MultipartFile profileImage) {
         try {
+        	
+        	String profileImagePath = servletContext.getRealPath("/image/profile/");
+        	
+        	
             if (profileImage != null && !profileImage.isEmpty()) {
                 // 파일 저장 경로
-                String userDirectory = PROFILE_IMAGE_PATH + user.getUsername();
+                String userDirectory = profileImagePath  + user.getUsername();
                 File dir = new File(userDirectory);
                 if (!dir.exists()) {
                     dir.mkdirs(); // 디렉토리 생성
@@ -38,8 +44,7 @@ public class ProfileServiceImpl implements IProfileService {
             }
 
             // 댓글 업데이트
-            user.setComments(comment);  // Comment 값이 올바르게 설정되는지 확인
-            System.out.println("Service: Comment : " + comment);
+            user.setComments(comment);
 
             // 사용자 정보를 DB에 저장
             userDAO.updateUser(user);

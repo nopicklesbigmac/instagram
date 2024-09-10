@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <style>
   #menu {
     width: 73px;
@@ -47,9 +47,16 @@
       <img id="writebutton" src="/image/menu/write.png">
     </a>
 
-	<a href="/profile/${user.email}" style="cursor: pointer; margin-top: 8px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-	    <img id="profilebutton" width="24px" height="24px" style="border-radius: 50%" src="/image/profile/default.jpg">
-	</a>
+    <a href="/profile/${user.email}" style="cursor: pointer; margin-top: 8px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+        <c:choose>
+            <c:when test="${user.use_profile_img != null && !user.use_profile_img.isEmpty()}">
+                <img id="profilebutton" src="<c:url value='/image/profile/${user.username}/profile.png' />" width="24px" height="24px" style="border-radius: 50%; border: 2px solid #dbdbdb">
+            </c:when>
+            <c:otherwise>
+                <img id="profilebutton" src="<c:url value='/image/profile/default.jpg' />" width="24px" height="24px">
+            </c:otherwise>
+        </c:choose>
+    </a>
 
     <a href="/setting" style="cursor: pointer; margin-top: 301px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
       <img id="settingbutton" src="/image/menu/setting.png">
