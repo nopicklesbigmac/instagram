@@ -34,7 +34,7 @@
 			<div class="headRight-sub" >
 					<img style="margin:auto; float:left; width: 40px; height: 40px;" src="/image/profile/default.jpg" />
 					<h3 style="margin-top:7px; margin-left:50px;">
-						@${receiver}	
+						${receiverinfo.name} ${'@'+= receiverinfo.username}	
 					</h3>
 				
 				</div>
@@ -80,12 +80,15 @@
 			<div class="right-section">
 				<div class="message mCustomScrollbar" data-mcs-theme="minimal-dark">
 					<ul class="msg-ul">
+						
 						<c:forEach var="message" items="${messages}" varStatus="status">
-						<c:if test="${receiver eq message.sender || receiver eq message.receiver}">
+						<c:set var="before" value="${messages[status.index - 1]} }"/>
+						
+						<c:if test="${receiver eq message.sender_username || receiver eq message.receiver_username}">
 							<fmt:formatDate value="${messages[status.index - 1].timestamp}" pattern="yyyy-MM-dd" var="y-day" />
 							<fmt:formatDate value="${message.timestamp}" pattern="yyyy-MM-dd" var="x-day" />
 							<c:if
-								test="${status.first || (x-day != y-day && status.count > 1)}">
+								test="${status.first ||(x-day != y-day && status.count > 1)}">
 								<li class="msg-day">
 									<small>
 										<fmt:formatDate value="${message.timestamp}" pattern="yyyy-MM-dd" />
@@ -93,7 +96,7 @@
 								</li>
 							</c:if>
 							<c:choose>
-								<c:when test="${message.sender eq sessionScope.username}">
+								<c:when test="${message.sender_username eq sessionScope.username}">
 									<li class="msg-right">
 								</c:when>
 								<c:otherwise> 
@@ -117,15 +120,15 @@
 					</ul>
 				</div>
 				<div class="right-section-bottom">
-					<form action="/send?value=${receiver}" method="post">
-						<input style="display: none;" type="text" name="receiver" placeholder="Receiver username" value="${receiver}" required>
+					<form action="/send?value=${receiverinfo.username}" method="post">
+						<input style="display: none;" type="text" name="receiver" placeholder="Receiver username" value="${receiverinfo.username}" required>
 						<div class="upload-btn">
 							<button class="btn">
 								<i class="fa fa-photo"></i>
 							</button>
 							<input type="file" name="myfile" />
 						</div>
-						<input type="text" name="content" placeholder="type here..."
+						<input type="text" id="messageinput" name="content" placeholder="type here..."
 							required>
 						<button type="submit" class="btn-send">
 							<i class="fa fa-send"></i>
@@ -160,6 +163,20 @@
 		}
 
 	};
+	 function sendMessage() {
+	        const messageInput = $('#messageinput').val();
+	        const receiver = '${receiver}';
+	        // AJAX를 통해 메시지를 전송하는 로직 추가
+	        $.post("/api/messages", { 
+	            sender_username: '${sessionScope.Sender}', // 실제 사용자명으로 변경
+	            receiver_username: receiver,
+	            content: messageInput
+	        }, function() {
+	            $('#messageinput').val(''); // 입력 필드 초기화
+	            // 메시지 전송 후 페이지를 새로 고침하여 최신 메시지를 가져올 수도 있습니다.
+	            location.reload();
+	        });
+	    }
 </script>
 </body>
 </html>

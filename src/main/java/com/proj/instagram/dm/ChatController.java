@@ -22,9 +22,8 @@ public class ChatController {
     private ChatService chatService;
     @Autowired
     private UserRepository userRepository;
-	/*
-	 * @Autowired private IUserDAO userDao;
-	 */
+	@Autowired private IUserDAO userDao;
+
 
 	/*
 	 * @GetMapping("/") public String chatPage(Model model) {
@@ -52,11 +51,15 @@ public class ChatController {
     	model.addAttribute("sender",send_user);
     	User userSender = userRepository.findByUsername(send_user);
     	User userReceiver = userRepository.findByUsername(value);
-    	//UserDTO receiver = userDao.selectuser(value);
+    	UserDTO receiver = userDao.selectuser(value);
+    	System.err.println(receiver.getName());
     	List<Message> left_msg = chatService.getleftmsg(userSender);
     	 model.addAttribute("left_msg", left_msg); 
     	 model.addAttribute("receiver", value); 
-    	 model.addAttribute("messages", chatService.getConversation(userSender,userReceiver)); // 메시지 목록을 모델에 추가
+    	 model.addAttribute("receiverinfo", receiver); 
+    	
+    	 List<MessageDTO> message = chatService.getConversation(userSender,userReceiver);
+    	 model.addAttribute("messages", message); // 메시지 목록을 모델에 추가
     	// 메시지 목록을 모델에 추가
         // 사용자 목록 및 대화 내용 로드
         return "views/home/dm";

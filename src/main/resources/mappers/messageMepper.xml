@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.proj.instagram.dm.MessageDAO">
+
+	<select id="selectemsg" parameterType="MessageDTO" resultType="MessageDTO">
+		SELECT * FROM Message 
+		WHERE 
+		(sender_username = #{sender_username} AND 
+		receiver_username = #{receiver_username}) OR 
+		(sender_username = #{receiver_username} AND 
+		receiver_username = #{sender_username})
+	</select>
+	
+	<insert id="insertMessage" parameterType="MessageDTO">
+        INSERT INTO messages (sender_username, receiver_username, content, timestamp)
+        VALUES (#{sender_username}, #{receiver_username}, #{content}, #{timestamp})
+    </insert>
+
+</mapper>
