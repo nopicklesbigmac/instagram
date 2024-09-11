@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <head>
-    <%@ include file="../../layout/indexHeader.jsp"%>
+<%--     
+	<%@ include file="../../layout/indexHeader.jsp"%> 
+--%>
     <%@ include file="../../layout/menu.jsp"%>
     <%@ include file="../getPrincipal.jsp"%>
 
@@ -70,11 +72,11 @@
             </div>
             <div style="display: flex; flex-direction: row; margin-bottom: 20px">
                 <input id="findInput" style="width: 600px; height: 36px; border: none; border-radius: 8px; background-color: #efefef" placeholder="  유저네임 입력" onkeydown="keyHandler(event)">
-                <div id="findButton" style="width: 80px; margin-left: 10px; margin-right: 10px; display: flex;  align-items: center; justify-content: center" onclick="findUsers()">검색</div>
+                <div id="findButton" style="width: 80px; margin-left: 10px; margin-right: 10px; display: flex; align-items: center; justify-content: center" onclick="findUsers()">검색</div>
             </div>
 
             <div id="usersDiv" style="height:500px; overflow-y: auto; overflow-x: hidden">
-
+                <!-- 유저 검색 결과가 여기에 표시됩니다 -->
             </div>
         </div>
     </div>

@@ -18,12 +18,19 @@
 		(#{email}, #{name}, #{username}, #{password})
 	</insert>
 	
-	<update id="updateUser">
-    UPDATE insta_user
-    SET comments = #{comments, jdbcType=VARCHAR},
-        use_profile_img = #{use_profile_img, jdbcType=VARCHAR}
-    WHERE email = #{email, jdbcType=VARCHAR}
-	</update>
+    <update id="updateUser" parameterType="com.proj.instagram.user.UserDTO">
+	    UPDATE insta_user
+	    SET COMMENTS = #{comments},
+	        USE_PROFILE_IMG  = #{use_profile_img}
+	    WHERE EMAIL  = #{email}
+    </update>
+    
+    <!-- 사용자 이름으로 사용자 검색 -->
+    <select id="findUsersByUsername" parameterType="String" resultType="com.proj.instagram.user.UserDTO">
+        SELECT *
+        FROM users
+        WHERE user_name LIKE '%' || #{user_name} || '%'
+    </select>
 <!--	
     <update id="updateUser">
         UPDATE insta_user

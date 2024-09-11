@@ -1,56 +1,53 @@
 package com.proj.instagram.profile;
 
+import com.proj.instagram.user.IUserDAO;
+import com.proj.instagram.user.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 
-import com.proj.instagram.user.IUserDAO;
-import com.proj.instagram.user.UserDTO;
-
 @Service
 public class ProfileServiceImpl implements IProfileService {
-
+    
     @Autowired
     private IUserDAO userDAO;
     
-    private static final String PROFILE_IMAGE_PATH = "C:/path/to/save/images/";
+    @Autowired
+    private ServletContext servletContext;
+
 
     @Override
-    public boolean updateProfile(UserDTO user, String comments, MultipartFile use_profile_img) {
+    public boolean updateProfile(UserDTO user, String comment, MultipartFile profileImage) {
         try {
-            // 사용자 댓글 업데이트
-            user.setComments(comments);
-
-            // 프로필 이미지 처리
-            if (use_profile_img != null && !use_profile_img.isEmpty()) {
-                // 사용자 폴더 생성
-                String userFolderPath = PROFILE_IMAGE_PATH + user.getUsername();
-                File userFolder = new File(userFolderPath);
-                if (!userFolder.exists()) {
-                    userFolder.mkdirs(); // 폴더가 없으면 생성
+        	
+        	String profileImagePath = servletContext.getRealPath("/image/profile/");
+        	
+        	
+            if (profileImage != null && !profileImage.isEmpty()) {
+                // 파일 저장 경로
+                String userDirectory = profileImagePath  + user.getUsername();
+                File dir = new File(userDirectory);
+                if (!dir.exists()) {
+                    dir.mkdirs(); // 디렉토리 생성
                 }
 
-                // 이전 프로필 이미지 삭제 (덮어쓰기)
-                File oldImage = new File(userFolderPath + "/profile.jpg");
-                if (oldImage.exists()) {
-                    oldImage.delete();
-                }
+                // 파일 저장
+                String fileName = "profile.png";
+                File file = new File(userDirectory + File.separator + fileName);
+                profileImage.transferTo(file);
 
-                // 새로운 이미지 저장
-                String imagePath = userFolderPath + "/profile.jpg";
-                File imageFile = new File(imagePath);
-                use_profile_img.transferTo(imageFile);
-
-                // 이미지 경로 설정
-                user.setUse_profile_img(imagePath);
+                // 프로필 이미지 URL 업데이트
+                user.setUse_profile_img("/image/profile/" + user.getUsername() + "/" + fileName);
             }
 
-            // 사용자 정보 업데이트
-            userDAO.updateUser(user);
+            // 댓글 업데이트
+            user.setComments(comment);
 
+            // 사용자 정보를 DB에 저장
+            userDAO.updateUser(user);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -60,7 +57,7 @@ public class ProfileServiceImpl implements IProfileService {
 
     @Override
     public String getProfileImagePath(String username) {
-        return "/dynamicImage/profile/" + username + "/profile.jpg";
+        // 프로필 이미지 경로를 반환
+        return "/image/profile/" + username + "/profile.png";
     }
-
 }

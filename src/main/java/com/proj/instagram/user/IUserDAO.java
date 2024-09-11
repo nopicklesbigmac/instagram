@@ -2,6 +2,8 @@ package com.proj.instagram.user;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface IUserDAO {
 	UserDTO selectemail(String email);
@@ -12,5 +14,7 @@ public interface IUserDAO {
 	
     void updateUser(UserDTO user);
     UserDTO getUserByEmail(String email);
+    
+    List<UserDTO> findUsersByUsername(String username);
 }
  

@@ -20,11 +20,11 @@ public class UserDTO {
 	private String comments;
 	public String created_at;
 	
-	public String getComments() {
+    public String getComments() { // getter 메서드 이름을 getComments로 변경
         return comments;
     }
 
-    public void setComments(String comments) {
+    public void setComments(String comments) { // setter 메서드 이름을 setComments로 변경
         this.comments = comments;
     }
 	
