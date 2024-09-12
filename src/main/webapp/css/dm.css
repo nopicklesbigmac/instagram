@@ -43,7 +43,7 @@ body {
 }
 
 .headLeft-sub input {
-	width: 60%;
+	width: 200px;
 	border-radius: 0px;
 	border: 1px solid #e6e6e6;
 	padding: 7px;
@@ -55,7 +55,25 @@ body {
 	border: 1px solid #e6e6e6;
 	padding: 7px 15px;
 }
-
+.headLeft-sub ul {
+	width: 252px;
+	border-radius: 0px;
+	padding: 5px;
+	list-style-type: none;
+	margin: 0px auto;
+	text-align: left;
+}
+.headLeft-sub ul li{
+	width: 200px; 
+	 display: flex;   
+	 align-items: center;   
+	 
+}
+.headLeft-sub ul li img{
+	width: 26px;
+	height: 26px;
+	
+}
 .headRight-section {
 	width: 70%;
 	float: left;

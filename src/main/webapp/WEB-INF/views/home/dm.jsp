@@ -25,10 +25,15 @@
 		<div class="head-section">
 			<div class="headLeft-section">
 				<div class="headLeft-sub">
-					<input type="text" name="search" placeholder="Search..." />
-					<button>
+					<div style="height:16px;"></div>
+					<input type="text" name="search"id="search-input" placeholder="Search..." onkeyup="send()"/>
+					
+					<button id="search-btn">
 						<i class="fa fa-search"></i>
 					</button>
+					<ul id="search_list">
+					
+					</ul>
 				</div>
 			</div>
 			<div class="headRight-sub" >
@@ -160,9 +165,39 @@
 		if (chatContainers.length > 0) {
 			var chatContainer = chatContainers[0]; // 첫 번째 요소 선택
 			chatContainer.scrollTop = chatContainer.scrollHeight;
+			
+			var button = document.getElementById('#search-btn');
+			button.onclick=send;
 		}
 
 	};
+	function send(){ 
+		req = new XMLHttpRequest();
+		req.onreadystatechange = textChange;
+		req.open('post', 'searchuser');
+		req.send(document.getElementById('search-input').value); 
+	}
+	function textChange(){
+		if(req.readyState == 4 && req.status == 200){
+			var jsonDatas = JSON.parse(req.responseText);
+			console.log(jsonDatas);
+			var data = "";
+			
+			for(i=0;i<jsonDatas.cd.length;i++){
+				var u_name = '${sessionScope.username}';
+				console.log(u_name);
+				if(u_name != jsonDatas.cd[i].username){
+					data += "<li>";
+					data = data + "<img src=/image/profile/default.jpg />"+jsonDatas.cd[i].username;
+					data += "</li>";
+					console.log(jsonDatas.cd[i].username);
+				}
+				
+			}
+			var tbody = document.getElementById('search_list');
+			tbody.innerHTML = data;
+		}
+	}
 	 function sendMessage() {
 	        const messageInput = $('#messageinput').val();
 	        const receiver = '${receiver}';

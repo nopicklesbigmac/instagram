@@ -3,11 +3,15 @@ package com.proj.instagram.dm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.proj.instagram.user.UserDTO;
+
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpSession;
 
 
 @Service
@@ -72,4 +76,23 @@ public class ChatService {
     public List<MessageDTO> getMessagesByReceiver(MessageDTO msg) {
         return dao.selectemsg(msg);
     }
+
+
+
+	public  String userSearch(String username) {
+		List<UserDTO> list = dao.userSearch(username);
+		return fromJson(list);
+	}
+
+	public String fromJson(List<UserDTO> list) {
+		String data = "{\"cd\" : [";
+		for(UserDTO tmp : list) {
+			data += "{ \"username\" : \"" + tmp.getUsername() + "\",";
+			data += " \"profile_img\" : \"" + tmp.getUse_profile_img() +"\" },";
+		}
+		data = data.substring(0, data.length()-1);
+		data += "]}";
+		System.out.println(data);
+		return data;
+	}
 }

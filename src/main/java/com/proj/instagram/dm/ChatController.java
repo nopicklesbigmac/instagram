@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proj.instagram.user.IUserDAO;
 import com.proj.instagram.user.UserDTO;
@@ -24,7 +26,19 @@ public class ChatController {
     private UserRepository userRepository;
 	@Autowired private IUserDAO userDao;
 
-
+	@ResponseBody
+	@PostMapping("searchuser")
+	public String ex7(@RequestBody(required = false)String username) {
+		System.err.println(username);
+		
+		if(username == null || username.isEmpty()) {
+			// 모든 데이터
+			return null;
+		}else {
+			// 검색어에 맞는 결과 
+			return chatService.userSearch(username);
+		}
+	}
 	/*
 	 * @GetMapping("/") public String chatPage(Model model) {
 	 * model.addAttribute("messages", chatService.getAllMessages()); // 메시지 목록을 모델에
