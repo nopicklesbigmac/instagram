@@ -56,22 +56,26 @@ body {
 	padding: 7px 15px;
 }
 .headLeft-sub ul {
-	width: 252px;
+	width: 276px;
 	border-radius: 0px;
 	padding: 5px;
 	list-style-type: none;
 	margin: 0px auto;
 	text-align: left;
 }
-.headLeft-sub ul li{
+.headLeft-sub ul  li{
 	width: 200px; 
 	 display: flex;   
 	 align-items: center;   
+	 margin: 7px;
+	 padding: 7px;
 	 
 }
 .headLeft-sub ul li img{
 	width: 26px;
 	height: 26px;
+	border-radius: 50%;
+	margin-right: 10px;
 	
 }
 .headRight-section {
@@ -446,4 +450,8 @@ body {
 	border-radius: 10px 10px 10px 10px;
 	position: relative;
 	
+}
+#search_list li:hover {
+	background: rgb(237, 246, 255);
+	    cursor: pointer;
 }

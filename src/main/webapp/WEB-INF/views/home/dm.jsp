@@ -28,7 +28,7 @@
 					<div style="height:16px;"></div>
 					<input type="text" name="search"id="search-input" placeholder="Search..." onkeyup="send()"/>
 					
-					<button id="search-btn">
+					<button id="search-btn" onclick="send()">
 						<i class="fa fa-search"></i>
 					</button>
 					<ul id="search_list">
@@ -37,8 +37,8 @@
 				</div>
 			</div>
 			<div class="headRight-sub" >
-					<img style="margin:auto; float:left; width: 40px; height: 40px;" src="/image/profile/default.jpg" />
-					<h3 style="margin-top:7px; margin-left:50px;">
+					<img style="margin:10px; float:left; width: 40px; height: 40px;" src="/image/profile/default.jpg" />
+					<h3 style="margin-top:17px; margin-left:50px;">
 						${receiverinfo.name} ${'@'+= receiverinfo.username}	
 					</h3>
 				
@@ -125,7 +125,7 @@
 					</ul>
 				</div>
 				<div class="right-section-bottom">
-					<form action="/send?value=${receiverinfo.username}" method="post">
+					<form action="/send?value=${receiver}" method="post">
 						<input style="display: none;" type="text" name="receiver" placeholder="Receiver username" value="${receiverinfo.username}" required>
 						<div class="upload-btn">
 							<button class="btn">
@@ -153,11 +153,12 @@
 		listItems.forEach(function(item) {
 			item.addEventListener('click', function() {
 				const value = this.getAttribute('value'); // value 속성값 가져오기
-				const url = `/dm/value?value=` + value; // URL 생성
+				const url = `/direct?value=` + value; // URL 생성
 				window.location.href = url; // URL로 이동
 
 			});
 		});
+		
 	});
 	window.onload = function() {
 		var chatContainers = document
@@ -166,8 +167,8 @@
 			var chatContainer = chatContainers[0]; // 첫 번째 요소 선택
 			chatContainer.scrollTop = chatContainer.scrollHeight;
 			
-			var button = document.getElementById('#search-btn');
-			button.onclick=send;
+			var button = document.getElementById('search-btn');
+			button.onclick=send();
 		}
 
 	};
@@ -177,26 +178,46 @@
 		req.open('post', 'searchuser');
 		req.send(document.getElementById('search-input').value); 
 	}
-	function textChange(){
-		if(req.readyState == 4 && req.status == 200){
-			var jsonDatas = JSON.parse(req.responseText);
-			console.log(jsonDatas);
-			var data = "";
-			
-			for(i=0;i<jsonDatas.cd.length;i++){
-				var u_name = '${sessionScope.username}';
-				console.log(u_name);
-				if(u_name != jsonDatas.cd[i].username){
-					data += "<li>";
-					data = data + "<img src=/image/profile/default.jpg />"+jsonDatas.cd[i].username;
-					data += "</li>";
-					console.log(jsonDatas.cd[i].username);
-				}
-				
-			}
-			var tbody = document.getElementById('search_list');
-			tbody.innerHTML = data;
-		}
+	function textChange() {
+	    if (req.readyState == 4 && req.status == 200) {
+	        try {
+	            var jsonDatas = JSON.parse(req.responseText);
+	            console.log(jsonDatas);
+	            var data = "";
+
+	            // 서버에서 전달된 u_name 값을 대체합니다.
+	            var u_name = '${sessionScope.username}'; // 이 부분이 올바르게 작동하는지 확인
+
+	            for (var i = 0; i < jsonDatas.cd.length; i++) {
+	                console.log(u_name);
+	                if (u_name != jsonDatas.cd[i].username) {
+	                    data += "<li class=msg_rcv2 value='" + jsonDatas.cd[i].username + "'>";
+	                    data += "<img src='/image/profile/default.jpg' />" + jsonDatas.cd[i].username;
+	                    data += "</li>";
+	                    console.log(jsonDatas.cd[i].username);
+	                }
+	            }
+
+	            var tbody = document.getElementById('search_list');
+	            if (tbody) { // tbody가 null이 아닌지 확인
+	                tbody.innerHTML = data;
+	            } else {
+	                console.error("Element with ID 'search_list' not found.");
+	            }
+	            // 클릭 이벤트를 추가합니다.
+	            tbody.addEventListener('click', function(event) {
+	                // 클릭한 요소가 li인지 확인
+	                if (event.target.tagName === 'LI' || event.target.closest('li')) {
+	                    var item = event.target.tagName === 'LI' ? event.target : event.target.closest('li');
+	                    const value2 = item.getAttribute('value'); // value 속성값 가져오기 // 알림으로 값 표시
+	                    const url2 = `/direct?value=` + value2; // URL 생성
+	                    window.location.href = url2; // URL로 이동
+	                }
+	            });
+	        } catch (e) {
+	            console.error("Parsing error:", e);
+	        }
+	    }
 	}
 	 function sendMessage() {
 	        const messageInput = $('#messageinput').val();

@@ -39,6 +39,7 @@ public class ChatController {
 			return chatService.userSearch(username);
 		}
 	}
+
 	/*
 	 * @GetMapping("/") public String chatPage(Model model) {
 	 * model.addAttribute("messages", chatService.getAllMessages()); // 메시지 목록을 모델에
@@ -57,7 +58,7 @@ public class ChatController {
         // 사용자 목록 및 대화 내용 로드
         return "views/home/dm";
     }
-    @GetMapping("/dm/value")
+    @GetMapping("/direct")
     public String dm2(Model model,HttpSession session,@RequestParam("value") String value) {
     	String send_user = (String) session.getAttribute("username");
     	System.err.println(send_user);
@@ -85,7 +86,7 @@ public class ChatController {
         User userReceiver = userRepository.findByUsername(receiver);
         
         chatService.sendMessage(userSender, userReceiver, content);
-        return "redirect:/dm/value?value="+receiver;
+        return "redirect:/direct?value="+receiver;
     }
 
 }
