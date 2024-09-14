@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -22,7 +23,7 @@ public class ProfileController {
 
     @Autowired
     private IProfileService profileService;
-
+    
     /**
      * 현재 로그인된 사용자 정보를 반환합니다.
      * @param session 세션 객체
@@ -53,10 +54,15 @@ public class ProfileController {
 
         if (user == null || !user.getEmail().equals(email)) {
             return "redirect:/login";
-        }
+        } 
+        // 사용자의 게시글 가져오기
+        List<PostDTO> posts = profileService.findPostsByUserEmail(email); // PostDAO를 사용
 
-        model.addAttribute("user", user);
-        return "views/home/profile"; // JSP 파일의 경로
+        String sessionEmail = (String) session.getAttribute("email");
+        model.addAttribute("sessionEmail", sessionEmail);
+        model.addAttribute("user", user); 
+        model.addAttribute("posts", posts);
+        return "views/home/profile";
     }
 
     /**

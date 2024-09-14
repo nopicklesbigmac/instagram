@@ -142,17 +142,18 @@
 
                 <div id="name_div_line2" style="margin-bottom: 20px">
                     게시물 <span style="font-weight: bold; margin-right: 30px">${posts.size()}</span>
-                    팔로워 <span style="font-weight: bold; margin-right: 30px"><%= session.getAttribute("Follower") %></span> <!-- 수정 -->
-                    팔로우 <span style="font-weight: bold;"><%= session.getAttribute("Following") %></span> <!-- 수정 -->
+                    팔로워 <span style="font-weight: bold; margin-right: 30px"><%= session.getAttribute("Follower") %></span>
+                    팔로우 <span style="font-weight: bold;"><%= session.getAttribute("Following") %></span>
                 </div>
 
                 <div id="name_div_line3" style="margin-bottom: 50px">
-                    <span style="font-size: 14px; font-weight: bold; margin-bottom: 10px; display: block"><%= session.getAttribute("name") %></span> <!-- 수정 -->
+                    <span style="font-size: 14px; font-weight: bold; margin-bottom: 10px; display: block"><%= session.getAttribute("name") %></span>
                     <span style="font-size: 14px;">${user.comments}</span>
                 </div>
             </div>
         </div>
- 		<div id="profile_middlebox" style="border-top: 1px solid #dbdbdb; width: 90%; padding-left: 30px; padding-right: 50px; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+
+        <div id="profile_middlebox" style="border-top: 1px solid #dbdbdb; width: 90%; padding-left: 30px; padding-right: 50px; display: flex; flex-direction: row; justify-content: center; align-items: center;">
             <div id="postsButton" class="middleboxButton" style="cursor: pointer; text-align: center; padding-top: 16px">
                 <span style="font-size: 12px; font-weight: bold; color: #737373">게시물</span>
             </div>
@@ -163,15 +164,16 @@
                 <span style="font-size: 12px; font-weight: bold; color: #737373">태그됨</span>
             </div>
         </div>
+
         <!-- 프로필 포스트 박스 -->
-       <div id="profile_postbox" style="width: 90%; height: 100%; padding-left: 30px; padding-right: 50px; display: flex; justify-content: center;">
+        <div id="profile_postbox" style="width: 90%; height: 100%; padding-left: 30px; padding-right: 50px; display: flex; justify-content: center;">
             <c:choose>
                 <c:when test="${posts.size() eq 0}">
                     <div id="NoPostsBox" style="margin-top: 50px; display: flex; flex-direction: column; align-items: center; text-align: center;">
                         <img src="/dynamicImage/profile/noPostsCamera.png" style="margin-bottom: 16px">
                         <span style="font-size: 30px; font-weight: bold; margin-bottom: 10px">사진 공유</span>
                         <span style="font-size: 14px; margin-bottom: 16px">사진을 공유하면 회원님의 프로필에 표시됩니다.</span>
-                        <a href style="text-decoration: none;"><span style="color: #0095f6; font-weight: bold; font-size: 14px">첫 사진 공유하기</span></a>
+                        <a href="#" style="text-decoration: none;"><span style="color: #0095f6; font-weight: bold; font-size: 14px">첫 사진 공유하기</span></a>
                     </div>
                 </c:when>
                 <c:otherwise>

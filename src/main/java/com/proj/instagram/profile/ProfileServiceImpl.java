@@ -1,13 +1,17 @@
 package com.proj.instagram.profile;
 
-import com.proj.instagram.user.IUserDAO;
-import com.proj.instagram.user.UserDTO;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import javax.servlet.ServletContext;
-import java.io.File;
-import java.io.IOException;
+
+import com.proj.instagram.user.IUserDAO;
+import com.proj.instagram.user.UserDTO;
 
 @Service
 public class ProfileServiceImpl implements IProfileService {
@@ -17,7 +21,9 @@ public class ProfileServiceImpl implements IProfileService {
     
     @Autowired
     private ServletContext servletContext;
-
+    
+    @Autowired
+    private PostDAO postDAO; // PostDAO로 변경
 
     @Override
     public boolean updateProfile(UserDTO user, String comment, MultipartFile profileImage) {
@@ -45,7 +51,7 @@ public class ProfileServiceImpl implements IProfileService {
 
             // 댓글 업데이트
             user.setComments(comment);
-
+ 
             // 사용자 정보를 DB에 저장
             userDAO.updateUser(user);
             return true;
@@ -59,5 +65,10 @@ public class ProfileServiceImpl implements IProfileService {
     public String getProfileImagePath(String username) {
         // 프로필 이미지 경로를 반환
         return "/image/profile/" + username + "/profile.png";
+    }
+    
+    @Override
+    public List<PostDTO> findPostsByUserEmail(String email) {
+        return postDAO.findByUserEmail(email); // PostDAO를 사용
     }
 }

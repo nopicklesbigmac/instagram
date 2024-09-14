@@ -1,6 +1,9 @@
 package com.proj.instagram.profile;
 
 import com.proj.instagram.user.UserDTO;
+
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public interface IProfileService {
@@ -8,4 +11,7 @@ public interface IProfileService {
     
     String getProfileImagePath(String username);
     
+    List<PostDTO> findPostsByUserEmail(String email);
+    
 }
+ 
