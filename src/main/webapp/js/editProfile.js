@@ -23,8 +23,6 @@ function init() {
         document.getElementById('profile_username').innerText = principal.username;
         document.getElementById('profile_name').innerText = principal.name;
         
-        // 소개 글 불러오기
-        
     }).fail(function(textStatus, errorThrown) {
         console.error("프로필 정보 로드 실패: ", textStatus, errorThrown);
     });
