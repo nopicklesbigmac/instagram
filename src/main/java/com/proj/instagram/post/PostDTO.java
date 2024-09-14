@@ -1,4 +1,4 @@
-package com.proj.instagram.profile;
+package com.proj.instagram.post;
 import java.util.Date;
 public class PostDTO {
     private Long postId;       // 게시글 ID

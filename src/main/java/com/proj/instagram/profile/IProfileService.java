@@ -1,5 +1,6 @@
 package com.proj.instagram.profile;
 
+import com.proj.instagram.post.PostDTO;
 import com.proj.instagram.user.UserDTO;
 
 import java.util.List;

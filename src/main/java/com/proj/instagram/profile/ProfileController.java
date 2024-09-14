@@ -1,5 +1,6 @@
 package com.proj.instagram.profile;
 
+import com.proj.instagram.post.PostDTO;
 import com.proj.instagram.user.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

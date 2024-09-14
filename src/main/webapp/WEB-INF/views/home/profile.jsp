@@ -170,7 +170,7 @@
             <c:choose>
                 <c:when test="${posts.size() eq 0}">
                     <div id="NoPostsBox" style="margin-top: 50px; display: flex; flex-direction: column; align-items: center; text-align: center;">
-                        <img src="/dynamicImage/profile/noPostsCamera.png" style="margin-bottom: 16px">
+                        <img src="/image/profile/noPostsCamera.png" style="margin-bottom: 16px">
                         <span style="font-size: 30px; font-weight: bold; margin-bottom: 10px">사진 공유</span>
                         <span style="font-size: 14px; margin-bottom: 16px">사진을 공유하면 회원님의 프로필에 표시됩니다.</span>
                         <a href="#" style="text-decoration: none;"><span style="color: #0095f6; font-weight: bold; font-size: 14px">첫 사진 공유하기</span></a>
