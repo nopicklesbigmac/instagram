@@ -22,7 +22,6 @@ function textChange() {
 	if (req.readyState == 4 && req.status == 200) {
 		try {
 			var jsonDatas = JSON.parse(req.responseText);
-			alert("dwdw");
 			for (var i = 0; i < jsonDatas.cd.length; i++) {
 				const userDiv = document.createElement("div");
 				userDiv.className = "user";
@@ -78,7 +77,7 @@ function textChange() {
 			}
 		} catch (e) {
 			console.error("JSON 파싱 오류:", e);
-			alert("서버에서 받은 데이터가 올바르지 않습니다.");
+			
 			return;
 		}
 

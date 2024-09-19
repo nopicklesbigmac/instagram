@@ -36,7 +36,6 @@ public class UserController {
     @GetMapping("/findUser")
     @ResponseBody
     public List<UserDTO> findUser(@RequestParam("username") String username) {
-    	System.out.println("search : "+username);
         return userService.findUsersByUsername(username);
     }
     

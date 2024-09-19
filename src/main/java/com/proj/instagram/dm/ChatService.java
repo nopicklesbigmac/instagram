@@ -35,17 +35,11 @@ public class ChatService {
     public List<MessageDTO> getConversation(User user1, User user2) {
     	 String username1 = user1.getUsername();
     	 String username2 = user2.getUsername();
-    	 System.out.println(username1);
-    	 System.out.println(username2);
     	 MessageDTO msg = new MessageDTO();
     	 msg.setSender_username(username1);
     	 msg.setReceiver_username(username2);
     	 List<MessageDTO> msg_list = dao.selectemsg(msg);
-    	 for (MessageDTO msgitem : msg_list) {
-    		    System.out.println(msgitem.getSender_username());
-    		    System.out.println(" => "+msgitem.getReceiver_username());
-    		    System.out.println(msgitem.getContent());
-    		}
+
     	//List<Message> list =messageRepository.getMessages(username1, username2);
     	//list.sort(Comparator.comparing(Message::getTimestamp));
     	 //getAllMessages()// timestamp를 기준으로 정렬
@@ -94,7 +88,6 @@ public class ChatService {
 		}
 		data = data.substring(0, data.length()-1);
 		data += "]}";
-		System.out.println(data);
 		return data;
 	}
 }

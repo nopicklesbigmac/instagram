@@ -29,7 +29,6 @@ public class ChatController {
 	@ResponseBody
 	@PostMapping("searchuser")
 	public String ex7(@RequestBody(required = false)String username) {
-		System.err.println("search : "+username);
 		
 		if(username == null || username.isEmpty()) {
 			// 모든 데이터
@@ -61,13 +60,11 @@ public class ChatController {
     @GetMapping("/direct")
     public String dm2(Model model,HttpSession session,@RequestParam("value") String value) {
     	String send_user = (String) session.getAttribute("username");
-    	System.err.println(send_user);
     	//UserDTO sender = userDao.selectuser(send_user);
     	model.addAttribute("sender",send_user);
     	User userSender = userRepository.findByUsername(send_user);
     	User userReceiver = userRepository.findByUsername(value);
     	UserDTO receiver = userDao.selectuser(value);
-    	System.err.println(receiver.getName());
     	List<Message> left_msg = chatService.getleftmsg(userSender);
     	 model.addAttribute("left_msg", left_msg); 
     	 model.addAttribute("receiver", value); 
