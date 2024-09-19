@@ -4,7 +4,13 @@
 <mapper namespace="com.proj.instagram.post.PostDAO">
 
     <select id="findByUserEmail" parameterType="String" resultType="PostDTO">
-        SELECT * FROM insta_post WHERE email = #{email}
+            SELECT POST_ID AS postId,
+           EMAIL AS email,
+           CONTENT AS content,
+           IMAGE_PATH AS imagePath,
+           CREATED_AT AS createdAt
+    FROM insta_post
+    WHERE EMAIL = #{email}
     </select>
 
     <insert id="savePost" parameterType="PostDTO">
