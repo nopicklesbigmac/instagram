@@ -88,7 +88,9 @@ public class ChatService {
 		String data = "{\"cd\" : [";
 		for(UserDTO tmp : list) {
 			data += "{ \"username\" : \"" + tmp.getUsername() + "\",";
-			data += " \"profile_img\" : \"" + tmp.getUse_profile_img() +"\" },";
+			data += " \"profile_img\" : \"" + tmp.getUse_profile_img() +"\" ,";
+			data += " \"email\" : \"" + tmp.getEmail() +"\" ,";
+			data += " \"name\" : \"" + tmp.getName() +"\" },";
 		}
 		data = data.substring(0, data.length()-1);
 		data += "]}";

@@ -29,7 +29,7 @@ public class ChatController {
 	@ResponseBody
 	@PostMapping("searchuser")
 	public String ex7(@RequestBody(required = false)String username) {
-		System.err.println(username);
+		System.err.println("search : "+username);
 		
 		if(username == null || username.isEmpty()) {
 			// 모든 데이터

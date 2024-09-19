@@ -39,7 +39,8 @@
 			<div class="headRight-sub" >
 					<img style="margin:10px; float:left; width: 40px; height: 40px;" src="/image/profile/default.jpg" />
 					<h3 style="margin-top:17px; margin-left:50px;">
-						${receiverinfo.name} ${'@'+= receiverinfo.username}	
+					<c:if test="${not empty receiverinfo}">${receiverinfo.name} ${'@'+= receiverinfo.username}	</c:if>
+						
 					</h3>
 				
 				</div>
@@ -72,7 +73,7 @@
 								<c:if test="${fdate eq '오전'}">am</c:if>
 								</small>
 								<h5>
-								${receiver_left}
+								${'@'+=receiver_left}
 								</h5>
 								<small>${left_msg.content}</small>
 							</div>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <script>
+/* 
     var principal;
 
     $.ajax({
@@ -18,5 +19,5 @@
         }
     }).fail(function (resp) {
     });
-
+ */
 </script>
