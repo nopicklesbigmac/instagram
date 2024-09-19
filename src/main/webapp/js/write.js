@@ -61,11 +61,16 @@ function showNext() {
 
 function postUpload() {
     let data = new FormData();
-    data.append('userId', principal.id);
-    data.append('comment', document.getElementById('contentBox').value);
+    data.append('email', userEmail); // userEmail 변수를 사용하여 이메일 전달
+    data.append('content', document.getElementById('contentBox').value);
 
-    for (let i=0; i<oriImages.length; i++) {
-        data.append('pictures', oriImages[i], 'image'+i);
+    for (let i = 0; i < oriImages.length; i++) {
+        data.append('file', oriImages[i], oriImages[i].name); // 'file'로 수정하여 서버와 일치시킴
+    }
+
+    // 전송할 데이터 로그
+    for (let pair of data.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]);
     }
 
     $.ajax({
@@ -74,10 +79,12 @@ function postUpload() {
         data: data,
         contentType: false,
         processData: false
-    }).done(function (resp){
+    }).done(function (resp) {
         alert("글이 작성되었습니다.");
         location.href = "/index";
-    }).fail(function(error){
+    }).fail(function(error) {
         alert(JSON.stringify(error));
     });
 }
+
+

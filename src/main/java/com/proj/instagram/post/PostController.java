@@ -1,23 +1,14 @@
 package com.proj.instagram.post;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,55 +16,31 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class PostController {
 
-    @Autowired
+    @Autowired 
     private PostService postService;
 
-    @GetMapping("/posts")
-    public String getAllPosts(Model model) {
-        List<PostDTO> posts = postService.getAllPosts();
-        model.addAttribute("posts", posts);
-        return "views/post/post";
-    }
+    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
-    @PostMapping("/postReply")
-    @ResponseBody
-    public List<ReplyDTO> postReply(@RequestBody Map<String, String> data, HttpSession session) {
-        String comment = data.get("comment");
-        String accountId = data.get("accountId");
-        int postId = Integer.parseInt(data.get("postId"));
-
-        postService.addReply(comment, accountId, postId);
-        return postService.getRepliesByPostId(postId);
-    }
-
-    @PostMapping("/postLike")
-    @ResponseBody
-    public int likePost(@RequestBody Map<String, String> data) {
-        String accountId = data.get("principalId");
-        int postId = Integer.parseInt(data.get("postId"));
-
-        postService.likePost(accountId, postId);
-        return postService.getLikeCount(postId);
-    }
-
-    @DeleteMapping("/postUnlike")
-    @ResponseBody
-    public int unlikePost(@RequestBody Map<String, String> data) {
-        String accountId = data.get("principalId");
-        int postId = Integer.parseInt(data.get("postId"));
-
-        postService.unlikePost(accountId, postId);
-        return postService.getLikeCount(postId);
-    }
-    
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+    @ResponseBody
+    public ResponseEntity<String> uploadPost(@RequestParam("email") String email,
+                                             @RequestParam("content") String content,
+                                             @RequestParam("file") List<MultipartFile> files) {
         try {
-            // 파일 저장 로직
-            return ResponseEntity.ok("파일 업로드 성공");
+            if (files.isEmpty()) {
+                return ResponseEntity.badRequest().body("파일이 업로드되지 않았습니다.");
+            }
+
+            PostDTO postDTO = new PostDTO();
+            postDTO.setEmail(email);
+            postDTO.setContent(content);
+
+            // 게시글 저장 후 ID를 가져오고, 이미지 저장을 포함합니다.
+            long postId = postService.createPost(postDTO, files);
+            return ResponseEntity.ok("게시글이 성공적으로 업로드되었습니다. 게시글 ID: " + postId);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 업로드 실패");
+            logger.error("게시글 업로드 실패: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 업로드에 실패했습니다. 오류: " + e.getMessage());
         }
     }
-
 }

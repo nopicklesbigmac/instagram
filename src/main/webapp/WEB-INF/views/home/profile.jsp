@@ -88,46 +88,38 @@
 
     </style>
 </head>
-
+<script>
+    var sessionEmail = '<%= session.getAttribute("email") %>';
+</script>
 <body style="margin-left: 74px">
+
     <div id="profilePage" style="padding-top: 30px; padding-left: 20px; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;">
-        <!-- 위쪽 프로필 설명들 -->
-     <!--    
-        <div id="debug-info" style="background-color: #f9f9f9; padding: 10px; margin-bottom: 20px;">
-            <h3>Debug Info:</h3>
-            <p>Session Email: <%= session.getAttribute("email") %></p>
-            <p>User Email: ${user.email}</p>
-            <p>Comparison Result: ${sessionScope.email eq user.email}</p>
-        </div>
-         -->
         <div id="profile-upperbox" style="display: flex">
             <div id="profile_img_div" style="padding-right: 44px">
-<c:choose>
-    <c:when test="${user.use_profile_img != null && !user.use_profile_img.isEmpty()}">
-        <img src="${user.use_profile_img}" width="150px" height="150px" style="border-radius: 50%; border: 2px solid #dbdbdb">
-    </c:when>
-    <c:otherwise>
-        <img src="/image/profile/default.jpg" width="150px" height="150px">
-    </c:otherwise>
-</c:choose>
-
+                <c:choose>
+                    <c:when test="${user.use_profile_img != null && !user.use_profile_img.isEmpty()}">
+                        <img src="${user.use_profile_img}" width="150px" height="150px" style="border-radius: 50%; border: 2px solid #dbdbdb">
+                    </c:when>
+                    <c:otherwise>
+                        <img src="/image/profile/default.jpg" width="150px" height="150px">
+                    </c:otherwise>
+                </c:choose>
             </div>
 
             <div id="name_div">
                 <div id="name_div_line1" style="display: flex; align-items: center;">
-                    <span id="nameBox" style="font-size: 20px;"><%= session.getAttribute("username") %></span> <!-- 수정 -->
+                    <span id="nameBox" style="font-size: 20px;"><%= session.getAttribute("username") %></span>
                     <div id="isMyProfile" style="display: flex; align-items: center;">
-                        <!-- 사용자의 프로필인지 확인 -->
-                        <c:if test="${sessionScope.email eq user.email}"> <!-- 자신의 프로필일 때 -->
+                        <c:if test="${sessionScope.email eq user.email}">
                             <button id="editProfile" class="profileButton" style="width: 104px; height: 32px; margin-left: 16px" onclick="editProfile()">프로필 편집</button>
                             <button id="viewStory" class="profileButton" style="width: 150px; height: 32px; margin-left: 4px">보관된 스토리 보기</button>
                             <div id="optionButton" style="width: 40px; height: 40px; margin-left: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center;" onclick="showOptionPopup()">
                                 <img src="/image/profile/option.png">
                             </div>
                         </c:if>
-                        <c:if test="${sessionScope.email ne user.email}"> <!-- 다른 사람의 프로필일 때 -->
+                        <c:if test="${sessionScope.email ne user.email}">
                             <div id="followOrUnfollow"></div>
-                            <button id="messageButton" class="profileButton" style="width: 120px; height: 32px; margin-left: 8px" onclick="sendDm(${user.email})">메시지 보내기</button>
+                            <button id="messageButton" class="profileButton" style="width: 120px; height: 32px; margin-left: 8px" onclick="sendDm('${user.email}')">메시지 보내기</button>
                             <button id="recommendButton" class="profileButton" style="width: 34px; height: 32px; margin-left: 8px">
                                 <img src="/dynamicImage/profile/recommend.png">
                             </button>
@@ -165,7 +157,6 @@
             </div>
         </div>
 
-        <!-- 프로필 포스트 박스 -->
         <div id="profile_postbox" style="width: 90%; height: 100%; padding-left: 30px; padding-right: 50px; display: flex; justify-content: center;">
             <c:choose>
                 <c:when test="${posts.size() eq 0}">
@@ -179,8 +170,8 @@
                 <c:otherwise>
                     <div id="postBox" style="width: 100%; max-width: 963px; display: flex; flex-wrap: wrap; justify-content: center">
                         <c:forEach var="post" items="${posts}">
-                            <div id="tmpBox" style="width: 300px; height: 300px; margin: 10px; cursor: pointer" onclick="gotoPost('/post/${post.id}')">
-                                <img class="post" src="/dynamicImage/posts/${post.id}/0.jpg" style="width: 290px; height: 290px">
+                            <div id="tmpBox" style="width: 300px; height: 300px; margin: 10px; cursor: pointer" onclick="gotoPost('/post/${post.postId}')">
+                                <img class="post" src="/image/post/${post.email}/${post.postId}/image1.jpg" style="width: 290px; height: 290px" onerror="this.onerror=null; this.src='/image/post/default.jpg';">
                             </div>
                         </c:forEach>
                     </div>
@@ -201,5 +192,6 @@
         </div>
     </div>
 </body>
+
 
 <script src="/js/profile.js"></script>

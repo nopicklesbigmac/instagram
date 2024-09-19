@@ -51,20 +51,31 @@ public class ProfileController {
      */
     @GetMapping("/profile/{email}")
     public String profile(@PathVariable("email") String email, Model model, HttpSession session) {
-        UserDTO user = (UserDTO) session.getAttribute("user");
+        UserDTO sessionUser = (UserDTO) session.getAttribute("user");
 
-        if (user == null || !user.getEmail().equals(email)) {
+        // 세션에 사용자가 없으면 로그인 페이지로 리다이렉트
+        if (sessionUser == null) {
             return "redirect:/login";
-        } 
-        // 사용자의 게시글 가져오기
-        List<PostDTO> posts = profileService.findPostsByUserEmail(email); // PostDAO를 사용
+        }
 
-        String sessionEmail = (String) session.getAttribute("email");
+        // 프로필을 조회할 사용자의 정보 가져오기
+        UserDTO userProfile = profileService.findUserByEmail(email);
+        if (userProfile == null) {
+            return "redirect:/error"; // 사용자를 찾을 수 없을 때 에러 페이지로 리다이렉트
+        }
+
+        // 사용자의 게시글 가져오기
+        List<PostDTO> posts = profileService.findPostsByUserEmail(email);
+
+        // 모델에 필요한 정보 추가
+        String sessionEmail = sessionUser.getEmail();
         model.addAttribute("sessionEmail", sessionEmail);
-        model.addAttribute("user", user); 
+        model.addAttribute("user", userProfile);  // 조회한 사용자의 정보 추가
         model.addAttribute("posts", posts);
+
         return "views/home/profile";
     }
+
 
     /**
      * 프로필 편집 페이지를 보여줍니다.

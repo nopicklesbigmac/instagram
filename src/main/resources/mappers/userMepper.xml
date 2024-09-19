@@ -31,6 +31,12 @@
         FROM users
         WHERE user_name LIKE '%' || #{user_name} || '%'
     </select>
+    
+        <select id="selectUserByEmail" parameterType="string" resultType="UserDTO">
+        SELECT * FROM INSTA_USER WHERE EMAIL = #{email}
+    </select>
+    
+    
 <!--	
     <update id="updateUser">
         UPDATE insta_user

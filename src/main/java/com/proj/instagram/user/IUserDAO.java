@@ -16,5 +16,7 @@ public interface IUserDAO {
     UserDTO getUserByEmail(String email);
     
     List<UserDTO> findUsersByUsername(String username);
+    
+    UserDTO selectUserByEmail(String email);
 }
  

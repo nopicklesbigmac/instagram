@@ -73,4 +73,9 @@ public class ProfileServiceImpl implements IProfileService {
     public List<PostDTO> findPostsByUserEmail(String email) {
         return postDAO.findByUserEmail(email); // PostDAO를 사용
     }
+    
+    @Override 
+    public UserDTO findUserByEmail(String email) {
+        return userDAO.selectUserByEmail(email); // ProfileDAO를 사용하여 데이터베이스에서 사용자 정보 가져오기
+    }
 }

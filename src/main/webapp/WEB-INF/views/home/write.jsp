@@ -58,6 +58,10 @@
 </head>
 
 <body>
+    <!-- 사용자 이메일을 자바스크립트 변수로 전달 -->
+    <script>
+        var userEmail = "${sessionScope.user.email}"; // 세션에서 사용자 이메일 가져오기
+    </script>
     <div id="Content" class="contentBox">
         <div id="writeLableBox" style="margin-top: 30px">
             <span style="font-size: 16px; font-weight: bold; margin-bottom: 20px">새 게시물 만들기</span>
