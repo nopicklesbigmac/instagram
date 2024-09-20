@@ -7,24 +7,19 @@ public class ReplyDTO {
     private String comments; // 댓글 내용
     private String username; // 댓글 작성자 이름
     private boolean useProfileImg; // 프로필 이미지 사용 여부
+    private String email;
     private Long postId; // 해당 게시글 ID
     private Date createdAt; // 댓글 작성 날짜
 
-    // 기본 생성자
-    public ReplyDTO() {
-    }
-
-    // 모든 필드에 대한 생성자
-    public ReplyDTO(Long id, String comment, String username, boolean useProfileImg, Long postId, Date createdAt) {
-        this.id = id;
-        this.comments = comment;
-        this.username = username;
-        this.useProfileImg = useProfileImg;
-        this.postId = postId;
-        this.createdAt = createdAt;
-    }
-
-    // Getter와 Setter 메서드
+    // Getters and Setters
+    
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
     public Long getId() {
         return id;
     }
@@ -37,7 +32,7 @@ public class ReplyDTO {
         return comments;
     }
 
-    public void setComment(String comments) {
+    public void setComments(String comments) {
         this.comments = comments;
     }
 

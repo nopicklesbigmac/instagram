@@ -53,7 +53,6 @@ public class ProfileController {
     public String profile(@PathVariable("email") String email, Model model, HttpSession session) {
         UserDTO sessionUser = (UserDTO) session.getAttribute("user");
 
-        // 세션에 사용자가 없으면 로그인 페이지로 리다이렉트
         if (sessionUser == null) {
             return "redirect:/login";
         }
@@ -61,19 +60,19 @@ public class ProfileController {
         // 프로필을 조회할 사용자의 정보 가져오기
         UserDTO userProfile = profileService.findUserByEmail(email);
         if (userProfile == null) {
-            return "redirect:/error"; // 사용자를 찾을 수 없을 때 에러 페이지로 리다이렉트
+            return "redirect:/error";
         }
 
         // 사용자의 게시글 가져오기
         List<PostDTO> posts = profileService.findPostsByUserEmail(email);
 
-        // 모델에 필요한 정보 추가
-        String sessionEmail = sessionUser.getEmail();
-        model.addAttribute("sessionEmail", sessionEmail);
-        model.addAttribute("user", userProfile);  // 조회한 사용자의 정보 추가
+        model.addAttribute("sessionEmail", sessionUser.getEmail());
+        model.addAttribute("user", userProfile);
         model.addAttribute("posts", posts);
+
         return "views/home/profile";
     }
+
 
 
     /**

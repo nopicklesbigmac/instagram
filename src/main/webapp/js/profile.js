@@ -41,11 +41,11 @@ function optionCancel() {
 
 
 
-function onclickFollow(fromaccountId, toaccountId) {
+function onclickFollow(fromEmail, toEmail) {
     let data = {
-        fromaccountId: fromaccountId,
-        toaccountId: toaccountId
-    }
+        fromEmail: fromEmail,
+        toEmail: toEmail
+    };
 
     $.ajax({
         type: "POST",
@@ -53,38 +53,34 @@ function onclickFollow(fromaccountId, toaccountId) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json"
-    }).done(function (resp){
-
+    }).done(function (resp) {
         var isMyProfile = document.getElementById('followOrUnfollow');
-        isMyProfile.removeChild(document.getElementById('followButton' + toaccountId));
+        isMyProfile.removeChild(document.getElementById('followButton' + toEmail));
 
         var divElement = document.createElement('div');
-        divElement.id = 'unfollowButton' + toaccountId;
+        divElement.id = 'unfollowButton' + toEmail;
         divElement.textContent = '팔로잉';
         divElement.className = 'profileButton';
         divElement.style.width = '82px';
         divElement.style.height = '32px';
         divElement.style.marginLeft = '20px';
-        divElement.style.display = 'flex';
-        divElement.style.justifyContent = 'center';
-        divElement.style.alignItems = 'center';
         divElement.style.cursor = 'pointer';
         divElement.onclick = function() {
-            onclickUnfollow(fromaccountId, toaccountId);
+            onclickUnfollow(fromEmail, toEmail);
         };
 
         isMyProfile.appendChild(divElement);
 
-    }).fail(function(error){
+    }).fail(function (error) {
         alert(JSON.stringify(error));
     });
 }
 
-function onclickUnfollow(fromaccountId, toaccountId) {
+function onclickUnfollow(fromEmail, toEmail) {
     let data = {
-        fromaccountId: fromaccountId,
-        toaccountId: toaccountId
-    }
+        fromEmail: fromEmail,
+        toEmail: toEmail
+    };
 
     $.ajax({
         type: "DELETE",
@@ -92,33 +88,27 @@ function onclickUnfollow(fromaccountId, toaccountId) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json"
-    }).done(function (resp){
-
+    }).done(function (resp) {
         var isMyProfile = document.getElementById('followOrUnfollow');
-        isMyProfile.removeChild(document.getElementById('unfollowButton' + toaccountId));
+        isMyProfile.removeChild(document.getElementById('unfollowButton' + toEmail));
 
         var divElement = document.createElement('div');
-        divElement.id = 'followButton' + toaccountId;
+        divElement.id = 'followButton' + toEmail;
         divElement.textContent = '팔로우';
         divElement.className = 'followButton';
         divElement.style.width = '82px';
         divElement.style.height = '32px';
-        divElement.style.marginLeft = '20px';
-        divElement.style.display = 'flex';
-        divElement.style.justifyContent = 'center';
-        divElement.style.alignItems = 'center';
         divElement.style.cursor = 'pointer';
         divElement.onclick = function() {
-            onclickFollow(fromaccountId, toaccountId);
+            onclickFollow(fromEmail, toEmail);
         };
         isMyProfile.appendChild(divElement);
 
-        document.getElementById('unfollowPopupBackground').style.display = 'none';
-
-    }).fail(function(error){
+    }).fail(function (error) {
         alert(JSON.stringify(error));
     });
 }
+
 
 function unfollowPopup(toaccountId) {
     var parentDiv = document.getElementById("index_account" + toaccountId);

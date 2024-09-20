@@ -71,5 +71,15 @@ public class PostServiceImpl implements PostService {
         return postId;
     }
 
+    
+    @Override
+    public PostDTO getPostById(Long postId) {
+        return postDAO.getPostById(postId);
+    }
 
+    @Override
+    public List<ReplyDTO> getRepliesByPostId(Long postId) {
+        return postDAO.getRepliesByPostId(postId);
+
+}
 }

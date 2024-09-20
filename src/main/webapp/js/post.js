@@ -44,8 +44,8 @@ function updateReplies(resp) {
         reply = resp[i]
         var reply_username = reply.account.username;
         var profileImgSrc = reply.account.use_profile_img === 1
-            ? "/dynamicImage/profile/" + reply.account.username + "/profile.jpg"
-            : "/dynamicImage/profile/default.jpg";
+            ? "/image/profile/" + reply.username + "/profile.jpg"
+            : "/image/profile/default.jpg";
 
         // 동적으로 생성한 HTML 추가
         replyBox.append(
@@ -63,8 +63,9 @@ function updateReplies(resp) {
 // 사진 표기
 let currentIdx = 0; // 시작 사진 인덱스
 var postId = document.getElementById("post_id").innerText;
+var postname = document.getElementById("email").innerText;
 var post_picsize = document.getElementById("post_pic_size").innerText;
-const imagePath = '/dynamicImage/posts/' + postId + '/'; // 사진의 기본 경로
+const imagePath = '/image/post/' + postname + postId + '/'; // 사진의 기본 경로
 const imageContainer = document.getElementById('post_imageConatiner');
 
 const prevButton = document.getElementById('imagePrevButton');
@@ -145,6 +146,6 @@ function Unlike() {
 }
 
 
-function gotoUserProfile(username) {
-    location.href = "/profile/" + username;
+function gotoUserProfile(email) {
+    location.href = "/profile/" + email;
 }

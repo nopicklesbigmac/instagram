@@ -7,4 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface PostService {
     int createPost(PostDTO postDTO, List<MultipartFile> files) throws Exception;
+    
+    PostDTO getPostById(Long postId);
+    
+    List<ReplyDTO> getRepliesByPostId(Long postId);
 }

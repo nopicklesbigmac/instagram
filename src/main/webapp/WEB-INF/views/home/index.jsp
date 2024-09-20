@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <head>
-<%--     
+
 	<%@ include file="../../layout/indexHeader.jsp"%> 
---%>
+
     <%@ include file="../../layout/menu.jsp"%>
     <%@ include file="../getPrincipal.jsp"%>
 
@@ -377,59 +377,53 @@
 <body>
     <div id="Contents">
 
-        <!----- 팔로우 중인 유저가 없는 경우 ----->
-        <div id = "NoFollowing" style="display: none">
+        <!----- 팔로우 중인 유저가 없는 경우 -----> 
+        <div id="NoFollowing" style="display: none">
             <div id="recommendForyouLable">회원님을 위한 추천</div>
-
             <div id="index_accountBox">
                 <c:forEach var="accounts" items="${NoFollowingAccounts}">
-                     <!-- <script>
-                      addDivs('${accounts.id}', '${accounts.username}', '${accounts.name}', '${accounts.use_profile_img}');
-                       addDivs('${accounts.id}', '${accounts.username}', '${accounts.name}');
-                    </script> -->
-                    
                     
                     <%
-					    // 세션에서 사용자 정보 가져오기
-					    String sessionId = (String) session.getAttribute("email");
-					    String sessionUsername = (String) session.getAttribute("username");
-					    String sessionName = (String) session.getAttribute("name");
-					    String sessionProfileImg = (String) session.getAttribute("Profile_img");
-					%>
-					
-					<script>
-					    // JavaScript에서 세션 정보를 사용하기 위해 JSP 변수를 JS 변수에 할당
-					    var sessionEmail = "<%= sessionId %>";
-					    var sessionUsername = "<%= sessionUsername %>";
-					    var sessionName = "<%= sessionName %>";
-					    var sessionProfileImg = "<%= sessionProfileImg %>";
-					    
-					    console.log("Session Email: " + sessionEmail);
-					    console.log("Session Username: " + sessionUsername);
-					    console.log("Session Name: " + sessionName);
-					    console.log("Session Profile Image: " + sessionProfileImg);
-					
-					    // addDivs 함수에 세션 정보를 넘겨 호출
-					    addDivs(sessionEmail, sessionUsername, sessionName, sessionProfileImg);
-					</script>
+                        // 세션에서 사용자 정보 가져오기
+                        String sessionId = (String) session.getAttribute("email");
+                        String sessionUsername = (String) session.getAttribute("username");
+                        String sessionName = (String) session.getAttribute("name");
+                        String sessionProfileImg = (String) session.getAttribute("Profile_img");
+                    %>
 
+                    <script>
+                        // JavaScript에서 세션 정보를 사용하기 위해 JSP 변수를 JS 변수에 할당
+                        var sessionEmail = "<%= sessionId %>";
+                        var sessionUsername = "<%= sessionUsername %>";
+                        var sessionName = "<%= sessionName %>";
+                        var sessionProfileImg = "<%= sessionProfileImg %>";
+                        
+                        console.log("Session Email: " + sessionEmail);
+                        console.log("Session Username: " + sessionUsername);
+                        console.log("Session Name: " + sessionName);
+                        console.log("Session Profile Image: " + sessionProfileImg);
+
+                        // addDivs 함수에 세션 정보를 넘겨 호출
+                        addDivs(sessionEmail, sessionUsername, sessionName, sessionProfileImg);
+                    </script>
 
                 </c:forEach>
             </div>
+
             <script>
                 this.getFollowings();
             </script>
         </div>
 
-        <!----- 팔로우 중인 유저가 있는 경우 ----->
+        <!----- 팔로우 중인 유저가 있는 경우 -----> 
         <div id="FollowingContents" style="display: flex; flex-direction: column; justify-content: center; align-items: center">
             <script>
-                this.addPosts();
+                this.addPosts(); // 팔로우 중인 사용자의 게시물 표시
             </script>
         </div>
     </div>
 
-
+    <!-- 좋아요 목록 팝업 -->
     <div id="likeListPopupBackground" onclick="onclickLikeListPopupCancel()">
         <div id="likeListPopup" onclick="event.stopPropagation();">
             <div id="likeListPopupTitle" style="height: 44px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #dbdbdb">
@@ -448,8 +442,7 @@
         </div>
     </div>
 
-
-
+    <!-- 언팔로우 팝업 -->
     <div id="unfollowPopupBackground" onclick="onclickPopupCancel()">
         <div id="unfollowPopup">
             <div id="unfollowPopupInfo">
@@ -467,5 +460,77 @@
         </div>
     </div>
 </body>
+
+<script>
+    // 팔로우 상태 확인 AJAX 요청 및 버튼 추가
+    function getFollowings() {
+        $.ajax({
+            type: "GET",
+            url: "/getFollowInfo",
+            data: {
+                fromaccountId: sessionEmail,
+                toaccountId: profileUserEmail // 팔로우 대상자의 이메일
+            },
+            success: function (response) {
+                if (response === 1) {
+                    // 팔로우 중인 경우
+                    $('#followOrUnfollow').append('<button id="unfollowButton" class="profileButton" style="width: 82px; height: 32px; margin-left: 20px" onclick="onclickUnfollow(\'' + sessionEmail + '\', \'' + profileUserEmail + '\')">팔로잉</button>');
+                } else {
+                    // 팔로우하지 않은 경우
+                    $('#followOrUnfollow').append('<button id="followButton" class="followButton" style="width: 82px; height: 32px; margin-left: 20px" onclick="onclickFollow(\'' + sessionEmail + '\', \'' + profileUserEmail + '\')">팔로우</button>');
+                }
+            },
+            error: function (error) {
+                console.error("팔로우 상태 확인 실패", error);
+            }
+        });
+    }
+
+    // 팔로우 버튼 클릭 시 호출되는 함수
+    function onclickFollow(fromaccountId, toaccountId) {
+        let data = {
+            fromaccountId: fromaccountId,
+            toaccountId: toaccountId
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/follow",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            success: function () {
+                // 버튼을 '팔로잉'으로 변경
+                $('#followOrUnfollow').empty();
+                $('#followOrUnfollow').append('<button id="unfollowButton" class="profileButton" style="width: 82px; height: 32px; margin-left: 20px" onclick="onclickUnfollow(\'' + fromaccountId + '\', \'' + toaccountId + '\')">팔로잉</button>');
+            },
+            error: function (error) {
+                console.error("팔로우 실패", error);
+            }
+        });
+    }
+
+    // 언팔로우 버튼 클릭 시 호출되는 함수
+    function onclickUnfollow(fromaccountId, toaccountId) {
+        let data = {
+            fromaccountId: fromaccountId,
+            toaccountId: toaccountId
+        };
+
+        $.ajax({
+            type: "DELETE",
+            url: "/unfollow",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            success: function () {
+                // 버튼을 '팔로우'로 변경
+                $('#followOrUnfollow').empty();
+                $('#followOrUnfollow').append('<button id="followButton" class="followButton" style="width: 82px; height: 32px; margin-left: 20px" onclick="onclickFollow(\'' + fromaccountId + '\', \'' + toaccountId + '\')">팔로우</button>');
+            },
+            error: function (error) {
+                console.error("언팔로우 실패", error);
+            }
+        });
+    }
+</script>
 
 <script src="/js/indexBottom.js"></script>

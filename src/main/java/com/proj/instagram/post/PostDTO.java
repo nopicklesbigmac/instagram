@@ -6,7 +6,7 @@ public class PostDTO {
     private String content;    // 게시글 내용
     private String imagePath;  // 이미지 경로
     private Date createdAt;    // 게시글 생성 일시
-
+    
     // 기본 생성자
     public PostDTO() {}
 
@@ -19,6 +19,7 @@ public class PostDTO {
         this.createdAt = createdAt;
     }
 
+    
     // Getter 및 Setter 메서드
     public Long getPostId() {
         return postId;
