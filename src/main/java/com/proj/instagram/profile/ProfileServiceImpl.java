@@ -78,4 +78,22 @@ public class ProfileServiceImpl implements IProfileService {
     public UserDTO findUserByEmail(String email) {
         return userDAO.selectUserByEmail(email); // ProfileDAO를 사용하여 데이터베이스에서 사용자 정보 가져오기
     }
+    
+    // 사용자 프로필 가져오기
+    @Override
+    public UserDTO getUserProfile(String email) {
+        UserDTO user = userDAO.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("사용자를 찾을 수 없습니다: " + email);
+        }
+
+        int followerCount = userDAO.getFollowerCount(email);
+        int followingCount = userDAO.getFollowingCount(email);
+
+        user.setFollowerCount(followerCount);
+        user.setFollowingCount(followingCount);
+
+        return user;
+    }
+
 }

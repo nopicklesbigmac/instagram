@@ -90,11 +90,10 @@
 
     </style>
 </head>
-<script>
-    var sessionEmail = '<%= session.getAttribute("email") %>';
-</script>
 <body style="margin-left: 74px">
-
+    <script>
+        var sessionEmail = '<%= session.getAttribute("email") %>';
+    </script>
 
     <div id="profilePage" style="padding-top: 30px; padding-left: 20px; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;">
         <div id="profile-upperbox" style="display: flex">
@@ -111,7 +110,7 @@
 
             <div id="name_div">
                 <div id="name_div_line1" style="display: flex; align-items: center;">
-                    <span id="nameBox" style="font-size: 20px;"><%= session.getAttribute("username") %></span>
+                    <span id="nameBox" style="font-size: 20px;">${user.username}</span>
                     <div id="isMyProfile" style="display: flex; align-items: center;">
                         <c:if test="${sessionScope.email eq user.email}">
                             <button id="editProfile" class="profileButton" style="width: 104px; height: 32px; margin-left: 16px" onclick="editProfile()">프로필 편집</button>
@@ -137,13 +136,13 @@
 
                 <div id="name_div_line2" style="margin-bottom: 20px">
                     게시물 <span style="font-weight: bold; margin-right: 30px">${posts.size()}</span>
-                    팔로워 <span style="font-weight: bold; margin-right: 30px"><%= session.getAttribute("Follower") %></span>
-                    팔로우 <span style="font-weight: bold;"><%= session.getAttribute("Following") %></span>
+                    팔로워 <span style="font-weight: bold; margin-right: 30px">${user.followerCount}</span>
+                    팔로우 <span style="font-weight: bold;">${user.followingCount}</span>
                 </div>
 
                 <div id="name_div_line3" style="margin-bottom: 50px">
-                    <span style="font-size: 14px; font-weight: bold; margin-bottom: 10px; display: block"><%= session.getAttribute("name") %></span>
-                    <span style="font-size: 14px;">${user.comments}</span>
+                    <span style="font-size: 14px; font-weight: bold; margin-bottom: 10px">${user.name}</span>
+                    <span style="font-size: 14px; display: block;">${user.comments}</span>
                 </div>
             </div>
         </div>
@@ -195,6 +194,7 @@
         </div>
     </div>
 </body>
+
 
 
 <script src="/js/profile.js"></script>

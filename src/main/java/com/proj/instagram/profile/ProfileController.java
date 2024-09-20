@@ -72,9 +72,6 @@ public class ProfileController {
         model.addAttribute("sessionEmail", sessionEmail);
         model.addAttribute("user", userProfile);  // 조회한 사용자의 정보 추가
         model.addAttribute("posts", posts);
-        System.out.println("UserProfile: " + userProfile);
-        System.out.println("Posts: " + posts);
-
         return "views/home/profile";
     }
 
