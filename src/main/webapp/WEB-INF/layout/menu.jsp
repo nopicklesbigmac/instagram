@@ -47,10 +47,10 @@
       <img id="writebutton" src="/image/menu/write.png">
     </a>
 
-    <a href="/profile/${user.email}" style="cursor: pointer; margin-top: 8px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+    <a href="/profile/${sessionScope.email}" style="cursor: pointer; margin-top: 8px; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
         <c:choose>
-            <c:when test="${user.use_profile_img != null && !user.use_profile_img.isEmpty()}">
-                <img id="profilebutton" src="<c:url value='/image/profile/${user.username}/profile.png' />" width="24px" height="24px" style="border-radius: 50%; border: 2px solid #dbdbdb">
+            <c:when test="${sessionScope.Profile_img != null && !sessionScope.Profile_img.isEmpty()}">
+                <img id="profilebutton" src="<c:url value='/image/profile/${sessionScope.username}/profile.png' />" width="24px" height="24px" style="border-radius: 50%; border: 2px solid #dbdbdb">
             </c:when>
             <c:otherwise>
                 <img id="profilebutton" src="<c:url value='/image/profile/default.jpg' />" width="24px" height="24px">
