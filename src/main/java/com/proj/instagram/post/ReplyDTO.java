@@ -3,55 +3,24 @@ package com.proj.instagram.post;
 import java.util.Date;
 
 public class ReplyDTO {
-    private Long id; // 댓글 ID
-    private String comments; // 댓글 내용
-    private String username; // 댓글 작성자 이름
-    private boolean useProfileImg; // 프로필 이미지 사용 여부
+    private Long replyId;
+    private Long postId;
     private String email;
-    private Long postId; // 해당 게시글 ID
-    private Date createdAt; // 댓글 작성 날짜
+    private String username;
+    private String comments;
+    private String useProfileImg;
+    private Date createdAt;
 
-    // Getters and Setters
-    
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-    public Long getId() {
-        return id;
+    // Getter and Setter for replyId
+    public Long getReplyId() {
+        return replyId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setReplyId(Long replyId) {
+        this.replyId = replyId;
     }
 
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public boolean isUseProfileImg() {
-        return useProfileImg;
-    }
-
-    public void setUseProfileImg(boolean useProfileImg) {
-        this.useProfileImg = useProfileImg;
-    }
-
+    // Getter and Setter for postId
     public Long getPostId() {
         return postId;
     }
@@ -60,6 +29,43 @@ public class ReplyDTO {
         this.postId = postId;
     }
 
+    // Getter and Setter for email
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    // Getter and Setter for username
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    // Getter and Setter for comments
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    // Getter and Setter for useProfileImg
+    public String getUseProfileImg() {
+        return useProfileImg;
+    }
+
+    public void setUseProfileImg(String useProfileImg) {
+        this.useProfileImg = useProfileImg;
+    }
+
+    // Getter and Setter for createdAt
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -68,3 +74,4 @@ public class ReplyDTO {
         this.createdAt = createdAt;
     }
 }
+

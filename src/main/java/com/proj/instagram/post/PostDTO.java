@@ -3,6 +3,8 @@ import java.util.Date;
 public class PostDTO {
     private Long postId;       // 게시글 ID
     private String email;      // 사용자 이메일
+	public String name;		   // 사용자 닉네임
+	public String username;    // 사용자 이름
     private String content;    // 게시글 내용
     private String imagePath;  // 이미지 경로
     private Date createdAt;    // 게시글 생성 일시
@@ -21,6 +23,19 @@ public class PostDTO {
 
     
     // Getter 및 Setter 메서드
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
     public Long getPostId() {
         return postId;
     }

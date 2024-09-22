@@ -1,9 +1,10 @@
-
-function gotoPost(url) {
-    // JavaScript 함수 내에서 세션 값을 사용할 수 있습니다.
-    console.log("User email: " + sessionEmail); // 예시로 콘솔에 출력
-    location.href = url;
+function gotoPost(postId) {
+    var url = '/post/' + postId;
+    console.log("Navigating to URL: " + url); // URL 출력
+    window.location.href = url;
 }
+
+
 function editProfile() {
     console.log("Redirecting to profile edit page");
     location.href = "/editProfile"; // 컨트롤러에서 정의한 URL

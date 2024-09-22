@@ -15,8 +15,10 @@ public interface PostDAO {
     
     void updatePost(PostDTO postDTO);
     
+    PostDTO findPostById(Long postId); 
     
-    PostDTO getPostById(Long postId);
     
     List<ReplyDTO> getRepliesByPostId(Long postId);
+
+	void saveReply(ReplyDTO replyDTO);
 }

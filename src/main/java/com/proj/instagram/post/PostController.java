@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +39,6 @@ public class PostController {
             postDTO.setEmail(email);
             postDTO.setContent(content);
 
-            // 게시글 저장 후 ID를 가져오고, 이미지 저장을 포함합니다.
             long postId = postService.createPost(postDTO, files);
             return ResponseEntity.ok("게시글이 성공적으로 업로드되었습니다. 게시글 ID: " + postId);
         } catch (Exception e) {
@@ -47,19 +47,29 @@ public class PostController {
         }
     }
     
-    @GetMapping("/post/{email}/{postId}")
+    @GetMapping("/post/{postId}")  // URL 경로를 /post/{postId}로 변경
     public String viewPost(@PathVariable Long postId, Model model) {
-        PostDTO post = postService.getPostById(postId);
-        List<ReplyDTO> replies = postService.getRepliesByPostId(postId);
-
-        model.addAttribute("post", post);
-        model.addAttribute("replies", replies);
-        
-        if (post != null) {
+        try {
+        	logger.info("Received request for post ID: " + postId);
+            PostDTO post = postService.getPostById(postId);
+            if (post == null) {
+                logger.error("게시글을 찾을 수 없습니다. postId: " + postId);
+                return "error/404"; // 404 에러 페이지로 이동
+            }
+            System.out.println("PostController : " + post);
             model.addAttribute("post", post);
-            return "views/home/post"; // view.jsp 파일을 반환
-        } else {
-            return "redirect:/error"; // 게시글을 찾을 수 없으면 에러 페이지로 리다이렉트
+            return "views/home/post"; // JSP 파일 경로
+        } catch (Exception e) {
+        	System.out.println("PostController : error");
+            logger.error("게시글 조회 실패: ", e);
+            return "error/500"; // 500 에러 페이지로 이동
         }
+    }
+
+    @PostMapping("/postReply")
+    public ResponseEntity<List<ReplyDTO>> postReply(@RequestBody ReplyDTO replyDTO) {
+        postService.saveReply(replyDTO);
+        List<ReplyDTO> replies = postService.getRepliesByPostId(replyDTO.getPostId());
+        return ResponseEntity.ok(replies);
     }
 }

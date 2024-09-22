@@ -41,7 +41,7 @@ function updateReplies(resp) {
     replyBox.empty();
 
     for (var i = 0; i < resp.length; i++) {
-        reply = resp[i]
+        reply = resp[i];
         var reply_username = reply.account.username;
         var profileImgSrc = reply.account.use_profile_img === 1
             ? "/image/profile/" + reply.username + "/profile.jpg"
@@ -51,7 +51,7 @@ function updateReplies(resp) {
         replyBox.append(
             '<div id="post_reply" style="margin-top: 10px">' +
             '<img src="' + profileImgSrc + '" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile(\'' + reply_username + '\')">' +
-            '<span style="font-weight: bold; font-size: 16px; cursor: pointer" onclick="gotoUserProfile(\'' + reply_username + '\')">' + " " + reply.account.username + " " + '</span>' +
+            '<span style="font-weight: bold; font-size: 16px; cursor: pointer" onclick="gotoUserProfile(\'' + reply_username + '\')">' + reply_username + '</span>' +
             '<span style="font-weight: normal">' + reply.comment + '</span>' +
             '</div>'
         );
@@ -59,28 +59,27 @@ function updateReplies(resp) {
     $("#post_commentInput").val('');
 }
 
-
-// 사진 표기
+// 사진 슬라이드 기능
 let currentIdx = 0; // 시작 사진 인덱스
 var postId = document.getElementById("post_id").innerText;
 var postname = document.getElementById("email").innerText;
 var post_picsize = document.getElementById("post_pic_size").innerText;
-const imagePath = '/image/post/' + postname + postId + '/'; // 사진의 기본 경로
-const imageContainer = document.getElementById('post_imageConatiner');
+const imagePath = '/image/post/' + postname + '/' + postId + '/'; // 사진의 기본 경로
+const imageContainer = document.getElementById('post_imageContainer');
 
 const prevButton = document.getElementById('imagePrevButton');
 const nextButton = document.getElementById('imageNextButton');
 prevButton.style.display = currentIdx === 0 ? 'none' : '';
 nextButton.style.display = currentIdx === post_picsize - 1 ? 'none' : '';
 
-document.getElementById('imagePrevButton').addEventListener('click', () => {
-    currentIdx = (parseInt(currentIdx-1, 10) + parseInt(post_picsize, 10)) % post_picsize;
+prevButton.addEventListener('click', () => {
+    currentIdx = (parseInt(currentIdx - 1, 10) + parseInt(post_picsize, 10)) % post_picsize;
     updateImage();
     prevButton.style.display = currentIdx === 0 ? 'none' : '';
     nextButton.style.display = currentIdx === post_picsize - 1 ? 'none' : '';
 });
 
-document.getElementById('imageNextButton').addEventListener('click', () => {
+nextButton.addEventListener('click', () => {
     currentIdx = (currentIdx + 1) % post_picsize;
     updateImage();
     prevButton.style.display = currentIdx === 0 ? 'none' : '';
@@ -89,10 +88,10 @@ document.getElementById('imageNextButton').addEventListener('click', () => {
 
 function updateImage() {
     const imageUrl = `${imagePath}${currentIdx}.jpg`;
-    imageContainer.innerHTML = `<img src="${imageUrl}" style="max-width: 100%; height: auto;">`;
+    imageContainer.innerHTML = `<img src="${imageUrl}" style="max-width: 100%; height: auto; max-height: 800px;" onerror="this.onerror=null; this.src='/image/post/default.jpg';">`;
 }
 
-
+// 좋아요 기능
 function Like() {
     let data = {
         principalId: principal.id,
@@ -127,7 +126,7 @@ function Unlike() {
 
     $.ajax({
         type: "DELETE",
-        url: "/postUnlike",
+        url: "/postLike",
         data: JSON.stringify(data),
         contentType: "application/json"
     }).done(function (resp) {
@@ -137,15 +136,10 @@ function Unlike() {
         var likeButtonDiv = document.createElement('div');
         likeButtonDiv.id = 'likeButton';
         likeButtonDiv.className = 'buttons';
-        likeButtonDiv.innerHTML = '<span>🤍</span>';
+        likeButtonDiv.innerHTML = '<span>♡</span>';
         likeButtonDiv.onclick = Like;
         document.getElementById('likeOrUnlike').appendChild(likeButtonDiv);
     }).fail(function (error) {
         alert(JSON.stringify(error));
     });
-}
-
-
-function gotoUserProfile(email) {
-    location.href = "/profile/" + email;
 }

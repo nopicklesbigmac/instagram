@@ -74,7 +74,10 @@ public class PostServiceImpl implements PostService {
     
     @Override
     public PostDTO getPostById(Long postId) {
-        return postDAO.getPostById(postId);
+        System.out.println("PostServiceImpl : " + postId);
+        PostDTO post = postDAO.findPostById(postId);
+        System.out.println("Fetched Post: " + post); // 여기에 추가
+        return post;
     }
 
     @Override
@@ -82,4 +85,9 @@ public class PostServiceImpl implements PostService {
         return postDAO.getRepliesByPostId(postId);
 
 }
+    
+    public void saveReply(ReplyDTO replyDTO) {
+    	postDAO.saveReply(replyDTO);
+    }
+
 }

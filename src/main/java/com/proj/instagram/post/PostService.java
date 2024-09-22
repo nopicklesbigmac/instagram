@@ -11,4 +11,6 @@ public interface PostService {
     PostDTO getPostById(Long postId);
     
     List<ReplyDTO> getRepliesByPostId(Long postId);
+
+	void saveReply(ReplyDTO replyDTO);
 }

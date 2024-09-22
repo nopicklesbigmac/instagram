@@ -171,11 +171,11 @@
                 </c:when>
                 <c:otherwise>
                     <div id="postBox" style="width: 100%; max-width: 963px; display: flex; flex-wrap: wrap; justify-content: center">
-                        <c:forEach var="post" items="${posts}">
-                            <div id="tmpBox" style="width: 300px; height: 300px; margin: 10px; cursor: pointer" onclick="gotoPost('/views/post?no=${post.postId}')">
-                                <img class="post" src="/image/post/${post.email}/${post.postId}/image1.jpg" style="width: 290px; height: 290px" onerror="this.onerror=null; this.src='/image/post/default.jpg';">
-                            </div>
-                        </c:forEach>
+					<c:forEach var="post" items="${posts}">
+					    <div id="tmpBox" style="width: 300px; height: 300px; margin: 10px; cursor: pointer" onclick="gotoPost('${post.postId}')">
+					        <img class="post" src="${post.imagePath}" style="width: 290px; height: 290px" onerror="this.onerror=null; this.src='/image/post/default.jpg';">
+					    </div>
+					</c:forEach>
                     </div>
                 </c:otherwise>
             </c:choose>
@@ -194,7 +194,6 @@
         </div>
     </div>
 
-    <script src="path/to/Profile.js"></script>
 </body>
 
 

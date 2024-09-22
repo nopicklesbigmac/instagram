@@ -30,11 +30,16 @@
 
 
     <!-- 게시글 조회 by postId -->
-    <select id="getPostById" parameterType="long" resultType="PostDTO">
-        SELECT post_id, email, content, image_path, created_at
-        FROM insta_post
-        WHERE post_id = #{postId}
-    </select>
+	<select id="findPostById" parameterType="Long" resultType="PostDTO">
+	        SELECT POST_ID AS postId,
+           EMAIL AS email,
+           CONTENT AS content,
+           IMAGE_PATH AS imagePath,
+           CREATED_AT AS createdAt
+		    FROM insta_post
+		    WHERE POST_ID = #{postId}
+	</select>
+
 
     <!-- 댓글 조회 by postId -->
     <select id="getRepliesByPostId" parameterType="long" resultType="ReplyDTO">

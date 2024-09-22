@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.proj.instagram.post.PostDTO" %>
+
 
 <head>
     <%@ include file="../../layout/indexHeader.jsp"%>
@@ -134,16 +136,16 @@
     </style>
 
     <div id="post_id" style="display: none">${post.postId}</div>
-    <div id="post_pic_size" style="display: none">${post.pic_size}</div>
 </head>
 
 <body style="margin-left: 74px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <% PostDTO post = (PostDTO) request.getAttribute("post"); %>
 
     <div id="post_idBox" class="post_idBox">
         <div id="profile_img_div" style="padding-right: 44px; cursor: pointer" onclick="gotoUserProfile('${post.email}')">
             <c:choose>
-                <c:when test="${post.use_profile_img eq 1}">
-                    <img src="/image/profile/${post.email}/profile.jpg" class="profile">
+                <c:when test="${not empty post.imagePath}">
+                    <img src="${user.use_profile_img}" class="profile">
                 </c:when>
                 <c:otherwise>
                     <img src="/image/profile/default.jpg" class="profile">
@@ -155,7 +157,9 @@
 
     <div id="post_upperBox" class="post_upperBox">
         <div id="post_imagesBox" class="post_imagesBox">
-            <div id="post_imageConatiner"><img src="/image/post/${post.postId}/1.jpg" style="max-width: 100%; height: auto; max-height: 800px;"></div>
+            <div id="post_imageContainer">
+                <img src="${post.imagePath}" style="max-width: 100%; height: auto; max-height: 800px;">
+            </div>
             <div id="imagePrevButton" class="imagePrevNextButton" style="left: 10px">◀</div>
             <div id="imageNextButton" class="imagePrevNextButton" style="right: 10px">▶</div>
         </div>
@@ -164,15 +168,15 @@
             <div id="commentAndReply" style="height: 600px; border-bottom: 1px solid #dbdbdb; margin-bottom: 10px; overflow: auto">
                 <div id="post_comment" style="margin-bottom: 20px">
                     <c:choose>
-                        <c:when test="${post.use_profile_img eq 1}">
-                            <img src="/image/profile/${post.email}/profile.jpg" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile('${post.email}')">
+                        <c:when test="${not empty post.imagePath}">
+                            <img src="${user.use_profile_img}" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile('${post.email}')">
                         </c:when>
                         <c:otherwise>
                             <img src="/image/profile/default.jpg" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile('${post.email}')">
                         </c:otherwise>
                     </c:choose>
                     <span style="font-weight: bold; font-size: 18px; cursor: pointer" onclick="gotoUserProfile('${post.email}')">${post.username}</span>
-                    <span style="font-size: 18px">${post.comment}</span>
+                    <span style="font-size: 18px; display: block; margin-top: 30px;">${post.content}</span> <!-- 'post.comment'에서 'post.content'로 변경 -->
                 </div>
 
                 <!-- 댓글 출력 -->
@@ -180,7 +184,7 @@
                     <c:forEach var="reply" items="${replies}">
                         <div id="post_reply" style="margin-top: 10px">
                             <c:choose>
-                                <c:when test="${reply.use_profile_img eq 1}">
+                                <c:when test="${not empty reply.imagePath}">
                                     <img src="/image/profile/${reply.email}/profile.jpg" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile('${reply.email}')">
                                 </c:when>
                                 <c:otherwise>
@@ -196,5 +200,6 @@
         </div>
     </div>
 </body>
+
 
 <script src="/js/post.js"></script>
