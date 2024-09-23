@@ -7,6 +7,8 @@ public class PostDTO {
 	public String username;    // 사용자 이름
     private String content;    // 게시글 내용
     private String imagePath;  // 이미지 경로
+    private int likeCount;
+    private int postPicSize; // 이미지 개수
     private Date createdAt;    // 게시글 생성 일시
     
     // 기본 생성자
@@ -23,6 +25,22 @@ public class PostDTO {
 
     
     // Getter 및 Setter 메서드
+    public int getPostPicSize() {
+        return postPicSize;
+    }
+
+    public void setPostPicSize(int postPicSize) {
+        this.postPicSize = postPicSize;
+    }
+    
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+    
 	public String getName() {
 		return name;
 	}

@@ -13,4 +13,14 @@ public interface PostService {
     List<ReplyDTO> getRepliesByPostId(Long postId);
 
 	void saveReply(ReplyDTO replyDTO);
+	
+   int getLikeStatus(String accountId, Long postId);
+    
+    // 좋아요 추가 메서드
+    void likePost(String accountId, Long postId);
+    
+    // 좋아요 제거 메서드
+    void unlikePost(String accountId, Long postId);
+    
+    int getLikeCount(Long postId);
 }

@@ -4,13 +4,13 @@
 <mapper namespace="com.proj.instagram.post.PostDAO">
 
     <select id="findByUserEmail" parameterType="String" resultType="PostDTO">
-            SELECT POST_ID AS postId,
-           EMAIL AS email,
-           CONTENT AS content,
-           IMAGE_PATH AS imagePath,
-           CREATED_AT AS createdAt
-    FROM insta_post
-    WHERE EMAIL = #{email}
+        SELECT POST_ID AS postId,
+               EMAIL AS email,
+               CONTENT AS content,
+               IMAGE_PATH AS imagePath,
+               CREATED_AT AS createdAt
+        FROM insta_post
+        WHERE EMAIL = #{email}
     </select>
 
     <insert id="savePost" parameterType="PostDTO">
@@ -23,28 +23,62 @@
     </select>
 
     <update id="updatePost" parameterType="PostDTO">
-        UPDATE insta_post 
-        SET CONTENT = #{content}, IMAGE_PATH = #{imagePath} 
-        WHERE POST_ID = #{postId}
+        UPDATE insta_post
+        SET content = #{content},
+            image_path = #{imagePath},
+            post_pic_size = #{postPicSize}
+        WHERE post_id = #{postId}
     </update>
 
+    <select id="findPostById" parameterType="Long" resultType="PostDTO">
+        SELECT POST_ID AS postId,
+               EMAIL AS email,
+               CONTENT AS content,
+               IMAGE_PATH AS imagePath,
+               CREATED_AT AS createdAt,
+               LIKECOUNT AS likeCount
+        FROM insta_post
+        WHERE POST_ID = #{postId}
+    </select>
 
-    <!-- 게시글 조회 by postId -->
-	<select id="findPostById" parameterType="Long" resultType="PostDTO">
-	        SELECT POST_ID AS postId,
-           EMAIL AS email,
-           CONTENT AS content,
-           IMAGE_PATH AS imagePath,
-           CREATED_AT AS createdAt
-		    FROM insta_post
-		    WHERE POST_ID = #{postId}
-	</select>
+    <insert id="insertReply" parameterType="ReplyDTO">
+        INSERT INTO INSTA_REPLY (REPLY_ID, POST_ID, EMAIL, USERNAME, COMMENTS, USE_PROFILE_IMG)
+        VALUES (reply_id_seq.NEXTVAL, #{postId}, #{email}, #{username}, #{comments}, #{useProfileImg})
+    </insert>
 
+    <select id="getRepliesByPostId" resultType="ReplyDTO">
+        SELECT REPLY_ID, POST_ID, EMAIL, USERNAME, COMMENTS, USE_PROFILE_IMG, CREATED_AT
+        FROM INSTA_REPLY
+        WHERE POST_ID = #{postId}
+        ORDER BY CREATED_AT DESC
+    </select>
 
-    <!-- 댓글 조회 by postId -->
-    <select id="getRepliesByPostId" parameterType="long" resultType="ReplyDTO">
-        SELECT reply_id, post_id, email, comments, created_at
-        FROM insta_reply
+    <select id="findLikeStatus" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM insta_likes
+        WHERE account_id = #{accountId} AND post_id = #{postId}
+    </select>
+
+    <insert id="addLike" parameterType="map">
+        INSERT INTO insta_likes (account_id, post_id)
+        VALUES (#{accountId}, #{postId})
+    </insert>
+
+    <delete id="removeLike" parameterType="map">
+        DELETE FROM insta_likes
+        WHERE account_id = #{accountId} AND post_id = #{postId}
+    </delete>
+
+    <select id="getLikeCount" parameterType="Long" resultType="int">
+        SELECT COUNT(*)
+        FROM insta_likes
         WHERE post_id = #{postId}
+    </select>
+
+
+    <select id="getPostPicSize" parameterType="Long" resultType="int">
+        SELECT COUNT(*)
+        FROM insta_post
+        WHERE POST_ID = #{postId} AND IMAGE_PATH IS NOT NULL
     </select>
 </mapper>

@@ -1,16 +1,13 @@
 package com.proj.instagram.post;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-
 import javax.servlet.ServletContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-@Service 
+@Service
 public class PostServiceImpl implements PostService {
 
     @Autowired
@@ -37,19 +34,18 @@ public class PostServiceImpl implements PostService {
         }
 
         StringBuilder imagePaths = new StringBuilder();
-        int imageIndex = 1; // 이미지 번호를 추적할 변수
+        int imageIndex = 0; // 이미지 번호를 추적할 변수
 
         // 이미지 저장
         for (MultipartFile file : files) {
             if (file != null && !file.isEmpty()) {
-                // 파일 이름 생성 (image1.jpg, image2.jpg, ...)
+                imageIndex++; // 이미지 번호 증가
                 String fileName = "image" + imageIndex + ".jpg";
                 File serverFile = new File(directory, fileName);
                 file.transferTo(serverFile); // 파일 저장
 
                 // 이미지 경로 저장
                 imagePaths.append("/image/post/" + postDTO.getEmail() + "/" + postId + "/" + fileName).append(";");
-                imageIndex++; // 이미지 번호 증가
             }
         }
 
@@ -58,36 +54,63 @@ public class PostServiceImpl implements PostService {
             imagePaths.setLength(imagePaths.length() - 1);
         }
 
-        // 게시글 DTO에 이미지 경로 설정
+        // 게시글 DTO에 이미지 경로 및 이미지 개수 설정
         postDTO.setImagePath(imagePaths.toString());
+        postDTO.setPostPicSize(imageIndex); // 이미지 개수 설정
 
-     // 업데이트된 게시글 저장
+        // 업데이트된 게시글 저장
         postDTO.setPostId((long) postId); // postId를 long으로 변환하여 설정
         postDAO.updatePost(postDTO); // 이미지 경로와 함께 게시글 업데이트
-
-        // 로그 확인
-        System.out.println("Final Image Path: " + postDTO.getImagePath());
 
         return postId;
     }
 
-    
     @Override
     public PostDTO getPostById(Long postId) {
-        System.out.println("PostServiceImpl : " + postId);
         PostDTO post = postDAO.findPostById(postId);
-        System.out.println("Fetched Post: " + post); // 여기에 추가
+        if (post != null) {
+            int picSize = postDAO.getPostPicSize(postId); // 이미지 개수 가져오기
+            post.setPostPicSize(picSize); // 이미지 개수 설정
+            int likeCount = postDAO.getLikeCount(postId); // 좋아요 개수 가져오기
+            post.setLikeCount(likeCount); // 좋아요 개수 설정
+        }
         return post;
     }
 
     @Override
     public List<ReplyDTO> getRepliesByPostId(Long postId) {
         return postDAO.getRepliesByPostId(postId);
-
-}
-    
-    public void saveReply(ReplyDTO replyDTO) {
-    	postDAO.saveReply(replyDTO);
     }
 
+    public void saveReply(ReplyDTO replyDTO) {
+        postDAO.saveReply(replyDTO);
+    }
+
+    @Override
+    public int getLikeStatus(String accountId, Long postId) {
+        System.out.println("PostServiceImpl getLikeStatus PostId : " +  postId);
+        System.out.println("PostServiceImpl getLikeStatus accountId : " +  accountId);
+        return postDAO.findLikeStatus(accountId, postId);
+    }
+    
+    @Override
+    public void likePost(String accountId, Long postId) {
+        // 먼저 좋아요 상태를 확인하고, 좋아요가 없을 경우 추가
+        if (postDAO.findLikeStatus(accountId, postId) == 0) {
+            postDAO.addLike(accountId, postId);
+        }
+    }
+
+    @Override
+    public void unlikePost(String accountId, Long postId) {
+        // 좋아요가 있을 경우에만 제거
+        if (postDAO.findLikeStatus(accountId, postId) > 0) {
+            postDAO.removeLike(accountId, postId);
+        }
+    }
+
+    @Override
+    public int getLikeCount(Long postId) {
+        return postDAO.getLikeCount(postId);
+    }
 }

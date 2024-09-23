@@ -47,29 +47,67 @@ public class PostController {
         }
     }
     
-    @GetMapping("/post/{postId}")  // URL 경로를 /post/{postId}로 변경
+    @GetMapping("/post/{postId}") 
     public String viewPost(@PathVariable Long postId, Model model) {
         try {
-        	logger.info("Received request for post ID: " + postId);
+            logger.info("Received request for post ID: " + postId);
             PostDTO post = postService.getPostById(postId);
+            List<ReplyDTO> replies = postService.getRepliesByPostId(postId); // 댓글 추가
+            
             if (post == null) {
                 logger.error("게시글을 찾을 수 없습니다. postId: " + postId);
-                return "error/404"; // 404 에러 페이지로 이동
+                return "error/404"; 
             }
-            System.out.println("PostController : " + post);
+            
             model.addAttribute("post", post);
-            return "views/home/post"; // JSP 파일 경로
+            model.addAttribute("replies", replies); // 댓글 추가
+            System.out.println("PostController viewPost : " + post);
+            return "views/home/post"; 
         } catch (Exception e) {
-        	System.out.println("PostController : error");
             logger.error("게시글 조회 실패: ", e);
-            return "error/500"; // 500 에러 페이지로 이동
+            return "error/500"; 
         }
     }
+
 
     @PostMapping("/postReply")
     public ResponseEntity<List<ReplyDTO>> postReply(@RequestBody ReplyDTO replyDTO) {
         postService.saveReply(replyDTO);
         List<ReplyDTO> replies = postService.getRepliesByPostId(replyDTO.getPostId());
         return ResponseEntity.ok(replies);
+    }
+    
+    // 좋아요 상태를 가져오는 메서드
+    @GetMapping("/post/getLike")
+    public ResponseEntity<Integer> getLikeStatus(@RequestParam String accountId, @RequestParam Long postId) {
+        int likeStatus = postService.getLikeStatus(accountId, postId);
+        System.out.println("PostController getLikeStatus PostId : " +  postId);
+        System.out.println("PostController getLikeStatus accountId : " +  accountId);
+        return ResponseEntity.ok(likeStatus);
+    }
+
+    @PostMapping("/post/like")
+    @ResponseBody
+    public ResponseEntity<String> likePost(@RequestParam String accountId, @RequestParam Long postId) {
+        try {
+            postService.likePost(accountId, postId);
+            System.out.println("Like request received for accountId: " + accountId + ", postId: " + postId);
+            return ResponseEntity.ok("좋아요가 추가되었습니다.");
+        } catch (Exception e) {
+            logger.error("좋아요 추가 실패: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("좋아요 추가 실패: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/post/unlike")
+    @ResponseBody
+    public ResponseEntity<String> unlikePost(@RequestParam String accountId, @RequestParam Long postId) {
+        try {
+            postService.unlikePost(accountId, postId);
+            return ResponseEntity.ok("좋아요가 취소되었습니다.");
+        } catch (Exception e) {
+            logger.error("좋아요 취소 실패: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("좋아요 취소 실패: " + e.getMessage());
+        }
     }
 }
