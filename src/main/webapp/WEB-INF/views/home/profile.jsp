@@ -136,8 +136,8 @@
 
                 <div id="name_div_line2" style="margin-bottom: 20px">
                     게시물 <span style="font-weight: bold; margin-right: 30px">${posts.size()}</span>
-                    팔로워 <span style="font-weight: bold; margin-right: 30px">${user.followerCount}</span>
-                    팔로우 <span style="font-weight: bold;">${user.followingCount}</span>
+                    팔로워 <span style="font-weight: bold; margin-right: 30px"></span>
+                    팔로우 <span style="font-weight: bold;"></span>
                 </div>
 
                 <div id="name_div_line3" style="margin-bottom: 50px">

@@ -18,7 +18,7 @@
 		(#{email}, #{name}, #{username}, #{password})
 	</insert>
 	
-    <update id="updateUser" parameterType="com.proj.instagram.user.UserDTO">
+    <update id="updateUser" parameterType="UserDTO">
 	    UPDATE insta_user
 	    SET COMMENTS = #{comments},
 	        USE_PROFILE_IMG  = #{use_profile_img}
@@ -26,7 +26,7 @@
     </update>
     
     <!-- 사용자 이름으로 사용자 검색 -->
-    <select id="findUsersByUsername" parameterType="String" resultType="com.proj.instagram.user.UserDTO">
+    <select id="findUsersByUsername" parameterType="String" resultType="UserDTO">
         SELECT *
         FROM users
         WHERE user_name LIKE '%' || #{user_name} || '%'
