@@ -127,7 +127,7 @@
                             </button>
                             <button id="useroptionButton" style="background-color: white; border: 0px; width: 32px; height: 32px; margin-left: 16px">
                                 <img src="/image/profile/useroption.png">
-                            </button>
+                            </button> 
                         </c:if>
                     </div>
                 </div>

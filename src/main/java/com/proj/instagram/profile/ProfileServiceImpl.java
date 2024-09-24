@@ -44,7 +44,7 @@ public class ProfileServiceImpl implements IProfileService {
 
                 // 파일 저장
                 String fileName = "profile.png";
-                File file = new File(userDirectory + File.separator + fileName);
+                File file = new File(userDirectory + File.separator + fileName); 
                 profileImage.transferTo(file);
 
                 // 프로필 이미지 URL 업데이트

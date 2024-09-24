@@ -21,7 +21,7 @@ public class UserDTO {
 	public String created_at;
 	
     public String getComments() { // getter 메서드 이름을 getComments로 변경
-        return comments;
+        return comments; 
     }
 
     public void setComments(String comments) { // setter 메서드 이름을 setComments로 변경
