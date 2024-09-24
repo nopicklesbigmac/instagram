@@ -8,19 +8,18 @@ import org.springframework.web.multipart.MultipartFile;
 public interface PostService {
     int createPost(PostDTO postDTO, List<MultipartFile> files) throws Exception;
     
-    PostDTO getPostById(Long postId);
+    PostDTO getPostById(int postId);
     
-    List<ReplyDTO> getRepliesByPostId(Long postId);
+    List<ReplyDTO> getRepliesByPostId(int postId);
 
 	void saveReply(ReplyDTO replyDTO);
 	
-   int getLikeStatus(String accountId, Long postId);
+   int getLikeStatus(String accountId, int postId);
     
-    // 좋아요 추가 메서드
-    void likePost(String accountId, Long postId);
+    int getLikeCount(int postId);
     
-    // 좋아요 제거 메서드
-    void unlikePost(String accountId, Long postId);
-    
-    int getLikeCount(Long postId);
+    int addLike(LikeDTO likeDto);
+    int removeLike(LikeDTO likeDto);
+    List<ReplyDTO> addReply(ReplyDTO replyDto);
+    PostDTO getPost(int postId);
 }

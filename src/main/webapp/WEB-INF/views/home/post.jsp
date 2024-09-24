@@ -184,7 +184,7 @@
                     <c:forEach var="reply" items="${replies}">
                         <div id="post_reply" style="margin-top: 10px">
                             <c:choose>
-                                <c:when test="${not empty reply.imagePath}">
+                                <c:when test="${not empty reply.useProfileImg}">
                                     <img src="/image/profile/${reply.email}/profile.jpg" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile('${reply.email}')">
                                 </c:when>
                                 <c:otherwise>
@@ -192,7 +192,7 @@
                                 </c:otherwise>
                             </c:choose>
                             <span style="font-weight: bold; font-size: 16px; cursor: pointer" onclick="gotoUserProfile('${reply.email}')">${reply.username}</span>
-                            <span style="font-weight: normal">${reply.comments}</span> <!-- 'reply.comment'에서 'reply.comments'로 변경 -->
+                            <span style="font-weight: normal">${reply.comments}</span>
                         </div>
                     </c:forEach>
                 </div>
@@ -202,13 +202,12 @@
                 <div id="post_infoBox_buttons" style="display: flex; flex-direction: row; margin-bottom: 4px">
                     <div id="likeOrUnlike"></div>
                     <div id="messageButton" class="buttons"><span>💬</span></div>
-                    <div id="shareButton" class="buttons"><span>🔗</span></div>
+                    <div id="shareButton" class="buttons"><span>🔗</span></div>F
                 </div>
 
                 <div id="post_infoBox_likes" style="margin-bottom: 4px">
                     <span id="likeCounts" style="font-weight: bold; display: block">좋아요 ${post.likeCount}개</span>
-                    <span id="post_infoBox_likes_date" style="font-size: 14px; color: darkgray; display: block">${post.createdAt}</span>
-                    <span id="post_pic_size" style="font-size: 14px; color: darkgray; display: block">이미지 ${post.postPicSize}개</span>
+                    <span id="post_infoBox_likes_date" style="font-size: 14px; color: darkgray; display: block">${post.formattedCreatedAt}</span>
                 </div>
                 <div id="post_infoBox_replyBox" style="text-align: right;">
                     <input id="post_commentInput" style="width: 100%; margin-bottom: 2px">
@@ -235,7 +234,7 @@
             // 좋아요 상태를 가져오기 위한 AJAX 요청
             $.ajax({
                 type: "GET",
-                url: "/post/getLike?accountId=" + accountId + "&postId=" + postId,
+                url: "/post/getLike?accountId=" + accountId + "&postId=" + "<%= post.getPostId() %>",
                 contentType: "application/json; charset=utf-8"
             }).done(function(resp) {
                 if (resp === 1) {
@@ -270,6 +269,7 @@
 </script>
 
 </body>
+
 
 
 

@@ -22,25 +22,38 @@ $(document).ready(function() {
                 console.error("Invalid date: ", dateString);
             }
         }
+    });
 
-        // 좋아요 상태를 가져오기 위한 AJAX 요청
-        var postId = "${post.postId}"; // post.jsp에서 postId를 직접 가져옴
-        var accountId = encodeURIComponent(principal.email); // accountId 인코딩
+    // 댓글 작성 함수
+    function postReply(postId) {
+        var comment = $("#post_commentInput").val();
+        if (comment.trim() === "") {
+            alert("댓글을 입력해주세요.");
+            return;
+        }
+
+        var replyData = {
+            accountId: principal.email,
+            postId: postId,
+            email: principal.email,
+            username: principal.username,
+            comments: comment,
+            useProfileImg: principal.useProfileImg,
+        };
 
         $.ajax({
-            type: "GET",
-            url: "/post/getLike?accountId=" + accountId + "&postId=" + postId,
-            contentType: "application/json; charset=utf-8"
-        }).done(function(resp) {
-            if (resp === 1) {
-                document.getElementById('likeOrUnlike').innerHTML = '<div id="unLikeButton" class="buttons" onclick="unLikePost(' + postId + ')"><span>❤️</span></div>';
-            } else {
-                document.getElementById('likeOrUnlike').innerHTML = '<div id="likeButton" class="buttons" onclick="likePost(' + postId + ')"><span>🤍</span></div>';
+            type: "POST",
+            url: "/reply",
+            contentType: "application/json",
+            data: JSON.stringify(replyData),
+            success: function(response) {
+                // 댓글 추가 후 입력창 초기화
+                $("#post_commentInput").val("");
+                // 댓글 추가 로직 (예: 새 댓글 추가를 위해 페이지 새로고침)
+            },
+            error: function(error) {
+                console.error("Error posting reply: ", error);
             }
-        }).fail(function(error) {
-            console.log("Error fetching like status: ", JSON.stringify(error));
         });
-    }).fail(function(resp) {
-        console.log("Error fetching principal: ", resp);
-    });
+    }
 });

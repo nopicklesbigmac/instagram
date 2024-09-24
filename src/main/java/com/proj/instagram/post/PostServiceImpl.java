@@ -59,26 +59,26 @@ public class PostServiceImpl implements PostService {
         postDTO.setPostPicSize(imageIndex); // 이미지 개수 설정
 
         // 업데이트된 게시글 저장
-        postDTO.setPostId((long) postId); // postId를 long으로 변환하여 설정
+        postDTO.setPostId((int) postId); // postId를 long으로 변환하여 설정
         postDAO.updatePost(postDTO); // 이미지 경로와 함께 게시글 업데이트
 
         return postId;
     }
 
     @Override
-    public PostDTO getPostById(Long postId) {
+    public PostDTO getPostById(int postId) {
         PostDTO post = postDAO.findPostById(postId);
         if (post != null) {
-            int picSize = postDAO.getPostPicSize(postId); // 이미지 개수 가져오기
-            post.setPostPicSize(picSize); // 이미지 개수 설정
-            int likeCount = postDAO.getLikeCount(postId); // 좋아요 개수 가져오기
-            post.setLikeCount(likeCount); // 좋아요 개수 설정
+            Integer picSize = postDAO.getPostPicSize(postId); // Integer 사용
+            post.setPostPicSize(picSize != null ? picSize : 0); // null일 경우 0으로 설정
+            int likeCount = postDAO.getLikeCount(postId);
+            post.setLikeCount(likeCount);
         }
         return post;
     }
 
     @Override
-    public List<ReplyDTO> getRepliesByPostId(Long postId) {
+    public List<ReplyDTO> getRepliesByPostId(int postId) {
         return postDAO.getRepliesByPostId(postId);
     }
 
@@ -87,30 +87,38 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public int getLikeStatus(String accountId, Long postId) {
+    public int getLikeStatus(String accountId, int postId) {
         System.out.println("PostServiceImpl getLikeStatus PostId : " +  postId);
         System.out.println("PostServiceImpl getLikeStatus accountId : " +  accountId);
         return postDAO.findLikeStatus(accountId, postId);
     }
     
-    @Override
-    public void likePost(String accountId, Long postId) {
-        // 먼저 좋아요 상태를 확인하고, 좋아요가 없을 경우 추가
-        if (postDAO.findLikeStatus(accountId, postId) == 0) {
-            postDAO.addLike(accountId, postId);
-        }
-    }
 
     @Override
-    public void unlikePost(String accountId, Long postId) {
-        // 좋아요가 있을 경우에만 제거
-        if (postDAO.findLikeStatus(accountId, postId) > 0) {
-            postDAO.removeLike(accountId, postId);
-        }
-    }
-
-    @Override
-    public int getLikeCount(Long postId) {
+    public int getLikeCount(int postId) {
         return postDAO.getLikeCount(postId);
+    }
+     
+    @Override
+    public int addLike(LikeDTO likeDto) {
+        postDAO.addLike(likeDto);
+        return postDAO.countLikes(likeDto.getPostId());
+    }
+
+    @Override
+    public int removeLike(LikeDTO likeDto) {
+        postDAO.removeLike(likeDto);
+        return postDAO.countLikes(likeDto.getPostId());
+    }
+
+    @Override
+    public List<ReplyDTO> addReply(ReplyDTO replyDto) {
+        postDAO.addReply(replyDto);
+        return postDAO.findRepliesByPostId(replyDto.getPostId());
+    }
+
+    @Override
+    public PostDTO getPost(int postId) {
+        return postDAO.findPostById(postId);
     }
 }

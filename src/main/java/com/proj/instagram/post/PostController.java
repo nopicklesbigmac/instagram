@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,7 +49,7 @@ public class PostController {
     }
     
     @GetMapping("/post/{postId}") 
-    public String viewPost(@PathVariable Long postId, Model model) {
+    public String viewPost(@PathVariable int postId, Model model) {
         try {
             logger.info("Received request for post ID: " + postId);
             PostDTO post = postService.getPostById(postId);
@@ -58,6 +59,7 @@ public class PostController {
                 logger.error("게시글을 찾을 수 없습니다. postId: " + postId);
                 return "error/404"; 
             }
+            
             
             model.addAttribute("post", post);
             model.addAttribute("replies", replies); // 댓글 추가
@@ -69,45 +71,24 @@ public class PostController {
         }
     }
 
-
-    @PostMapping("/postReply")
-    public ResponseEntity<List<ReplyDTO>> postReply(@RequestBody ReplyDTO replyDTO) {
-        postService.saveReply(replyDTO);
-        List<ReplyDTO> replies = postService.getRepliesByPostId(replyDTO.getPostId());
-        return ResponseEntity.ok(replies);
-    }
-    
-    // 좋아요 상태를 가져오는 메서드
-    @GetMapping("/post/getLike")
-    public ResponseEntity<Integer> getLikeStatus(@RequestParam String accountId, @RequestParam Long postId) {
-        int likeStatus = postService.getLikeStatus(accountId, postId);
-        System.out.println("PostController getLikeStatus PostId : " +  postId);
-        System.out.println("PostController getLikeStatus accountId : " +  accountId);
-        return ResponseEntity.ok(likeStatus);
-    }
-
+    // 좋아요 추가
     @PostMapping("/post/like")
-    @ResponseBody
-    public ResponseEntity<String> likePost(@RequestParam String accountId, @RequestParam Long postId) {
-        try {
-            postService.likePost(accountId, postId);
-            System.out.println("Like request received for accountId: " + accountId + ", postId: " + postId);
-            return ResponseEntity.ok("좋아요가 추가되었습니다.");
-        } catch (Exception e) {
-            logger.error("좋아요 추가 실패: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("좋아요 추가 실패: " + e.getMessage());
-        }
+    public ResponseEntity<Integer> postLike(@RequestBody LikeDTO likeDto) {
+        int likeCount = postService.addLike(likeDto);
+        return new ResponseEntity<>(likeCount, HttpStatus.OK);
     }
 
-    @PostMapping("/post/unlike")
-    @ResponseBody
-    public ResponseEntity<String> unlikePost(@RequestParam String accountId, @RequestParam Long postId) {
-        try {
-            postService.unlikePost(accountId, postId);
-            return ResponseEntity.ok("좋아요가 취소되었습니다.");
-        } catch (Exception e) {
-            logger.error("좋아요 취소 실패: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("좋아요 취소 실패: " + e.getMessage());
-        }
+    // 좋아요 취소
+    @DeleteMapping("/post/like")
+    public ResponseEntity<Integer> postUnlike(@RequestBody LikeDTO likeDto) {
+        int likeCount = postService.removeLike(likeDto);
+        return new ResponseEntity<>(likeCount, HttpStatus.OK);
+    }
+
+    // 댓글 작성
+    @PostMapping("/post/reply")
+    public ResponseEntity<List<ReplyDTO>> postReply(@RequestBody ReplyDTO replyDto) {
+        List<ReplyDTO> replies = postService.addReply(replyDto);
+        return new ResponseEntity<>(replies, HttpStatus.OK);
     }
 }

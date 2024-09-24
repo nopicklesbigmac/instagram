@@ -3,8 +3,8 @@ package com.proj.instagram.post;
 import java.util.Date;
 
 public class ReplyDTO {
-    private Long replyId;
-    private Long postId;
+    private String accountId;
+    private int postId;
     private String email;
     private String username;
     private String comments;
@@ -12,20 +12,20 @@ public class ReplyDTO {
     private Date createdAt;
 
     // Getter and Setter for replyId
-    public Long getReplyId() {
-        return replyId;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setReplyId(Long replyId) {
-        this.replyId = replyId;
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     // Getter and Setter for postId
-    public Long getPostId() {
+    public int getPostId() {
         return postId;
     }
 
-    public void setPostId(Long postId) {
+    public void setPostId(int postId) {
         this.postId = postId;
     }
 
