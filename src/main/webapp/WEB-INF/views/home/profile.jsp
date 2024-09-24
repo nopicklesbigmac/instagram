@@ -121,7 +121,7 @@
                         </c:if>
                         <c:if test="${sessionScope.email ne user.email}">
                             <div id="followOrUnfollow"></div>
-                            <button id="messageButton" class="profileButton" style="width: 120px; height: 32px; margin-left: 8px" onclick="sendDm('${user.email}')">메시지 보내기</button>
+                            <button id="messageButton" class="profileButton" style="width: 120px; height: 32px; margin-left: 8px" onclick="window.location.href='/direct?value=${user.username}'">메시지 보내기</button>
                             <button id="recommendButton" class="profileButton" style="width: 34px; height: 32px; margin-left: 8px">
                                 <img src="/image/profile/recommend.png">
                             </button>
