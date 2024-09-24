@@ -1,7 +1,7 @@
 package com.proj.instagram.post;
 
 import java.util.Date;
-
+ 
 public class LikeDTO {
     private Long likeId;        // 좋아요 ID
     private String accountId;   // 사용자 계정 ID (INSTA_USER의 EMAIL)
