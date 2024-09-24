@@ -20,5 +20,13 @@ public interface IUserDAO {
     UserDTO selectUserByEmail(String email);
     
     UserDTO findByEmail(String email);
+    
+    FollowDTO selectFollow(FollowDTO follow);
+    int getFollower(String username);
+    int getFollow(String username);
+     void unfollow(FollowDTO follow);
+     void following(FollowDTO follow);
+    
+
 }
  

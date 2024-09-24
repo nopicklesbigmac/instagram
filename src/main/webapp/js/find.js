@@ -22,6 +22,8 @@ function textChange() {
 	if (req.readyState == 4 && req.status == 200) {
 		try {
 			var jsonDatas = JSON.parse(req.responseText);
+			const usersDiv = document.getElementById('usersDiv');
+			usersDiv.innerHTML = '';
 			for (var i = 0; i < jsonDatas.cd.length; i++) {
 				const userDiv = document.createElement("div");
 				userDiv.className = "user";
