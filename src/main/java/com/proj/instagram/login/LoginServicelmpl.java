@@ -29,8 +29,6 @@ public class LoginServicelmpl implements ILoginService{
             session.setAttribute("email", user.getEmail());
             session.setAttribute("name", user.getName());
             session.setAttribute("username", user.getUsername());
-            session.setAttribute("followingCount", 40);
-            session.setAttribute("followerCount", 100);
             session.setAttribute("Profile_img", user.getUse_profile_img());
             session.setAttribute("comment", user.getComments());
             session.setAttribute("user", user);

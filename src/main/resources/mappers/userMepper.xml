@@ -13,9 +13,9 @@
 	
 	<insert id="join" parameterType="UserDTO">
 		INSERT INTO insta_user 
-		(email, name, username, password)
+		(email, name, username, password, use_profile_img)
 		VALUES
-		(#{email}, #{name}, #{username}, #{password})
+		(#{email}, #{name}, #{username}, #{password},'/image/profile/default.jpg')
 	</insert>
 	
     <update id="updateUser" parameterType="com.proj.instagram.user.UserDTO">
