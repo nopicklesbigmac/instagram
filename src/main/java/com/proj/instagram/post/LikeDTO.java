@@ -13,7 +13,7 @@ public class LikeDTO {
         return likeId;
     }
 
-    public void setLikeId(Long likeId) {
+    public void setLikeId(Long likeId) { 
         this.likeId = likeId;
     }
 
