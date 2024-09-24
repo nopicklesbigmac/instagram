@@ -131,3 +131,48 @@ function onclickPopupCancel() {
 function sendDm(userId) {
     location.href = "/dm?principalId=" + principal.id + "&userId=" + userId;
 }
+function toggleFollow() {
+	const followButton = document.getElementById('followButton');
+	const unfollowButton = document.getElementById('unfollowButton');
+	const nameBox = document.getElementById('nameBox');
+	var username = '<%= session.getAttribute("username") %>';
+	var params = {
+            FOLLOWIER_username: username,
+            FOLLOWING_username: nameBox.getAttribute('data-username')
+        }
+   	const valueDisplay = document.getElementById('valueDisplay');
+    let currentValue = parseInt(valueDisplay.innerText);
+	if (followButton.style.display === 'none') {
+		followButton.style.display = 'inline-block';
+		unfollowButton.style.display = 'none';
+		$.ajax({
+			type: "POST",            // HTTP method type(GET, POST) 형식이다.
+			url: "/unfollowProc",      // 컨트롤러에서 대기중인 URL 주소이다.
+			data: JSON.stringify(params),            // Json 형식의 데이터이다.
+			contentType: "application/json; charset=utf-8", // Content-Type 설정
+			success: function(res) { // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+			currentValue -= 1;
+            valueDisplay.innerText = currentValue;
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+				alert("통신 실패.")
+			}
+		});
+	} else {
+		followButton.style.display = 'none';
+		unfollowButton.style.display = 'inline-block';
+		$.ajax({
+			type: "POST",            // HTTP method type(GET, POST) 형식이다.
+			url: "/followingProc",      // 컨트롤러에서 대기중인 URL 주소이다.
+			data: JSON.stringify(params),            // Json 형식의 데이터이다.
+			contentType: "application/json; charset=utf-8", // Content-Type 설정
+			success: function(res) { // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+             currentValue += 1;
+            valueDisplay.innerText = currentValue;
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+				alert("통신 실패.")
+			}
+		});
+	}
+}

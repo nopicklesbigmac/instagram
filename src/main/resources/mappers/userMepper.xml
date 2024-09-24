@@ -36,6 +36,30 @@
         SELECT * FROM INSTA_USER WHERE EMAIL = #{email}
     </select>
     
+    <select id="selectFollow" parameterType="FollowDTO" resultType="FollowDTO">
+        SELECT * FROM INSTA_FOLLOWERS  
+        WHERE FOLLOWER_username  = #{FOLLOWER_username}
+        and FOLLOWING_username   = #{FOLLOWING_username}
+    </select>
+    <select id="getFollow" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM INSTA_FOLLOWERS  
+        WHERE FOLLOWER_username  = #{username}
+    </select>
+    <select id="getFollower" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM INSTA_FOLLOWERS  
+        WHERE FOLLOWING_username   = #{username}
+    </select>
+    <insert id="following" parameterType="FollowDTO">
+		INSERT INTO INSTA_FOLLOWERS
+		VALUES
+		(#{FOLLOWER_username}, #{FOLLOWING_username})
+	</insert>
+	<delete id="unfollow" parameterType="FollowDTO">
+		delete from INSTA_FOLLOWERS
+		WHERE FOLLOWER_username  = #{FOLLOWER_username}
+		and FOLLOWING_username   = #{FOLLOWING_username}
+	</delete>
+    
     
 <!--	
     <update id="updateUser">

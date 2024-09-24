@@ -20,7 +20,12 @@ public interface IUserDAO {
     UserDTO selectUserByEmail(String email);
     
     UserDTO findByEmail(String email);
-    int getFollowerCount(String email); // 팔로워 수 조회
-    int getFollowingCount(String email); // 팔로잉 수 조회
+    
+    FollowDTO selectFollow(FollowDTO follow);
+    int getFollower(String username);
+    int getFollow(String username);
+     void unfollow(FollowDTO follow);
+     void following(FollowDTO follow);
+    
 }
  

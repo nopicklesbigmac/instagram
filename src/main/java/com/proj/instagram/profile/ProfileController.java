@@ -1,12 +1,15 @@
 package com.proj.instagram.profile;
 
 import com.proj.instagram.post.PostDTO;
+import com.proj.instagram.user.FollowDTO;
+import com.proj.instagram.user.IUserDAO;
 import com.proj.instagram.user.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +25,8 @@ import java.util.Map;
 @Controller
 public class ProfileController {
 
+	@Autowired
+	private IUserDAO userdao;
     @Autowired
     private IProfileService profileService;
     
@@ -52,7 +57,8 @@ public class ProfileController {
     @GetMapping("/profile/{email}")
     public String profile(@PathVariable("email") String email, Model model, HttpSession session) {
         UserDTO sessionUser = (UserDTO) session.getAttribute("user");
-
+    	FollowDTO follow = new FollowDTO();
+    	model.addAttribute("follow", false);
         if (sessionUser == null) {
             return "redirect:/login";
         }
@@ -65,15 +71,42 @@ public class ProfileController {
 
         // 사용자의 게시글 가져오기
         List<PostDTO> posts = profileService.findPostsByUserEmail(email);
-
+        if(!sessionUser.getUsername().equals(userProfile.getUsername())) {
+        	follow.setFOLLOWING_username(userProfile.getUsername());
+        	follow.setFOLLOWER_username(sessionUser.getUsername());
+        	if(userdao.selectFollow(follow)!=null) {
+            	model.addAttribute("checkfollow", true);
+            	System.err.println("");
+        	}
+        }
+        model.addAttribute("Follow", userdao.getFollow(userProfile.getUsername()));
+        model.addAttribute("Follower", userdao.getFollower(userProfile.getUsername()));
         model.addAttribute("sessionEmail", sessionUser.getEmail());
         model.addAttribute("user", userProfile);
         model.addAttribute("posts", posts);
 
         return "views/home/profile";
     }
-
-
+    
+    @PostMapping("/followingProc")
+    @ResponseBody
+    public  void followingProc(@RequestBody FollowDTO following,HttpSession session) {
+    	UserDTO sessionUser = (UserDTO) session.getAttribute("user");
+    	FollowDTO follow = new FollowDTO();
+    	follow.setFOLLOWER_username(sessionUser.getUsername());
+    	follow.setFOLLOWING_username(following.getFOLLOWING_username());
+    	userdao.following(follow);
+    }
+    @PostMapping("/unfollowProc")
+    @ResponseBody
+    public  void unfollowProc(@RequestBody FollowDTO following,HttpSession session) {
+    	UserDTO sessionUser = (UserDTO) session.getAttribute("user");
+    	FollowDTO follow = new FollowDTO();
+    	follow.setFOLLOWER_username(sessionUser.getUsername());
+    	follow.setFOLLOWING_username(following.getFOLLOWING_username());
+    	userdao.unfollow(follow);
+    	
+    }
 
     /**
      * 프로필 편집 페이지를 보여줍니다.

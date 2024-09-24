@@ -110,7 +110,7 @@
 
             <div id="name_div">
                 <div id="name_div_line1" style="display: flex; align-items: center;">
-                    <span id="nameBox" style="font-size: 20px;">${user.username}</span>
+                    <span id="nameBox" style="font-size: 20px;" data-username="${user.username}">${user.username}</span>
                     <div id="isMyProfile" style="display: flex; align-items: center;">
                         <c:if test="${sessionScope.email eq user.email}">
                             <button id="editProfile" class="profileButton" style="width: 104px; height: 32px; margin-left: 16px" onclick="editProfile()">프로필 편집</button>
@@ -120,7 +120,25 @@
                             </div>
                         </c:if>
                         <c:if test="${sessionScope.email ne user.email}">
-                            <div id="followOrUnfollow"></div>
+                            <div id="followOrUnfollow">
+								<c:set var="follows" value="${checkfollow}" />
+								<c:if test="${follows}">
+									<button id="followButton" class="followButton"
+										style="display: none; width: 82px; height: 32px; margin-left: 20px"
+										onclick="toggleFollow()">팔로우</button>
+									<button id="unfollowButton" class="profileButton"
+										style="width: 82px; height: 32px; margin-left: 20px; font-size: 14px"
+										onclick="toggleFollow()">팔로잉</button>
+								</c:if>
+								<c:if test="${!follows}"><button id="followButton"
+										class="followButton"
+										style="width: 82px; height: 32px; margin-left: 20px"
+										onclick="toggleFollow()">팔로우</button>
+									<button id="unfollowButton" class="profileButton"
+										style="display: none; width: 82px; height: 32px; margin-left: 20px; font-size: 14px"
+										onclick="toggleFollow()">팔로잉</button>
+								</c:if>
+							</div>
                             <button id="messageButton" class="profileButton" style="width: 120px; height: 32px; margin-left: 8px" onclick="window.location.href='/direct?value=${user.username}'">메시지 보내기</button>
                             <button id="recommendButton" class="profileButton" style="width: 34px; height: 32px; margin-left: 8px">
                                 <img src="/image/profile/recommend.png">
@@ -136,8 +154,8 @@
 
                 <div id="name_div_line2" style="margin-bottom: 20px">
                     게시물 <span style="font-weight: bold; margin-right: 30px">${posts.size()}</span>
-                    팔로워 <span style="font-weight: bold; margin-right: 30px"></span>
-                    팔로우 <span style="font-weight: bold;"></span>
+                    팔로워 <span id="valueDisplay" style="font-weight: bold; margin-right: 30px">${Follower}</span>
+                    팔로우 <span style="font-weight: bold;">${Follow}</span>
                 </div>
 
                 <div id="name_div_line3" style="margin-bottom: 50px">
@@ -193,7 +211,12 @@
             </div>
         </div>
     </div>
+<script type="text/javascript">
 
+window.onload = function() {
+
+}
+</script>
 </body>
 
 
