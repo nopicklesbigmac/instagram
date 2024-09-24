@@ -7,7 +7,7 @@ public class LikeDTO {
     private String accountId;   // 사용자 계정 ID (INSTA_USER의 EMAIL)
     private int postId;        // 게시물 ID (INSTA_POST의 POST_ID)
     private Date likedAt;       // 좋아요한 날짜
-
+ 
     // Getters and Setters
     public Long getLikeId() {
         return likeId;
