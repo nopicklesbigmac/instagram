@@ -1,16 +1,13 @@
 package com.proj.instagram.post;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-
 import javax.servlet.ServletContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-@Service 
+@Service
 public class PostServiceImpl implements PostService {
 
     @Autowired
@@ -37,19 +34,18 @@ public class PostServiceImpl implements PostService {
         }
 
         StringBuilder imagePaths = new StringBuilder();
-        int imageIndex = 1; // 이미지 번호를 추적할 변수
+        int imageIndex = 0; // 이미지 번호를 추적할 변수
 
         // 이미지 저장
         for (MultipartFile file : files) {
             if (file != null && !file.isEmpty()) {
-                // 파일 이름 생성 (image1.jpg, image2.jpg, ...)
+                imageIndex++; // 이미지 번호 증가
                 String fileName = "image" + imageIndex + ".jpg";
                 File serverFile = new File(directory, fileName);
                 file.transferTo(serverFile); // 파일 저장
 
                 // 이미지 경로 저장
                 imagePaths.append("/image/post/" + postDTO.getEmail() + "/" + postId + "/" + fileName).append(";");
-                imageIndex++; // 이미지 번호 증가
             }
         }
 
@@ -58,36 +54,71 @@ public class PostServiceImpl implements PostService {
             imagePaths.setLength(imagePaths.length() - 1);
         }
 
-        // 게시글 DTO에 이미지 경로 설정
+        // 게시글 DTO에 이미지 경로 및 이미지 개수 설정
         postDTO.setImagePath(imagePaths.toString());
+        postDTO.setPostPicSize(imageIndex); // 이미지 개수 설정
 
-     // 업데이트된 게시글 저장
-        postDTO.setPostId((long) postId); // postId를 long으로 변환하여 설정
+        // 업데이트된 게시글 저장
+        postDTO.setPostId((int) postId); // postId를 long으로 변환하여 설정
         postDAO.updatePost(postDTO); // 이미지 경로와 함께 게시글 업데이트
-
-        // 로그 확인
-        System.out.println("Final Image Path: " + postDTO.getImagePath());
 
         return postId;
     }
 
-    
     @Override
-    public PostDTO getPostById(Long postId) {
-        System.out.println("PostServiceImpl : " + postId);
+    public PostDTO getPostById(int postId) {
         PostDTO post = postDAO.findPostById(postId);
-        System.out.println("Fetched Post: " + post); // 여기에 추가
+        if (post != null) {
+            Integer picSize = postDAO.getPostPicSize(postId); // Integer 사용
+            post.setPostPicSize(picSize != null ? picSize : 0); // null일 경우 0으로 설정
+            int likeCount = postDAO.getLikeCount(postId);
+            post.setLikeCount(likeCount);
+        }
         return post;
     }
 
     @Override
-    public List<ReplyDTO> getRepliesByPostId(Long postId) {
+    public List<ReplyDTO> getRepliesByPostId(int postId) {
         return postDAO.getRepliesByPostId(postId);
-
-}
-    
-    public void saveReply(ReplyDTO replyDTO) {
-    	postDAO.saveReply(replyDTO);
     }
 
+    public void saveReply(ReplyDTO replyDTO) {
+        postDAO.saveReply(replyDTO);
+    }
+
+    @Override
+    public int getLikeStatus(String accountId, int postId) {
+        System.out.println("PostServiceImpl getLikeStatus PostId : " +  postId);
+        System.out.println("PostServiceImpl getLikeStatus accountId : " +  accountId);
+        return postDAO.findLikeStatus(accountId, postId);
+    }
+    
+
+    @Override
+    public int getLikeCount(int postId) {
+        return postDAO.getLikeCount(postId);
+    }
+     
+    @Override
+    public int addLike(LikeDTO likeDto) {
+        postDAO.addLike(likeDto);
+        return postDAO.countLikes(likeDto.getPostId());
+    }
+
+    @Override
+    public int removeLike(LikeDTO likeDto) {
+        postDAO.removeLike(likeDto);
+        return postDAO.countLikes(likeDto.getPostId());
+    }
+
+    @Override
+    public List<ReplyDTO> addReply(ReplyDTO replyDto) {
+        postDAO.addReply(replyDto);
+        return postDAO.findRepliesByPostId(replyDto.getPostId());
+    }
+
+    @Override
+    public PostDTO getPost(int postId) {
+        return postDAO.findPostById(postId);
+    }
 }

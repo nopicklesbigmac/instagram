@@ -2,7 +2,11 @@
 
 <head>
 <%-- 
+<<<<<<< HEAD
 	<%@ include file="../../layout/indexHeader.jsp"%> 
+=======
+   <%@ include file="../../layout/checkToken.js.jsp"%> 
+>>>>>>> branch 'master' of https://github.com/nopicklesbigmac/test_kill.git
  --%>
     <%@ include file="../../layout/menu.jsp"%>
     <%@ include file="../getPrincipal.jsp"%>

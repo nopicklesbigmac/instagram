@@ -20,6 +20,7 @@ public interface IUserDAO {
     UserDTO selectUserByEmail(String email);
     
     UserDTO findByEmail(String email);
+<<<<<<< HEAD
     
     FollowDTO selectFollow(FollowDTO follow);
     int getFollower(String username);
@@ -27,5 +28,7 @@ public interface IUserDAO {
      void unfollow(FollowDTO follow);
      void following(FollowDTO follow);
     
+=======
+>>>>>>> branch 'master' of https://github.com/nopicklesbigmac/test_kill.git
 }
  

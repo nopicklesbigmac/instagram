@@ -32,7 +32,7 @@ body {
 }
 
 .headLeft-section {
-	width: calc(25% - 1px);
+	width: calc(30% - 1px);
 	float: left;
 	border-right: 1px solid #e6e6e6;
 }
@@ -79,7 +79,7 @@ body {
 	
 }
 .headRight-section {
-	width: 80%;
+	width: 70%;
 	float: left;
 }
 
@@ -100,7 +100,7 @@ body {
 }
 
 .left-section {
-	width: calc(25% - 1px);
+	width: calc(30% - 1px);
 	float: left;
 	height: 850px;
 	border-right: 1px solid #e6e6e6;
@@ -235,7 +235,7 @@ body {
 
 .message ul li {
 	position: relative;
-	width: 75%;
+	width: 80%;
 	padding: 15px 0px;
 	clear: both;
 }

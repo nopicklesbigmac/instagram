@@ -1,9 +1,8 @@
 function gotoPost(postId) {
-    var url = '/post/' + postId;
+    var url = '/post/' + encodeURIComponent(postId); // postId를 URL 인코딩
     console.log("Navigating to URL: " + url); // URL 출력
     window.location.href = url;
 }
-
 
 function editProfile() {
     console.log("Redirecting to profile edit page");

@@ -30,10 +30,10 @@ public class ProfileServiceImpl implements IProfileService {
     @Override
     public boolean updateProfile(UserDTO user, String comment, MultipartFile profileImage) {
         try {
-        	
-        	String profileImagePath = servletContext.getRealPath("/image/profile/");
-        	
-        	
+           
+           String profileImagePath = servletContext.getRealPath("/image/profile/");
+           
+           
             if (profileImage != null && !profileImage.isEmpty()) {
                 // 파일 저장 경로
                 String userDirectory = profileImagePath  + user.getUsername();

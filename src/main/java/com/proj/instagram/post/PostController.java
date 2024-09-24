@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,29 +48,47 @@ public class PostController {
         }
     }
     
-    @GetMapping("/post/{postId}")  // URL 경로를 /post/{postId}로 변경
-    public String viewPost(@PathVariable Long postId, Model model) {
+    @GetMapping("/post/{postId}") 
+    public String viewPost(@PathVariable int postId, Model model) {
         try {
-        	logger.info("Received request for post ID: " + postId);
+            logger.info("Received request for post ID: " + postId);
             PostDTO post = postService.getPostById(postId);
+            List<ReplyDTO> replies = postService.getRepliesByPostId(postId); // 댓글 추가
+            
             if (post == null) {
                 logger.error("게시글을 찾을 수 없습니다. postId: " + postId);
-                return "error/404"; // 404 에러 페이지로 이동
+                return "error/404"; 
             }
-            System.out.println("PostController : " + post);
+            
+            
             model.addAttribute("post", post);
-            return "views/home/post"; // JSP 파일 경로
+            model.addAttribute("replies", replies); // 댓글 추가
+            System.out.println("PostController viewPost : " + post);
+            return "views/home/post"; 
         } catch (Exception e) {
-        	System.out.println("PostController : error");
             logger.error("게시글 조회 실패: ", e);
-            return "error/500"; // 500 에러 페이지로 이동
+            return "error/500"; 
         }
     }
 
-    @PostMapping("/postReply")
-    public ResponseEntity<List<ReplyDTO>> postReply(@RequestBody ReplyDTO replyDTO) {
-        postService.saveReply(replyDTO);
-        List<ReplyDTO> replies = postService.getRepliesByPostId(replyDTO.getPostId());
-        return ResponseEntity.ok(replies);
+    // 좋아요 추가
+    @PostMapping("/post/like")
+    public ResponseEntity<Integer> postLike(@RequestBody LikeDTO likeDto) {
+        int likeCount = postService.addLike(likeDto);
+        return new ResponseEntity<>(likeCount, HttpStatus.OK);
+    }
+
+    // 좋아요 취소
+    @DeleteMapping("/post/like")
+    public ResponseEntity<Integer> postUnlike(@RequestBody LikeDTO likeDto) {
+        int likeCount = postService.removeLike(likeDto);
+        return new ResponseEntity<>(likeCount, HttpStatus.OK);
+    }
+
+    // 댓글 작성
+    @PostMapping("/post/reply")
+    public ResponseEntity<List<ReplyDTO>> postReply(@RequestBody ReplyDTO replyDto) {
+        List<ReplyDTO> replies = postService.addReply(replyDto);
+        return new ResponseEntity<>(replies, HttpStatus.OK);
     }
 }

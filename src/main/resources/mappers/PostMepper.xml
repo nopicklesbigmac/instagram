@@ -4,47 +4,102 @@
 <mapper namespace="com.proj.instagram.post.PostDAO">
 
     <select id="findByUserEmail" parameterType="String" resultType="PostDTO">
-            SELECT POST_ID AS postId,
-           EMAIL AS email,
-           CONTENT AS content,
-           IMAGE_PATH AS imagePath,
-           CREATED_AT AS createdAt
-    FROM insta_post
-    WHERE EMAIL = #{email}
+        SELECT POST_ID AS postId,
+               EMAIL AS email,
+               CONTENT AS content,
+               IMAGE_PATH AS imagePath,
+               CREATED_AT AS createdAt
+        FROM insta_post
+        WHERE EMAIL = #{email}
     </select>
 
-    <insert id="savePost" parameterType="PostDTO">
-        INSERT INTO insta_post (EMAIL, CONTENT, IMAGE_PATH, CREATED_AT)
-        VALUES (#{email}, #{content}, #{imagePath, jdbcType=VARCHAR}, SYSDATE)
-    </insert>
+<insert id="savePost" parameterType="PostDTO">
+    INSERT INTO insta_post (EMAIL, CONTENT, IMAGE_PATH, CREATED_AT)
+    VALUES (#{email}, #{content}, #{imagePath, jdbcType=VARCHAR}, SYSDATE)
+</insert>
+
 
     <select id="getLatestPostId" parameterType="String" resultType="int">
         SELECT MAX(POST_ID) FROM insta_post WHERE EMAIL = #{email}
     </select>
 
     <update id="updatePost" parameterType="PostDTO">
-        UPDATE insta_post 
-        SET CONTENT = #{content}, IMAGE_PATH = #{imagePath} 
-        WHERE POST_ID = #{postId}
+        UPDATE insta_post
+        SET content = #{content},
+            image_path = #{imagePath},
+            post_pic_size = #{postPicSize}
+        WHERE post_id = #{postId}
     </update>
 
-
-    <!-- 게시글 조회 by postId -->
-	<select id="findPostById" parameterType="Long" resultType="PostDTO">
-	        SELECT POST_ID AS postId,
-           EMAIL AS email,
-           CONTENT AS content,
-           IMAGE_PATH AS imagePath,
-           CREATED_AT AS createdAt
-		    FROM insta_post
-		    WHERE POST_ID = #{postId}
-	</select>
-
-
-    <!-- 댓글 조회 by postId -->
-    <select id="getRepliesByPostId" parameterType="long" resultType="ReplyDTO">
-        SELECT reply_id, post_id, email, comments, created_at
-        FROM insta_reply
-        WHERE post_id = #{postId}
+    <select id="findPostById" parameterType="int" resultType="PostDTO">
+        SELECT POST_ID AS postId,
+               EMAIL AS email,
+               CONTENT AS content,
+               IMAGE_PATH AS imagePath,
+               CREATED_AT AS createdAt,
+               LIKECOUNT AS likeCount
+        FROM insta_post
+        WHERE POST_ID = #{postId}
     </select>
+
+<insert id="insertReply" parameterType="ReplyDTO">
+    INSERT INTO insta_reply (accountId, post_id, email, username, comments, use_profile_img, created_at)
+    VALUES (#{username}, #{postId}, #{email}, #{username}, #{comments}, #{useProfileImg}, SYSDATE)
+</insert>
+ 
+
+
+    <select id="getRepliesByPostId" resultType="ReplyDTO">
+        SELECT ACCOUNTID, POST_ID, EMAIL, USERNAME, COMMENTS, USE_PROFILE_IMG, CREATED_AT
+        FROM INSTA_REPLY
+        WHERE POST_ID = #{postId}
+        ORDER BY CREATED_AT DESC
+    </select>
+
+    <select id="findLikeStatus" parameterType="map" resultType="LikeDTO">
+        SELECT COUNT(*)
+        FROM insta_likes
+        WHERE account_id = #{accountId} AND post_id = #{postId}
+    </select>
+
+
+    <delete id="removeLike" parameterType="LikeDTO">
+        DELETE FROM insta_likes
+        WHERE account_id = #{accountId} AND post_id = #{postId}
+    </delete>
+
+<select id="getLikeCount" parameterType="int" resultType="int">
+    SELECT COALESCE(COUNT(*), 0) FROM insta_likes WHERE post_id = #{postId}
+</select>
+
+
+<select id="getPostPicSize" parameterType="int" resultType="int">
+    SELECT COUNT(*) FROM insta_post WHERE post_id = #{postId}
+</select>
+    
+        
+    <insert id="addLike" parameterType="LikeDTO">
+    INSERT INTO insta_likes (like_id, account_id, post_id, liked_at)
+    VALUES (#{likeId}, #{accountId}, #{postId}, SYSDATE)
+	</insert>
+
+	<select id="countLikes" resultType="int" parameterType="LikeDTO">
+    SELECT COUNT(*) FROM insta_likes WHERE post_id = #{postId}
+</select>
+<insert id="addReply" parameterType="ReplyDTO">
+    INSERT INTO INSTA_REPLY (POST_ID, EMAIL, USERNAME, COMMENTS, USE_PROFILE_IMG, CREATED_AT)
+    VALUES (#{postId}, #{email}, #{username}, #{comments}, #{useProfileImg}, SYSDATE)
+</insert>
+
+
+<select id="findRepliesByPostId" resultType="ReplyDTO" parameterType="int">
+    SELECT POST_ID AS postId, EMAIL AS email, USERNAME AS username, 
+           COMMENTS AS comments, USE_PROFILE_IMG AS useProfileImg, CREATED_AT AS createdAt
+    FROM INSTA_REPLY
+    WHERE POST_ID = #{postId}
+</select>
+
+
+	
+	
 </mapper>

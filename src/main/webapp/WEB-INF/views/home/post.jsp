@@ -176,7 +176,7 @@
                         </c:otherwise>
                     </c:choose>
                     <span style="font-weight: bold; font-size: 18px; cursor: pointer" onclick="gotoUserProfile('${post.email}')">${post.username}</span>
-                    <span style="font-size: 18px; display: block; margin-top: 30px;">${post.content}</span> <!-- 'post.comment'에서 'post.content'로 변경 -->
+                    <span style="font-size: 18px; display: block; margin-top: 30px;">${post.content}</span>
                 </div>
 
                 <!-- 댓글 출력 -->
@@ -184,7 +184,7 @@
                     <c:forEach var="reply" items="${replies}">
                         <div id="post_reply" style="margin-top: 10px">
                             <c:choose>
-                                <c:when test="${not empty reply.imagePath}">
+                                <c:when test="${not empty reply.useProfileImg}">
                                     <img src="/image/profile/${reply.email}/profile.jpg" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile('${reply.email}')">
                                 </c:when>
                                 <c:otherwise>
@@ -192,14 +192,85 @@
                                 </c:otherwise>
                             </c:choose>
                             <span style="font-weight: bold; font-size: 16px; cursor: pointer" onclick="gotoUserProfile('${reply.email}')">${reply.username}</span>
-                            <span style="font-weight: normal">${reply.comment}</span>
+                            <span style="font-weight: normal">${reply.comments}</span>
                         </div>
                     </c:forEach>
                 </div>
             </div>
+
+            <div id="post_infoBox">
+                <div id="post_infoBox_buttons" style="display: flex; flex-direction: row; margin-bottom: 4px">
+                    <div id="likeOrUnlike"></div>
+                    <div id="messageButton" class="buttons"><span>💬</span></div>
+                    <div id="shareButton" class="buttons"><span>🔗</span></div>F
+                </div>
+
+                <div id="post_infoBox_likes" style="margin-bottom: 4px">
+                    <span id="likeCounts" style="font-weight: bold; display: block">좋아요 ${post.likeCount}개</span>
+                    <span id="post_infoBox_likes_date" style="font-size: 14px; color: darkgray; display: block">${post.formattedCreatedAt}</span>
+                </div>
+                <div id="post_infoBox_replyBox" style="text-align: right;">
+                    <input id="post_commentInput" style="width: 100%; margin-bottom: 2px">
+                    <div style="width: 100%; display: flex; justify-content: right">
+                        <div id="replyButton" class="replyButton" onclick="postReply(${post.postId})">게시</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+<script>
+    $(document).ready(function() {
+        // 사용자 정보를 가져오기 위한 AJAX 요청
+        $.ajax({
+            type: "GET",
+            url: "/getPrincipal",
+            contentType: "application/json; charset=utf-8",
+        }).done(function(resp) {
+            var principal = resp;
+            var accountId = principal.email; // 변경된 부분
+            var postId = "${post.postId}";
+
+            // 좋아요 상태를 가져오기 위한 AJAX 요청
+            $.ajax({
+                type: "GET",
+                url: "/post/getLike?accountId=" + accountId + "&postId=" + "<%= post.getPostId() %>",
+                contentType: "application/json; charset=utf-8"
+            }).done(function(resp) {
+                if (resp === 1) {
+                    document.getElementById('likeOrUnlike').innerHTML = '<div id="unLikeButton" class="buttons" onclick="unLikePost(' + postId + ')"><span>❤️</span></div>';
+                } else {
+                    document.getElementById('likeOrUnlike').innerHTML = '<div id="likeButton" class="buttons" onclick="likePost(' + postId + ')"><span>🤍</span></div>';
+                }
+            }).fail(function(error) {
+                console.log("Error fetching like status: ", JSON.stringify(error));
+            });
+        }).fail(function(resp) {
+            console.log("Error fetching principal: ", resp);
+        });
+
+        // 게시글 작성 날짜 표기
+        var dateString = document.getElementById("post_infoBox_likes_date").innerText;
+
+        // 날짜 문자열을 Date 객체로 변환
+        if (dateString) {
+            var dateObject = new Date(dateString);
+            if (!isNaN(dateObject.getTime())) {
+                var formattedDate = dateObject.getFullYear() + "년 " +
+                    (dateObject.getMonth() + 1).toString().padStart(2, '0') + "월 " +
+                    dateObject.getDate().toString().padStart(2, '0') + "일";
+
+                document.getElementById("post_infoBox_likes_date").innerHTML = formattedDate;
+            } else {
+                console.error("Invalid date: ", dateString);
+            }
+        }
+    });
+</script>
+
 </body>
+
+
 
 
 <script src="/js/post.js"></script>

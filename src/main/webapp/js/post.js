@@ -1,145 +1,59 @@
-// 게시글 작성 날짜 표기
-var dateString = document.getElementById("post_infoBox_likes_date").innerText;
-var dateObject = new Date(dateString);
+$(document).ready(function() {
+    // 사용자 정보를 가져오기 위한 AJAX 요청
+    $.ajax({
+        type: "GET",
+        url: "/getPrincipal",
+        contentType: "application/json; charset=utf-8",
+    }).done(function(resp) {
+        principal = resp;
 
-var formattedDate = dateObject.getFullYear() + "년 " +
-    (dateObject.getMonth() + 1).toString().padStart(2, '0') + "월 " +
-    dateObject.getDate().toString().padStart(2, '0') + "일";
+        // 게시글 작성 날짜 표기
+        var dateString = document.getElementById("post_infoBox_likes_date").innerText;
 
-document.getElementById("post_infoBox_likes_date").innerHTML = formattedDate;
+        if (dateString) {
+            var dateObject = new Date(dateString + "T00:00:00");
+            if (!isNaN(dateObject.getTime())) {
+                var formattedDate = dateObject.getFullYear() + "년 " +
+                    (dateObject.getMonth() + 1).toString().padStart(2, '0') + "월 " +
+                    dateObject.getDate().toString().padStart(2, '0') + "일";
 
+                document.getElementById("post_infoBox_likes_date").innerHTML = formattedDate;
+            } else {
+                console.error("Invalid date: ", dateString);
+            }
+        }
+    });
 
-function postReply(postId) {
-    var comment = document.getElementById("post_commentInput").value;
+    // 댓글 작성 함수
+    function postReply(postId) {
+        var comment = $("#post_commentInput").val();
+        if (comment.trim() === "") {
+            alert("댓글을 입력해주세요.");
+            return;
+        }
 
-    if (!comment) {
-        alert("댓글을 입력해 주세요.");
-    } else {
-        let data = {
-            comment: comment,
-            accountId: principal.id,
-            postId: postId
+        var replyData = {
+            accountId: principal.email,
+            postId: postId,
+            email: principal.email,
+            username: principal.username,
+            comments: comment,
+            useProfileImg: principal.useProfileImg,
         };
 
         $.ajax({
             type: "POST",
-            url: "/postReply",
-            data: JSON.stringify(data),
-            contentType: "application/json"
-        }).done(function (resp) {
-            alert("댓글이 작성되었습니다.");
-            updateReplies(resp);
-        }).fail(function (error) {
-            alert(JSON.stringify(error));
+            url: "/reply",
+            contentType: "application/json",
+            data: JSON.stringify(replyData),
+            success: function(response) {
+                // 댓글 추가 후 입력창 초기화
+                $("#post_commentInput").val("");
+                // 댓글 추가 로직 (예: 새 댓글 추가를 위해 페이지 새로고침)
+            },
+            error: function(error) {
+                console.error("Error posting reply: ", error);
+            }
         });
     }
-}
-
-function updateReplies(resp) {
-    var replyBox = $("#post_replyBox");
-
-    replyBox.empty();
-
-    for (var i = 0; i < resp.length; i++) {
-        reply = resp[i];
-        var reply_username = reply.account.username;
-        var profileImgSrc = reply.account.use_profile_img === 1
-            ? "/image/profile/" + reply.username + "/profile.jpg"
-            : "/image/profile/default.jpg";
-
-        // 동적으로 생성한 HTML 추가
-        replyBox.append(
-            '<div id="post_reply" style="margin-top: 10px">' +
-            '<img src="' + profileImgSrc + '" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile(\'' + reply_username + '\')">' +
-            '<span style="font-weight: bold; font-size: 16px; cursor: pointer" onclick="gotoUserProfile(\'' + reply_username + '\')">' + reply_username + '</span>' +
-            '<span style="font-weight: normal">' + reply.comment + '</span>' +
-            '</div>'
-        );
-    }
-    $("#post_commentInput").val('');
-}
-
-// 사진 슬라이드 기능
-let currentIdx = 0; // 시작 사진 인덱스
-var postId = document.getElementById("post_id").innerText;
-var postname = document.getElementById("email").innerText;
-var post_picsize = document.getElementById("post_pic_size").innerText;
-const imagePath = '/image/post/' + postname + '/' + postId + '/'; // 사진의 기본 경로
-const imageContainer = document.getElementById('post_imageContainer');
-
-const prevButton = document.getElementById('imagePrevButton');
-const nextButton = document.getElementById('imageNextButton');
-prevButton.style.display = currentIdx === 0 ? 'none' : '';
-nextButton.style.display = currentIdx === post_picsize - 1 ? 'none' : '';
-
-prevButton.addEventListener('click', () => {
-    currentIdx = (parseInt(currentIdx - 1, 10) + parseInt(post_picsize, 10)) % post_picsize;
-    updateImage();
-    prevButton.style.display = currentIdx === 0 ? 'none' : '';
-    nextButton.style.display = currentIdx === post_picsize - 1 ? 'none' : '';
 });
-
-nextButton.addEventListener('click', () => {
-    currentIdx = (currentIdx + 1) % post_picsize;
-    updateImage();
-    prevButton.style.display = currentIdx === 0 ? 'none' : '';
-    nextButton.style.display = currentIdx === post_picsize - 1 ? 'none' : '';
-});
-
-function updateImage() {
-    const imageUrl = `${imagePath}${currentIdx}.jpg`;
-    imageContainer.innerHTML = `<img src="${imageUrl}" style="max-width: 100%; height: auto; max-height: 800px;" onerror="this.onerror=null; this.src='/image/post/default.jpg';">`;
-}
-
-// 좋아요 기능
-function Like() {
-    let data = {
-        principalId: principal.id,
-        postId: document.getElementById("post_id").innerText
-    };
-
-    $.ajax({
-        type: "POST",
-        url: "/postLike",
-        data: JSON.stringify(data),
-        contentType: "application/json"
-    }).done(function (resp) {
-        document.getElementById('likeOrUnlike').removeChild(document.getElementById('likeButton'));
-        document.getElementById('likeCounts').innerText = "좋아요 " + resp + "개";
-
-        var likeButtonDiv = document.createElement('div');
-        likeButtonDiv.id = 'unLikeButton';
-        likeButtonDiv.className = 'buttons';
-        likeButtonDiv.innerHTML = '<span>❤️</span>';
-        likeButtonDiv.onclick = Unlike;
-        document.getElementById('likeOrUnlike').appendChild(likeButtonDiv);
-    }).fail(function (error) {
-        alert(JSON.stringify(error));
-    });
-}
-
-function Unlike() {
-    let data = {
-        principalId: principal.id,
-        postId: document.getElementById("post_id").innerText
-    };
-
-    $.ajax({
-        type: "DELETE",
-        url: "/postLike",
-        data: JSON.stringify(data),
-        contentType: "application/json"
-    }).done(function (resp) {
-        document.getElementById('likeOrUnlike').removeChild(document.getElementById('unLikeButton'));
-        document.getElementById('likeCounts').innerText = "좋아요 " + resp + "개";
-
-        var likeButtonDiv = document.createElement('div');
-        likeButtonDiv.id = 'likeButton';
-        likeButtonDiv.className = 'buttons';
-        likeButtonDiv.innerHTML = '<span>♡</span>';
-        likeButtonDiv.onclick = Like;
-        document.getElementById('likeOrUnlike').appendChild(likeButtonDiv);
-    }).fail(function (error) {
-        alert(JSON.stringify(error));
-    });
-}
