@@ -30,10 +30,10 @@ public class ProfileServiceImpl implements IProfileService {
     @Override
     public boolean updateProfile(UserDTO user, String comment, MultipartFile profileImage) {
         try {
-        	
-        	String profileImagePath = servletContext.getRealPath("/image/profile/");
-        	
-        	
+           
+           String profileImagePath = servletContext.getRealPath("/image/profile/");
+           
+           
             if (profileImage != null && !profileImage.isEmpty()) {
                 // 파일 저장 경로
                 String userDirectory = profileImagePath  + user.getUsername();
@@ -44,7 +44,7 @@ public class ProfileServiceImpl implements IProfileService {
 
                 // 파일 저장
                 String fileName = "profile.png";
-                File file = new File(userDirectory + File.separator + fileName);
+                File file = new File(userDirectory + File.separator + fileName); 
                 profileImage.transferTo(file);
 
                 // 프로필 이미지 URL 업데이트
@@ -78,6 +78,6 @@ public class ProfileServiceImpl implements IProfileService {
     public UserDTO findUserByEmail(String email) {
         return userDAO.selectUserByEmail(email); // ProfileDAO를 사용하여 데이터베이스에서 사용자 정보 가져오기
     }
-    
+
 
 }
