@@ -18,26 +18,7 @@ public class UserDTO {
 	public String password;
 	public String use_profile_img;
 	private String comments;
-    private int followerCount;  // 팔로워 수
-    private int followingCount; // 팔로잉 수
 	public String created_at;
-	
-	
-    public int getFollowerCount() { 
-    	return followerCount; 
-    }
-    
-    public void setFollowerCount(int followerCount) {
-    	this.followerCount = followerCount; 
-    }
-
-    public int getFollowingCount() {
-    	return followingCount; 
-    }
-    
-    public void setFollowingCount(int followingCount) {
-    	this.followingCount = followingCount; 
-    }
 	
     public String getComments() { // getter 메서드 이름을 getComments로 변경
         return comments;

@@ -14,10 +14,7 @@ public interface IProfileService {
     
     List<PostDTO> findPostsByUserEmail(String email);
     
-    UserDTO findUserByEmail(String email);
-
-	UserDTO getUserProfile(String email);
- 
+    UserDTO findUserByEmail(String email); 
 
 }
  
