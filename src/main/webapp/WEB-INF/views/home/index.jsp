@@ -2,7 +2,7 @@
 
 <head>
 <%-- 
-	<%@ include file="../../layout/indexHeader.jsp"%> 
+	<%@ include file="../../layout/checkToken.js.jsp"%> 
  --%>
     <%@ include file="../../layout/menu.jsp"%>
     <%@ include file="../getPrincipal.jsp"%>
