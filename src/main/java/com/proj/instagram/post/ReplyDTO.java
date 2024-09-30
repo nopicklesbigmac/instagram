@@ -1,24 +1,19 @@
 package com.proj.instagram.post;
 
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ReplyDTO {
-    private String accountId;
+	private String replyId;
     private int postId;
     private String email;
     private String username;
     private String comments;
-    private String useProfileImg;
+    
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
-
-    // Getter and Setter for replyId
-    public String getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
+    
+    private String useProfileImg;
 
     // Getter and Setter for postId
     public int getPostId() {
@@ -56,15 +51,6 @@ public class ReplyDTO {
         this.comments = comments;
     }
 
-    // Getter and Setter for useProfileImg
-    public String getUseProfileImg() {
-        return useProfileImg;
-    }
-
-    public void setUseProfileImg(String useProfileImg) {
-        this.useProfileImg = useProfileImg;
-    }
-
     // Getter and Setter for createdAt
     public Date getCreatedAt() {
         return createdAt;
@@ -73,5 +59,35 @@ public class ReplyDTO {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+	public String getUseProfileImg() {
+		return useProfileImg;
+	}
+
+	public void setUseProfileImg(String useProfileImg) {
+		this.useProfileImg = useProfileImg;
+	}
+
+	public String getReplyId() {
+		return replyId;
+	}
+
+	public void setReplyId(String replyId) {
+		this.replyId = replyId;
+	}
+
+	@Override
+	public String toString() {
+	    return "ReplyDTO{" +
+	            "replyId=" + replyId +
+	            ", postId=" + postId +
+	            ", email='" + email + '\'' +
+	            ", username='" + username + '\'' +
+	            ", comments='" + comments + '\'' +
+	            ", createdAt=" + createdAt +
+	            ", useProfileImg='" + useProfileImg + '\'' +
+	            '}';
+	}
+
 }
 

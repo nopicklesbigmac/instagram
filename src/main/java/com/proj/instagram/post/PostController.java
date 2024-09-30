@@ -49,7 +49,7 @@ public class PostController {
     }
     
     @GetMapping("/post/{postId}") 
-    public String viewPost(@PathVariable int postId, Model model) {
+    public String viewPost(@PathVariable("postId") int postId, Model model) {
         try {
             logger.info("Received request for post ID: " + postId);
             PostDTO post = postService.getPostById(postId);
@@ -60,10 +60,9 @@ public class PostController {
                 return "error/404"; 
             }
             
-            
             model.addAttribute("post", post);
             model.addAttribute("replies", replies); // 댓글 추가
-            System.out.println("PostController viewPost : " + post);
+            logger.info("게시글 조회 성공: " + post);
             return "views/home/post"; 
         } catch (Exception e) {
             logger.error("게시글 조회 실패: ", e);
@@ -86,9 +85,27 @@ public class PostController {
     }
 
     // 댓글 작성
-    @PostMapping("/post/reply")
-    public ResponseEntity<List<ReplyDTO>> postReply(@RequestBody ReplyDTO replyDto) {
-        List<ReplyDTO> replies = postService.addReply(replyDto);
-        return new ResponseEntity<>(replies, HttpStatus.OK);
+//    @PostMapping("/postReply")
+//    @ResponseBody
+//    public ResponseEntity<List<ReplyDTO>> addReply(@RequestBody ReplyDTO replyDTO) {
+//        try {
+//            logger.info("댓글 정보: {}", replyDTO); // 댓글 정보 로그 확인
+//            List<ReplyDTO> updatedReplies = postService.addReply(replyDTO); // 댓글 추가 및 업데이트된 댓글 목록 반환
+//            logger.info("응답 데이터 확인: {}", updatedReplies); // 응답 데이터 로그 확인
+//            return ResponseEntity.ok(updatedReplies);
+//        } catch (Exception e) {
+//            logger.error("댓글 추가 실패: ", e);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
+    
+    @PostMapping("/postReply")
+    @ResponseBody
+    public ResponseEntity<List<ReplyDTO>> postReply(@RequestBody ReplyDTO replyDTO) {
+        // 댓글 추가 처리
+    	postService.addReply(replyDTO); // 댓글 추가 메서드 호출
+        List<ReplyDTO> replies = postService.getRepliesByPostId(replyDTO.getPostId()); // 해당 게시글의 모든 댓글 가져오기
+        return ResponseEntity.ok(replies); // 댓글 목록 반환
     }
+
 }
