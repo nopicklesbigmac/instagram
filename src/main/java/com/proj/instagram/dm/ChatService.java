@@ -9,30 +9,24 @@ import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpSession;
 
 
 @Service
 public class ChatService {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private MessageRepository messageRepository;
+    
     @Autowired
     private MessageDAO dao;
 
-    public void sendMessage(User sender, User receiver, String content) {
-        Message message = new Message();
-        message.setSender(sender.getUsername());
-        message.setReceiver(receiver.getUsername());
+    public void sendMessage(UserDTO sender, UserDTO receiver, String content) {
+    	MessageDTO message = new MessageDTO();
+        message.setSender_username(sender.getUsername());
+        message.setReceiver_username(receiver.getUsername());
         message.setContent(content);
         message.setTimestamp(new Timestamp(System.currentTimeMillis()));
-        messageRepository.save(message);
+        dao.insertMessage(message);
     }
 
-    public List<MessageDTO> getConversation(User user1, User user2) {
+    public List<MessageDTO> getConversation(UserDTO user1, UserDTO user2) {
     	 String username1 = user1.getUsername();
     	 String username2 = user2.getUsername();
     	 MessageDTO msg = new MessageDTO();
@@ -51,18 +45,19 @@ public class ChatService {
          });
         return msg_list;
     }
-    public List<Message> getleftmsg(User userSender) {
-    	List<Message> left_msg = messageRepository.left_msg(userSender.getUsername());
-    	left_msg.sort(Comparator.comparing(Message::getTimestamp).reversed());
+    public List<MessageDTO> getleftmsg(UserDTO userSender) {
+    	String u_name = userSender.getUsername();
+    	List<MessageDTO> left_msg = dao.leftMsg(u_name);
+    	left_msg.sort(Comparator.comparing(MessageDTO::getTimestamp).reversed());
         return left_msg;
     }
 
-    public List<Message> getAllMessages() {
-    	List<Message> list = messageRepository.findAll();
-    	list.sort(Comparator.comparing(Message::getTimestamp));
-         return list;
-    }
-    public void sendMessage(Message message) {
+	/*
+	 * public List<Message> getAllMessages() { List<Message> list =
+	 * messageRepository.findAll();
+	 * list.sort(Comparator.comparing(Message::getTimestamp)); return list; }
+	 */
+    public void sendMessage(MessageDTO message) {
         message.setTimestamp(new Timestamp(System.currentTimeMillis())); // 현재 시간 설정
         dao.insertMessage(message);
     }

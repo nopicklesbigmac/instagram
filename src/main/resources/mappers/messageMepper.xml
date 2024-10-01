@@ -12,11 +12,26 @@
 		receiver_username = #{sender_username})
 	</select>
 	
-	<insert id="insertMessage" parameterType="MessageDTO">
-        INSERT INTO messages (sender_username, receiver_username, content, timestamp)
-        VALUES (#{sender_username}, #{receiver_username}, #{content}, #{timestamp})
+
+     <insert id="insertMessage" parameterType="MessageDTO">
+        INSERT INTO message (id, sender_username, receiver_username, content, timestamp)
+        VALUES (seq_message.nextval, #{sender_username}, #{receiver_username}, #{content}, SYSTIMESTAMP)
     </insert>
 	<select id="userSearch" resultType="com.proj.instagram.user.UserDTO">
 		SELECT * FROM insta_user WHERE username LIKE '%'||#{username}||'%'
 	</select>
+	
+	 <select id="leftMsg" resultType="MessageDTO">
+        SELECT m.id, m.sender_username, m.receiver_username, m.content, m.timestamp
+        FROM (
+            SELECT m.*, 
+                   ROW_NUMBER() OVER (PARTITION BY CASE 
+                       WHEN sender_username = #{userSender} THEN receiver_username 
+                       ELSE sender_username 
+                   END ORDER BY timestamp DESC) as rn
+            FROM message m
+            WHERE sender_username = #{userSender} OR receiver_username = #{userSender}
+        ) m
+        WHERE rn = 1
+    </select>
 </mapper>

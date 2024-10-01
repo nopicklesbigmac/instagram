@@ -51,11 +51,11 @@
 				<ul>
 				<c:forEach var="left_msg" items="${left_msg}" varStatus="status">
 								<c:choose>
-								<c:when test="${left_msg.sender eq sessionScope.username}">
-									<c:set var="receiver_left" value="${left_msg.receiver}"></c:set>
+								<c:when test="${left_msg.sender_username eq sessionScope.username}">
+									<c:set var="receiver_left" value="${left_msg.receiver_username}"></c:set>
 								</c:when>
 								<c:otherwise> 
-									<c:set var="receiver_left" value="${left_msg.sender}"></c:set>
+									<c:set var="receiver_left" value="${left_msg.sender_username}"></c:set>
 								</c:otherwise>
 								</c:choose>
 					<li class="msg_rcv" value="${receiver_left}">
@@ -126,7 +126,8 @@
 					</ul>
 				</div>
 				<div class="right-section-bottom">
-					<form action="/send?value=${receiver}" method="post">
+					<%-- <form action="/send?value=${receiver}" method="post"> --%>
+						<input style="display: none;" type="text" name="sender" placeholder="Sender username" value="${sessionScope.username}" required>
 						<input style="display: none;" type="text" name="receiver" placeholder="Receiver username" value="${receiverinfo.username}" required>
 						<div class="upload-btn">
 							<button class="btn">
@@ -139,7 +140,7 @@
 						<button type="submit" class="btn-send">
 							<i class="fa fa-send"></i>
 						</button>
-					</form>
+					<!-- </form> -->
 				</div>
 			</div>
 		</div>
@@ -220,20 +221,7 @@
 	        }
 	    }
 	}
-	 function sendMessage() {
-	        const messageInput = $('#messageinput').val();
-	        const receiver = '${receiver}';
-	        // AJAX를 통해 메시지를 전송하는 로직 추가
-	        $.post("/api/messages", { 
-	            sender_username: '${sessionScope.Sender}', // 실제 사용자명으로 변경
-	            receiver_username: receiver,
-	            content: messageInput
-	        }, function() {
-	            $('#messageinput').val(''); // 입력 필드 초기화
-	            // 메시지 전송 후 페이지를 새로 고침하여 최신 메시지를 가져올 수도 있습니다.
-	            location.reload();
-	        });
-	    }
+
 </script>
 </body>
 </html>

@@ -10,6 +10,7 @@ import com.proj.instagram.user.UserDTO;
 public interface MessageDAO {
 	List<MessageDTO> selectemsg(MessageDTO dto);
 	List<UserDTO> userSearch(String username);
-	 void insertMessage(Message message);
+	 void insertMessage(MessageDTO message);
+	 List<MessageDTO> leftMsg(String userSenderId);
 }
  
