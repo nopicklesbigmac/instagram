@@ -2,7 +2,9 @@ package com.proj.instagram.post;
 
 import java.io.File;
 import java.util.List;
+
 import javax.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,7 +47,7 @@ public class PostServiceImpl implements PostService {
                 file.transferTo(serverFile); // 파일 저장
 
                 // 이미지 경로 저장
-                imagePaths.append("/image/post/" + postDTO.getEmail() + "/" + postId + "/" + fileName).append(";");
+                imagePaths.append("/image/post/" + postDTO.getEmail() + "/" + postId + "/" + fileName).append(";"); // 세미콜론으로 구분
             }
         }
 
@@ -59,7 +61,7 @@ public class PostServiceImpl implements PostService {
         postDTO.setPostPicSize(imageIndex); // 이미지 개수 설정
 
         // 업데이트된 게시글 저장
-        postDTO.setPostId((int) postId); // postId를 long으로 변환하여 설정
+        postDTO.setPostId(postId); // postId를 long으로 변환하여 설정
         postDAO.updatePost(postDTO); // 이미지 경로와 함께 게시글 업데이트
 
         return postId;
@@ -78,27 +80,23 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<ReplyDTO> getRepliesByPostId(int postId) {
-        return postDAO.getRepliesByPostId(postId);
-    }
-
     public void saveReply(ReplyDTO replyDTO) {
-        postDAO.saveReply(replyDTO);
+        System.out.println("saveReply ReplyDTO: " + replyDTO); // DTO 로그 확인
+        if (replyDTO.getUsername() == null || replyDTO.getUsername().isEmpty()){
+            throw new IllegalArgumentException("Username cannot be null or empty");
+        }
+        postDAO.insertReply(replyDTO);
     }
-
     @Override
     public int getLikeStatus(String accountId, int postId) {
-        System.out.println("PostServiceImpl getLikeStatus PostId : " +  postId);
-        System.out.println("PostServiceImpl getLikeStatus accountId : " +  accountId);
         return postDAO.findLikeStatus(accountId, postId);
     }
-    
 
     @Override
     public int getLikeCount(int postId) {
         return postDAO.getLikeCount(postId);
     }
-     
+
     @Override
     public int addLike(LikeDTO likeDto) {
         postDAO.addLike(likeDto);
@@ -110,15 +108,16 @@ public class PostServiceImpl implements PostService {
         postDAO.removeLike(likeDto);
         return postDAO.countLikes(likeDto.getPostId());
     }
-
+	
     @Override
-    public List<ReplyDTO> addReply(ReplyDTO replyDto) {
-        postDAO.addReply(replyDto);
-        return postDAO.findRepliesByPostId(replyDto.getPostId());
+    public List<ReplyDTO> addReply(ReplyDTO replyDTO) {
+    	postDAO.insertReply(replyDTO); // 댓글 DB에 저장
+        return postDAO.findRepliesByPostId(replyDTO.getPostId()); // 저장된 댓글 목록 반환
     }
 
     @Override
-    public PostDTO getPost(int postId) {
-        return postDAO.findPostById(postId);
+    public List<ReplyDTO> getRepliesByPostId(int postId) {
+    	System.out.println("PostService getRepliesByPostId : " + postId);
+        return postDAO.selectRepliesByPostId(postId);
     }
 }

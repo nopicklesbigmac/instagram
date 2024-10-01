@@ -21,5 +21,4 @@ public interface PostService {
     int addLike(LikeDTO likeDto);
     int removeLike(LikeDTO likeDto);
     List<ReplyDTO> addReply(ReplyDTO replyDto);
-    PostDTO getPost(int postId);
 }

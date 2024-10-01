@@ -48,5 +48,8 @@ public interface PostDAO {
 	void addLike(LikeDTO likeDto);
 
 	int countLikes(int postId);
+	
+    void insertReply(ReplyDTO replyDTO); // 댓글 저장
+    List<ReplyDTO> selectRepliesByPostId(@Param("postId") int postId); // 댓글 조회
     
 }

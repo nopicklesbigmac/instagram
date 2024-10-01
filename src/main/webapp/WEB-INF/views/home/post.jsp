@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.proj.instagram.post.PostDTO" %>
-
+<%@ page import="com.proj.instagram.user.UserDTO" %>
+<%@ page import="com.proj.instagram.post.ReplyDTO" %>
 
 <head>
     <%@ include file="../../layout/indexHeader.jsp"%>
@@ -75,6 +76,11 @@
             border: 1px solid #dbdbdb;
             margin: 2px;
             padding: 20px;
+            overflow-y: auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
 
         .buttons {
@@ -133,6 +139,22 @@
             font-size: 20px;
         }
 
+        .post_infoBox_replyBox {
+        	maring-top : 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: sticky;
+            bottom: 0;
+            background-color: white;
+            padding: 10px;
+            width: 100%;
+            border-top: 1px solid #ededed; 
+            margin-top: 20px;
+        }
+.reply {
+    margin-top: 10px;
+    }
     </style>
 
     <div id="post_id" style="display: none">${post.postId}</div>
@@ -140,11 +162,13 @@
 
 <body style="margin-left: 74px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
     <% PostDTO post = (PostDTO) request.getAttribute("post"); %>
+    <% UserDTO user = (UserDTO) request.getAttribute("user"); %>
+    <% ReplyDTO reply = (ReplyDTO) request.getAttribute("reply"); %>
 
     <div id="post_idBox" class="post_idBox">
         <div id="profile_img_div" style="padding-right: 44px; cursor: pointer" onclick="gotoUserProfile('${post.email}')">
             <c:choose>
-                <c:when test="${not empty post.imagePath}">
+                <c:when test="${not empty user.use_profile_img}">
                     <img src="${user.use_profile_img}" class="profile">
                 </c:when>
                 <c:otherwise>
@@ -165,10 +189,10 @@
         </div>
 
         <div id="post_commentBox" class="post_commentBox">
-            <div id="commentAndReply" style="height: 600px; border-bottom: 1px solid #dbdbdb; margin-bottom: 10px; overflow: auto">
+            <div id="commentAndReply" style="flex-grow: 1; overflow: auto">
                 <div id="post_comment" style="margin-bottom: 20px">
                     <c:choose>
-                        <c:when test="${not empty post.imagePath}">
+                        <c:when test="${not empty user.use_profile_img}">
                             <img src="${user.use_profile_img}" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile('${post.email}')">
                         </c:when>
                         <c:otherwise>
@@ -185,92 +209,47 @@
                         <div id="post_reply" style="margin-top: 10px">
                             <c:choose>
                                 <c:when test="${not empty reply.useProfileImg}">
-                                    <img src="/image/profile/${reply.email}/profile.jpg" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile('${reply.email}')">
+                                    <img src="${reply.useProfileImg}" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile('${reply.username}')">
                                 </c:when>
                                 <c:otherwise>
-                                    <img src="/image/profile/default.jpg" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile('${reply.email}')">
+                                    <img src="/image/profile/default.jpg" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile('${reply.username}')">
                                 </c:otherwise>
                             </c:choose>
-                            <span style="font-weight: bold; font-size: 16px; cursor: pointer" onclick="gotoUserProfile('${reply.email}')">${reply.username}</span>
-                            <span style="font-weight: normal">${reply.comments}</span>
+                            <span style="font-weight: bold; left-magin: 20px; font-size: 16px; cursor: pointer" onclick="gotoUserProfile('${reply.username}')">${reply.username}</span>
+                            <span style="left-magin: 20px;">${reply.comments}</span>
                         </div>
                     </c:forEach>
                 </div>
             </div>
 
-            <div id="post_infoBox">
+            <!-- 댓글 작성 섹션 -->
+            <div id="post_infoBox" class="post_infoBox_replyBox">
                 <div id="post_infoBox_buttons" style="display: flex; flex-direction: row; margin-bottom: 4px">
                     <div id="likeOrUnlike"></div>
                     <div id="messageButton" class="buttons"><span>💬</span></div>
-                    <div id="shareButton" class="buttons"><span>🔗</span></div>F
+                    <div id="shareButton" class="buttons"><span>🔗</span></div>
                 </div>
 
                 <div id="post_infoBox_likes" style="margin-bottom: 4px">
                     <span id="likeCounts" style="font-weight: bold; display: block">좋아요 ${post.likeCount}개</span>
-                    <span id="post_infoBox_likes_date" style="font-size: 14px; color: darkgray; display: block">${post.formattedCreatedAt}</span>
                 </div>
-                <div id="post_infoBox_replyBox" style="text-align: right;">
-                    <input id="post_commentInput" style="width: 100%; margin-bottom: 2px">
-                    <div style="width: 100%; display: flex; justify-content: right">
-                        <div id="replyButton" class="replyButton" onclick="postReply(${post.postId})">게시</div>
-                    </div>
+
+                <div id="post_infoBox_createdAt" style="font-size: 14px; color: darkgray; display: block">
+                    <span>${post.formattedCreatedAt}</span>
                 </div>
+
+                <!-- 댓글 입력창 -->
+				<div id="post_infoBox_replyBox" style="text-align: right;">
+                   <input type="text" id="replyInput${post.postId}" style="width: 100%; margin-bottom: 2px">
+                   <div style="width: 100%; display: flex; justify-content: right">
+	                   <input type="hidden" id="principalEmail" value="${user.email}"> <!-- 로그인된 사용자의 이메일 -->
+	                   <input type="hidden" id="principalUsername" value="${user.username}"> <!-- 로그인된 사용자의 사용자 이름 추가 -->
+	                   <input type="hidden" id="principalImg" value="${user.use_profile_img}">
+	                       <div id="replyButton" class="replyButton" onclick="postReply(${post.postId})">게시</div>
+                   </div>
             </div>
         </div>
     </div>
-
-<script>
-    $(document).ready(function() {
-        // 사용자 정보를 가져오기 위한 AJAX 요청
-        $.ajax({
-            type: "GET",
-            url: "/getPrincipal",
-            contentType: "application/json; charset=utf-8",
-        }).done(function(resp) {
-            var principal = resp;
-            var accountId = principal.email; // 변경된 부분
-            var postId = "${post.postId}";
-
-            // 좋아요 상태를 가져오기 위한 AJAX 요청
-            $.ajax({
-                type: "GET",
-                url: "/post/getLike?accountId=" + accountId + "&postId=" + "<%= post.getPostId() %>",
-                contentType: "application/json; charset=utf-8"
-            }).done(function(resp) {
-                if (resp === 1) {
-                    document.getElementById('likeOrUnlike').innerHTML = '<div id="unLikeButton" class="buttons" onclick="unLikePost(' + postId + ')"><span>❤️</span></div>';
-                } else {
-                    document.getElementById('likeOrUnlike').innerHTML = '<div id="likeButton" class="buttons" onclick="likePost(' + postId + ')"><span>🤍</span></div>';
-                }
-            }).fail(function(error) {
-                console.log("Error fetching like status: ", JSON.stringify(error));
-            });
-        }).fail(function(resp) {
-            console.log("Error fetching principal: ", resp);
-        });
-
-        // 게시글 작성 날짜 표기
-        var dateString = document.getElementById("post_infoBox_likes_date").innerText;
-
-        // 날짜 문자열을 Date 객체로 변환
-        if (dateString) {
-            var dateObject = new Date(dateString);
-            if (!isNaN(dateObject.getTime())) {
-                var formattedDate = dateObject.getFullYear() + "년 " +
-                    (dateObject.getMonth() + 1).toString().padStart(2, '0') + "월 " +
-                    dateObject.getDate().toString().padStart(2, '0') + "일";
-
-                document.getElementById("post_infoBox_likes_date").innerHTML = formattedDate;
-            } else {
-                console.error("Invalid date: ", dateString);
-            }
-        }
-    });
-</script>
-
 </body>
-
-
-
 
 <script src="/js/post.js"></script>
