@@ -47,6 +47,7 @@
     <select id="findPostById" parameterType="int" resultType="PostDTO">
         SELECT POST_ID AS postId,
                EMAIL AS email,
+               USERNAME AS username,
                CONTENT AS content,
                IMAGE_PATH AS imagePath,
                CREATED_AT AS createdAt,

@@ -18,11 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.proj.instagram.user.UserDTO;
+import com.proj.instagram.user.IUserDAO;
+
 @Controller
 public class PostController {
 
     @Autowired 
     private PostService postService;
+    @Autowired
+    private IUserDAO userDao;
 
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
@@ -53,6 +58,7 @@ public class PostController {
         try {
             logger.info("Received request for post ID: " + postId);
             PostDTO post = postService.getPostById(postId);
+            UserDTO postAuthor = userDao.selectUserByEmail(post.getEmail());  // 게시글 작성자의 최신 프로필 정보를 가져옴
             List<ReplyDTO> replies = postService.getRepliesByPostId(postId); // 댓글 추가
             
             if (post == null) {
@@ -61,6 +67,7 @@ public class PostController {
             }
             
             model.addAttribute("post", post);
+            model.addAttribute("postAuthor", postAuthor);
             model.addAttribute("replies", replies); // 댓글 추가
             logger.info("게시글 조회 성공: " + post);
             return "views/home/post"; 

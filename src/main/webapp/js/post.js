@@ -58,6 +58,8 @@ function postReply(postId) {
             spanUsername.style.fontWeight = "bold";
             spanUsername.style.fontSize = "16px";
             spanUsername.style.cursor = "pointer";
+            spanUsername.style.marginLeft = "0.8px";
+            spanUsername.style.padding = "4px";
             spanUsername.onclick = function() {
                 gotoUserProfile(reply.username);
             };

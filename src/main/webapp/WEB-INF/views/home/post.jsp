@@ -150,7 +150,6 @@
             padding: 10px;
             width: 100%;
             border-top: 1px solid #ededed; 
-            margin-top: 20px;
         }
 .reply {
     margin-top: 10px;
@@ -193,13 +192,13 @@
                 <div id="post_comment" style="margin-bottom: 20px">
                     <c:choose>
                         <c:when test="${not empty user.use_profile_img}">
-                            <img src="${user.use_profile_img}" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile('${post.email}')">
+                            <img src="${postAuthor.use_profile_img}" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile('${post.email}')">
                         </c:when>
                         <c:otherwise>
                             <img src="/image/profile/default.jpg" class="profileMini" style="cursor: pointer" onclick="gotoUserProfile('${post.email}')">
                         </c:otherwise>
                     </c:choose>
-                    <span style="font-weight: bold; font-size: 18px; cursor: pointer" onclick="gotoUserProfile('${post.email}')">${post.username}</span>
+                    <span style="font-weight: bold; font-size: 15px; cursor: pointer" onclick="gotoUserProfile('${post.email}')">${post.username}</span>
                     <span style="font-size: 18px; display: block; margin-top: 30px;">${post.content}</span>
                 </div>
 
