@@ -76,43 +76,68 @@ public class PostController {
             return "error/500"; 
         }
     }
-
-    // 좋아요 추가
-    @PostMapping("/post/like")
-    public ResponseEntity<Integer> postLike(@RequestBody LikeDTO likeDto) {
-        int likeCount = postService.addLike(likeDto);
-        return new ResponseEntity<>(likeCount, HttpStatus.OK);
+    @GetMapping("/post/getLike")
+    @ResponseBody
+    public ResponseEntity<Integer> getLike(@RequestParam("accountId") String accountId,
+                                           @RequestParam("postId") int postId) {
+        try {
+            boolean isLiked = postService.isPostLiked(accountId, postId);
+            return ResponseEntity.ok(isLiked ? 1 : 0); // 1이면 좋아요 상태, 0이면 좋아요 없음
+        } catch (Exception e) {
+            logger.error("좋아요 상태 조회 실패: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    // 좋아요 취소
-    @DeleteMapping("/post/like")
-    public ResponseEntity<Integer> postUnlike(@RequestBody LikeDTO likeDto) {
-        int likeCount = postService.removeLike(likeDto);
-        return new ResponseEntity<>(likeCount, HttpStatus.OK);
+    // 좋아요 등록
+    @PostMapping("/like")
+    public ResponseEntity<Integer> likePost(@RequestBody LikeDTO likeDTO) {
+        try {
+            // 좋아요 추가
+            postService.addLike(likeDTO);
+            
+            // 좋아요 개수 조회
+            int updatedLikeCount = postService.getLikeCounts(likeDTO.getPostId()); // 좋아요 개수 가져오기
+            
+            // PostDTO 업데이트
+            PostDTO post = postService.getPostById(likeDTO.getPostId());
+            post.setLikeCount(updatedLikeCount); // likeCount 업데이트
+            postService.updatePostLikeCount(post); // 업데이트된 게시글 저장
+
+            return ResponseEntity.ok(updatedLikeCount); // 변경된 좋아요 수 반환
+        } catch (Exception e) {
+            logger.error("좋아요 등록 실패: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    // 댓글 작성
-//    @PostMapping("/postReply")
-//    @ResponseBody
-//    public ResponseEntity<List<ReplyDTO>> addReply(@RequestBody ReplyDTO replyDTO) {
-//        try {
-//            logger.info("댓글 정보: {}", replyDTO); // 댓글 정보 로그 확인
-//            List<ReplyDTO> updatedReplies = postService.addReply(replyDTO); // 댓글 추가 및 업데이트된 댓글 목록 반환
-//            logger.info("응답 데이터 확인: {}", updatedReplies); // 응답 데이터 로그 확인
-//            return ResponseEntity.ok(updatedReplies);
-//        } catch (Exception e) {
-//            logger.error("댓글 추가 실패: ", e);
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-//        }
-//    }
+
+    @DeleteMapping("/unlike")
+    public ResponseEntity<Integer> unlikePost(@RequestBody LikeDTO likeDTO) {
+        try {
+            // 좋아요 제거 및 현재 좋아요 수 조회
+            int likeCount = postService.removeLike(likeDTO.getAccountId(), likeDTO.getPostId());
+            return ResponseEntity.ok(likeCount); // 현재 좋아요 수 반환
+        } catch (Exception e) {
+            logger.error("좋아요 취소 실패: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
     
     @PostMapping("/postReply")
     @ResponseBody
     public ResponseEntity<List<ReplyDTO>> postReply(@RequestBody ReplyDTO replyDTO) {
+    	try {
         // 댓글 추가 처리
     	postService.addReply(replyDTO); // 댓글 추가 메서드 호출
         List<ReplyDTO> replies = postService.getRepliesByPostId(replyDTO.getPostId()); // 해당 게시글의 모든 댓글 가져오기
         return ResponseEntity.ok(replies); // 댓글 목록 반환
+    	 } catch (Exception e) {
+    	        logger.error("댓글 추가 실패", e);
+    	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    	    }
     }
 
 }

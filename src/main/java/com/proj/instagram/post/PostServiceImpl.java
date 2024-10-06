@@ -18,7 +18,7 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private ServletContext servletContext;
 
-    private String getImageBasePath() {
+    private String getImageBasePath() { 
         return servletContext.getRealPath("/image/post/");
     }
 
@@ -73,8 +73,6 @@ public class PostServiceImpl implements PostService {
         if (post != null) {
             Integer picSize = postDAO.getPostPicSize(postId); // Integer 사용
             post.setPostPicSize(picSize != null ? picSize : 0); // null일 경우 0으로 설정
-            int likeCount = postDAO.getLikeCount(postId);
-            post.setLikeCount(likeCount);
         }
         return post;
     }
@@ -87,37 +85,89 @@ public class PostServiceImpl implements PostService {
         }
         postDAO.insertReply(replyDTO);
     }
-    @Override
-    public int getLikeStatus(String accountId, int postId) {
-        return postDAO.findLikeStatus(accountId, postId);
-    }
 
-    @Override
-    public int getLikeCount(int postId) {
-        return postDAO.getLikeCount(postId);
-    }
-
-    @Override
-    public int addLike(LikeDTO likeDto) {
-        postDAO.addLike(likeDto);
-        return postDAO.countLikes(likeDto.getPostId());
-    }
-
-    @Override
-    public int removeLike(LikeDTO likeDto) {
-        postDAO.removeLike(likeDto);
-        return postDAO.countLikes(likeDto.getPostId());
-    }
-	
     @Override
     public List<ReplyDTO> addReply(ReplyDTO replyDTO) {
     	postDAO.insertReply(replyDTO); // 댓글 DB에 저장
         return postDAO.findRepliesByPostId(replyDTO.getPostId()); // 저장된 댓글 목록 반환
-    }
+    } 
 
     @Override
     public List<ReplyDTO> getRepliesByPostId(int postId) {
     	System.out.println("PostService getRepliesByPostId : " + postId);
         return postDAO.selectRepliesByPostId(postId);
     }
+    
+    // 좋아요 상태 확인
+    @Override
+    public boolean isPostLiked(String accountId, int postId) {
+        Integer count = postDAO.isPostLiked(accountId, postId);
+        return count != null && count > 0; 
+    }
+
+    // 좋아요 등록
+    @Override
+    public void likePost(String accountId, int postId) {
+        postDAO.insertLike(accountId, postId);
+        postDAO.updateLikeCount(postId); // 좋아요 추가
+    }
+
+    @Override
+    public void unlikePost(String accountId, int postId) {
+        postDAO.deleteLike(accountId, postId);
+        postDAO.updateLikeCount(postId); // 좋아요 취소
+    }
+
+    // 좋아요 개수 조회
+    @Override
+    public int getLikeCounts(int postId) {
+        Integer count = postDAO.likeCount(postId);
+        return count != null ? count : 0; // null일 경우 0을 반환
+    }
+
+    // 좋아요 등록
+    @Override
+    public void addLike(LikeDTO likeDTO) {
+        // 좋아요 추가
+        postDAO.addLike(likeDTO);
+        
+        // 좋아요 수 업데이트
+        PostDTO post = postDAO.findPostById(likeDTO.getPostId());
+        updatePostLikeCount(post); // 업데이트된 게시글 저장
+    }
+
+    // 좋아요 개수 업데이트
+    public void updatePostLikeCount(int postId) {
+        int likeCount = postDAO.getLikeCount(postId); // 좋아요 개수 가져오기
+        postDAO.updatePostLikeCount(postId, likeCount); // 게시글의 좋아요 개수 업데이트
+    }
+    
+    
+    public int removeLike(String accountId, int postId) {
+        // 좋아요 제거
+        postDAO.removeLike(accountId, postId);
+        
+        // 좋아요 개수 조회
+        int likeCount = postDAO.getLikeCount(postId);
+        
+        // 게시물의 좋아요 개수 업데이트
+        postDAO.updatePostLikeCount(postId, likeCount);
+        
+        return likeCount; // 현재 좋아요 수 반환
+    }
+
+
+    @Override
+    public void updatePostLikeCount(PostDTO postDTO) {
+        Integer likeCount = postDAO.getLikeCount(postDTO.getPostId());
+        postDTO.setLikeCount(likeCount); // 좋아요 수 업데이트
+        postDAO.updatePostLikeCount(postDTO.getPostId(), postDTO.getLikeCount()); // DB에 업데이트
+    }
+
+	@Override
+	public int removeLike(LikeDTO likeDto) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+ 
 }

@@ -13,12 +13,20 @@ public interface PostService {
     List<ReplyDTO> getRepliesByPostId(int postId);
 
 	void saveReply(ReplyDTO replyDTO);
-	
-   int getLikeStatus(String accountId, int postId);
     
-    int getLikeCount(int postId);
+   int getLikeCounts(int postId);
     
-    int addLike(LikeDTO likeDto);
+    void addLike(LikeDTO likeDto);
     int removeLike(LikeDTO likeDto);
     List<ReplyDTO> addReply(ReplyDTO replyDto);
+
+	void likePost(String accountId, int postId);
+
+	void unlikePost(String accountId, int postId);
+
+	boolean isPostLiked(String accountId, int postId);
+
+	void updatePostLikeCount(PostDTO post);
+
+	int removeLike(String accountId, int postId);
 }

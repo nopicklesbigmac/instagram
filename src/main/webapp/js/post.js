@@ -1,25 +1,27 @@
 function postReply(postId) {
-    const replyContent = document.getElementById(`replyInput${postId}`).value; // 댓글 입력 값 가져오기
-    const principalEmail = document.getElementById('principalEmail').value; // 로그인 사용자 이메일 가져오기
-    const principalUsername = document.getElementById('principalUsername').value; // 로그인 사용자 이름 가져오기
-    const principalImg = document.getElementById('principalImg').value; // 로그인 사용자 프로필 이미지 가져오기
+    const replyButton = document.getElementById('replyButton');
+    replyButton.disabled = true;  // 버튼 비활성화
+    const replyContent = document.getElementById(`replyInput${postId}`).value; 
+    const principalEmail = document.getElementById('principalEmail').value; 
+    const principalUsername = document.getElementById('principalUsername').value; 
+    const principalImg = document.getElementById('principalImg').value; 
 
     if (!replyContent) {
-        alert("댓글을 입력해주세요."); // 댓글이 비어있을 경우
+        alert("댓글을 입력해주세요."); 
         return;
     }
 
     if (!principalEmail) {
-        alert("로그인해야 합니다."); // 로그인되지 않았을 경우
+        alert("로그인해야 합니다."); 
         return;
     }
 
     const data = {
-        postId: postId, // 게시글 ID
-        email: principalEmail, // 댓글 작성자의 이메일
-        username: principalUsername, // 댓글 작성자의 사용자 이름
-        useProfileImg: principalImg, // 댓글 작성자의 프로필 이미지
-        comments: replyContent, // 댓글 내용
+        postId: postId, 
+        email: principalEmail, 
+        username: principalUsername, 
+        useProfileImg: principalImg, 
+        comments: replyContent,
     };
 
     fetch(`/postReply`, {
@@ -31,23 +33,21 @@ function postReply(postId) {
     })
     .then(response => {
         if (response.ok) {
-            return response.json(); // 새로운 댓글 목록을 반환받기
+            return response.json();
         } else {
             alert("댓글 추가에 실패했습니다.");
         }
     })
     .then(data => {
-        // 댓글 목록 갱신
         const postReplyBox = document.getElementById('post_replyBox');
-        postReplyBox.innerHTML = ''; // 기존 댓글 지우기
+        postReplyBox.innerHTML = '';
 
-        // 댓글 출력
         data.forEach(reply => {
             const replyDiv = document.createElement('div');
             replyDiv.id = "post_reply";
             replyDiv.style.marginTop = '10px';
             const img = document.createElement('img');
-            img.src = reply.useProfileImg || '/image/profile/default.jpg'; // 기본 이미지 경로
+            img.src = reply.useProfileImg || '/image/profile/default.jpg'; 
             img.className = "profileMini";
             img.style.cursor = "pointer";
             img.onclick = function() {
@@ -74,7 +74,7 @@ function postReply(postId) {
             postReplyBox.appendChild(replyDiv);
         });
 
-        document.getElementById(`replyInput${postId}`).value = ''; // 입력값 초기화
+        document.getElementById(`replyInput${postId}`).value = ''; 
     })
     .catch(error => {
         console.error('댓글 추가 중 오류 발생:', error);

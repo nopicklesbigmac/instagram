@@ -28,9 +28,10 @@
 	<select id="getPostPicSize" parameterType="int" resultType="int">
 	    SELECT COUNT(*) FROM insta_post WHERE post_id = #{postId}
 	</select>
-	<select id="getLikeCount" parameterType="int" resultType="int">
-    	SELECT COALESCE(COUNT(*), 0) FROM insta_likes WHERE post_id = #{postId}
-	</select>
+<select id="getLikeCount" parameterType="int" resultType="Integer">
+    SELECT COUNT(*) FROM insta_likes WHERE post_id = #{postId}
+</select>
+
 	<select id="findRepliesByPostId" resultType="ReplyDTO" parameterType="int">
 	    SELECT POST_ID AS postId, EMAIL AS email, USERNAME AS username, 
 	           COMMENTS AS comments, USE_PROFILE_IMG AS useProfileImg, CREATED_AT AS createdAt
@@ -74,5 +75,56 @@
         WHERE POST_ID = #{postId}
         ORDER BY CREATED_AT ASC
     </select>
+    
+    <!-- 좋아요 추가 -->
+	<insert id="addLike" parameterType="LikeDTO">
+	    INSERT INTO insta_likes (like_id, account_id, post_id, liked_at)
+	    VALUES (#{likeId}, #{accountId}, #{postId}, SYSDATE)
+	</insert>
+
+
+    <!-- 좋아요 삭제 -->
+	<delete id="removeLike" parameterType="LikeDTO">
+	    DELETE FROM insta_likes 
+	    WHERE account_id = #{accountId} AND post_id = #{postId}
+	</delete>
+    
+    <select id="findLikeStatus" parameterType="map" resultType="LikeDTO">
+    SELECT * FROM insta_likes 
+    WHERE account_id = #{accountId} AND post_id = #{postId}
+	</select>
+
+    <!-- 좋아요 추가 -->
+    <insert id="insertLike" parameterType="LikeDTO">
+        INSERT INTO insta_likes (ACCOUNT_ID, POST_ID, LIKED_AT)
+        VALUES (#{accountId}, #{postId}, SYSDATE)
+    </insert>
+
+    <!-- 좋아요 개수 조회 -->
+    <select id="likeCount" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM insta_likes WHERE POST_ID = #{postId}
+    </select>
+
+    <!-- 좋아요가 있는지 확인 -->
+    <select id="isPostLiked" parameterType="LikeDTO" resultType="int">
+        SELECT COUNT(*) FROM insta_likes WHERE ACCOUNT_ID = #{accountId} AND POST_ID = #{postId}
+    </select>
+
+    <!-- 좋아요 삭제 -->
+    <delete id="deleteLike" parameterType="LikeDTO">
+        DELETE FROM insta_likes WHERE ACCOUNT_ID = #{accountId} AND POST_ID = #{postId}
+    </delete>
+
+    <!-- 게시물의 좋아요 수 업데이트 -->
+    <update id="updateLikeCount" parameterType="LikeDTO">
+	    UPDATE insta_post
+	    SET LIKECOUNT AS likeCount = (SELECT COUNT(*) FROM insta_likes WHERE post_id = #{postId})
+	    WHERE post_id = #{postId}
+    </update>
+<update id="updatePostLikeCount" parameterType="map">
+    UPDATE insta_post 
+    SET LIKECOUNT = #{likeCount} 
+    WHERE POST_ID = #{postId}
+</update>
 
 </mapper>

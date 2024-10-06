@@ -22,7 +22,7 @@ public interface PostDAO {
 
 	void saveReply(ReplyDTO replyDTO);
 	
-	int findLikeStatus(@Param("accountId") String accountId, @Param("postId") int postId);
+	Integer findLikeStatus(@Param("accountId") String accountId, @Param("postId") int postId);
     
     // 이미지 개수를 가져오는 메서드 추가
     int getPostPicSize(int postId);
@@ -32,8 +32,6 @@ public interface PostDAO {
     
     // 좋아요 제거 메서드
     void removeLike(@Param("accountId") String accountId, @Param("postId") int postId);
-    
-    int getLikeCount(int postId);
 
 	PostDTO getPostById(int postId);
 
@@ -43,13 +41,30 @@ public interface PostDAO {
 
 	List<ReplyDTO> findRepliesByPostId(int postId);
 
-	void removeLike(LikeDTO likeDto);
-
-	void addLike(LikeDTO likeDto);
-
-	int countLikes(int postId);
+	int likeCount(int postId);
 	
     void insertReply(ReplyDTO replyDTO); // 댓글 저장
     List<ReplyDTO> selectRepliesByPostId(@Param("postId") int postId); // 댓글 조회
-    
+
+
+    void insertLike(LikeDTO likeDto); // 좋아요 추가
+    void deleteLike(LikeDTO likeDto); // 좋아요 삭제
+
+    Integer getLikeCountByPostId(int postId);
+    Integer getLikeCounts(int postId);
+    int getLikeStatus(String accountId, int postId);
+    void insertLike(String accountId, int postId);
+    void deleteLike(String accountId, int postId);
+
+	int isPostLiked(String accountId, int postId);
+
+	void updateLikeCount(int postId);
+
+	void updatePostLikeCount(@Param("postId") int postId, @Param("likeCount") int likeCount);
+	
+	void updatePostLikeCount(PostDTO postDTO); // 추가
+
+	void addLike(LikeDTO likeDTO);
+
+	Integer getLikeCount(int postId);
 }
