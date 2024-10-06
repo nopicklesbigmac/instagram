@@ -10,7 +10,7 @@ public interface PostDAO {
     List<PostDTO> findByUserEmail(@Param("email") String email);
     
     void savePost(PostDTO postDTO);
-
+ 
     int getLatestPostId(String email);
     
     void updatePost(PostDTO postDTO);

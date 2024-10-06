@@ -53,7 +53,7 @@ function postReply(postId) {
             img.onclick = function() {
                 gotoUserProfile(reply.username);
             };
-
+ 
             const spanUsername = document.createElement('span');
             spanUsername.style.fontWeight = "bold";
             spanUsername.style.fontSize = "16px";

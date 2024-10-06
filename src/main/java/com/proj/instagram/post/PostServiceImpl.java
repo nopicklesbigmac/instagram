@@ -91,7 +91,7 @@ public class PostServiceImpl implements PostService {
     	postDAO.insertReply(replyDTO); // 댓글 DB에 저장
         return postDAO.findRepliesByPostId(replyDTO.getPostId()); // 저장된 댓글 목록 반환
     } 
-
+ 
     @Override
     public List<ReplyDTO> getRepliesByPostId(int postId) {
     	System.out.println("PostService getRepliesByPostId : " + postId);

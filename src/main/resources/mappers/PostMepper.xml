@@ -62,7 +62,7 @@
         INSERT INTO insta_reply (POST_ID, EMAIL, USERNAME, COMMENTS, USE_PROFILE_IMG, CREATED_AT)
         VALUES (#{postId}, #{email}, #{username}, #{comments}, #{useProfileImg, jdbcType=VARCHAR}, SYSDATE)
     </insert>
-
+ 
     <!-- 게시글 ID로 댓글 조회 -->
     <select id="selectRepliesByPostId" parameterType="int" resultType="ReplyDTO">
         SELECT POST_ID AS postId,

@@ -51,7 +51,7 @@ public class PostController {
             logger.error("게시글 업로드 실패: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 업로드에 실패했습니다. 오류: " + e.getMessage());
         }
-    }
+    } 
     
     @GetMapping("/post/{postId}") 
     public String viewPost(@PathVariable("postId") int postId, Model model) {

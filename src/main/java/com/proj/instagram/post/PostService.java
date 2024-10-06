@@ -13,7 +13,7 @@ public interface PostService {
     List<ReplyDTO> getRepliesByPostId(int postId);
 
 	void saveReply(ReplyDTO replyDTO);
-    
+     
    int getLikeCounts(int postId);
     
     void addLike(LikeDTO likeDto);

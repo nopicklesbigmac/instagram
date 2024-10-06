@@ -17,7 +17,7 @@
             justify-content: center;
             font-family: Arial;
         }
-
+ 
         .post_idBox {
             width: 100%;
             max-width: 1028px;
