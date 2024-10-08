@@ -246,87 +246,95 @@
 		document.getElementById('content').value = '';
 	}
 
+
 	function showMessage(message) {
 		// 메세지 추가 
 		const messagesDiv = document.getElementById('msg-ul'); // ul 요소를 선택
-    	const receiver = document.getElementById('receiver').value; // 특정 리시버의 이름을 설정
-         const lastItem = messagesDiv.lastElementChild; // 마지막 li 요소 선택
+		const receiver = document.getElementById('receiver').value; // 특정 리시버의 이름을 설정
+		const lastItem = messagesDiv.lastElementChild; // 마지막 li 요소 선택
 
-         if (lastItem) {
-        	 messagesDiv.removeChild(lastItem); // 마지막 li 요소 삭제
-         }
-    // 메시지를 보낼 사용자 이름 또는 수신자 이름이 세션 사용자와 일치하는지 확인
-    	if (receiver === message.sender_username || receiver === message.receiver_username) {
-        // 새로운 li 요소 생성
-        let listItem = document.createElement('li');
-/* 
-        // 메시지의 타임스탬프를 기반으로 날짜 표시
-        const messageDate = new Date(message.timestamp);
-        const today = new Date();
+		const sender = document.getElementById('sender').value;
+		
+		// 메시지를 보낼 사용자 이름 또는 수신자 이름이 세션 사용자와 일치하는지 확인
+		if ((receiver === message.sender_username
+				|| receiver === message.receiver_username) && (sender === message.sender_username
+				|| sender === message.receiver_username)) {
+			// 새로운 li 요소 생성
+			if (lastItem) {
+			messagesDiv.removeChild(lastItem); // 마지막 li 요소 삭제
+			}
+			let listItem = document.createElement('li');
+			/* 
+			 // 메시지의 타임스탬프를 기반으로 날짜 표시
+			 const messageDate = new Date(message.timestamp);
+			 const today = new Date();
 
-        // 날짜가 오늘인 경우에만 날짜를 표시
-        if (messageDate.toDateString() === today.toDateString()) {
-            listItem.classList.add('msg-day');
-            listItem.innerHTML = `<small><fmt:formatDate value="${message.timestamp}" pattern="yyyy-MM-dd" /></small>`;
-            messagesDiv.appendChild(listItem);
-        } */
+			 // 날짜가 오늘인 경우에만 날짜를 표시
+			 if (messageDate.toDateString() === today.toDateString()) {
+			 listItem.classList.add('msg-day');
+			 listItem.innerHTML = `<small><fmt:formatDate value="${message.timestamp}" pattern="yyyy-MM-dd" /></small>`;
+			 messagesDiv.appendChild(listItem);
+			 } */
 
-        // 메시지 방향에 따라 클래스 추가
-        console.log("저장된 사용자 이름:", sessionStorage.getItem("username"));
-console.log("메시지 보낸 사람:", message.sender_username);
-const sender = document.getElementById('sender').value
-        if (message.sender_username === sender) {
-            listItem.classList.add('msg-right');
-        } else {
-            listItem.classList.add('msg-left');
-        }
+			// 메시지 방향에 따라 클래스 추가
+			console.log("저장된 사용자 이름:", sessionStorage.getItem("username"));
+			console.log("메시지 보낸 사람:", message.sender_username);
+			if (message.sender_username === sender) {
+				listItem.classList.add('msg-right');
+			} else {
+				listItem.classList.add('msg-left');
+			}
 
-        // 메시지 내용 추가
-        listItem.innerHTML += "<div class='msg-left-sub'>";
-    listItem.innerHTML += "<img src='/image/profile/default.jpg' />";
-    listItem.innerHTML += "<div class='msg-desc'>" + message.content + "</div>";
-    
-    // 시간 포맷팅
-    const timeFormatted = formatDate(message.timestamp, 'hh:mm');
-    const amPm = formatDate(message.timestamp, 'a') === '오후' ? 'pm' : 'am';
-    
-    listItem.innerHTML += "<small>" + timeFormatted + " " + amPm + "</small>";
-    listItem.innerHTML += "</div>";
+			// 메시지 내용 추가
+			listItem.innerHTML += "<div class='msg-left-sub'>";
+			listItem.innerHTML += "<img src='/image/profile/default.jpg' />";
+			listItem.innerHTML += "<div class='msg-desc'>" + message.content
+					+ "</div>";
 
-        // 완성된 listItem을 messagesDiv에 추가
-        messagesDiv.appendChild(listItem);
-        const newItem = document.createElement('li');
-        newItem.style.height = '5px'; // 높이 5px 설정
-        messagesDiv.appendChild(newItem);
-        Scrollbarbottom()
-    }
+			// 시간 포맷팅
+			const timeFormatted = formatDate(message.timestamp, 'hh:mm');
+			const amPm = formatDate(message.timestamp, 'a') === '오후' ? 'pm'
+					: 'am';
+
+			listItem.innerHTML += "<small>" + timeFormatted + " " + amPm
+					+ "</small>";
+			listItem.innerHTML += "</div>";
+
+			// 완성된 listItem을 messagesDiv에 추가
+			messagesDiv.appendChild(listItem);
+			const newItem = document.createElement('li');
+			newItem.style.height = '5px'; // 높이 5px 설정
+			messagesDiv.appendChild(newItem);
+			Scrollbarbottom()
+		}
 	}
-	
-	function Scrollbarbottom(){
+
+	function Scrollbarbottom() {
 		var chatContainers = document
-		.getElementsByClassName('message mCustomScrollbar'); // 클래스 선택
-if (chatContainers.length > 0) {
-	var chatContainer = chatContainers[0]; // 첫 번째 요소 선택
-	chatContainer.scrollTop = chatContainer.scrollHeight;
+				.getElementsByClassName('message mCustomScrollbar'); // 클래스 선택
+		if (chatContainers.length > 0) {
+			var chatContainer = chatContainers[0]; // 첫 번째 요소 선택
+			chatContainer.scrollTop = chatContainer.scrollHeight;
 
-	var button = document.getElementById('search-btn');
-	button.onclick = send();
-}
+			var button = document.getElementById('search-btn');
+			button.onclick = send();
+		}
 	}
-	
-	function formatDate(timestamp, format) {
-	    const date = new Date(timestamp);
-	    let hours = date.getHours();
-	    let minutes = date.getMinutes();
 
-	    // 12시간 형식으로 변환
-	    if (format === 'hh:mm') {
-	        hours = hours % 12 || 12; // 0을 12로 변환
-	        return (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
-	    } else if (format === 'a') {
-	        return date.getHours() >= 12 ? '오후' : '오전';
-	    }
-	    return '';
+	function formatDate(timestamp, format) {
+		const date = new Date(timestamp);
+		let hours = date.getHours();
+		let minutes = date.getMinutes();
+
+		// 12시간 형식으로 변환
+		if (format === 'hh:mm') {
+			hours = hours % 12 || 12; // 0을 12로 변환
+			return (hours < 10 ? '0' : '') + hours + ':'
+					+ (minutes < 10 ? '0' : '') + minutes;
+		} else if (format === 'a') {
+			return date.getHours() >= 12 ? '오후' : '오전';
+		}
+		return '';
 	}
 	connect();
 </script>
