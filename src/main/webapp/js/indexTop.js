@@ -522,8 +522,8 @@ function addPosts() {
             });
 
         }).fail(function (error) {
-            alert("에러 발생 (콘솔 확인)");
-            console.log(error);
+            //alert("에러 발생 (콘솔 확인)");
+            //console.log(error);
         });
 
     });

@@ -39,8 +39,8 @@
 				</div>
 			</div>
 			<div class="headRight-sub" >
-			<c:if test="${not empty receiverinfo}">
-					<img style="margin:10px; float:left; width: 40px; height: 40px;" src="/image/profile/default.jpg" />
+				<c:if test="${not empty receiverinfo}">
+					<img style="margin: 10px 10px 10px 30px; float:left; width: 40px; height: 40px;" src="/image/profile/default.jpg" />
 					<h3 style="margin-top:17px; margin-left:50px;">
 					${receiverinfo.name} ${'@'+= receiverinfo.username}	
 						
@@ -51,7 +51,7 @@
 		<div class="body-section">
 			<div class="left-section mCustomScrollbar" id="f7Bj3"
 				data-mcs-theme="minimal-dark">
-				<ul>
+				<ul id="left_ul">
 				<c:forEach var="left_msg" items="${left_msg}" varStatus="status">
 								<c:choose>
 								<c:when test="${left_msg.sender_username eq sessionScope.username}">
@@ -78,7 +78,7 @@
 								<h5>
 								${receiver_left}
 								</h5>
-								<small>${left_msg.content}</small>
+								<small class="contsm">${left_msg.content}</small>
 							</div>
 						</div>
 					</li>
@@ -152,6 +152,32 @@
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript">
+
+
+const msgDescElements = document.querySelectorAll('.contsm');
+const maxLength = 10; // 최대 글자 수 설정
+
+msgDescElements.forEach(element => {
+    if (element.innerText.length > maxLength) {
+        const truncatedText = element.innerText.slice(0, maxLength) + ' . . .';
+        element.innerText = truncatedText;
+    }
+});
+
+/* const msgDescElements = document.querySelectorAll('.msg-desc');
+const maxLength = 40; // 최대 글자 수 설정
+
+msgDescElements.forEach(element => {
+    const text = element.innerText;
+    let wrappedText = '';
+
+    // 글자를 40자씩 잘라서 줄바꿈 처리
+    for (let i = 0; i < text.length; i += maxLength) {
+        wrappedText += text.slice(i, i + maxLength) + '\n';
+    }
+
+    element.innerText = wrappedText.trim(); // 마지막 줄바꿈 제거
+}); */
 	document.addEventListener('DOMContentLoaded', function() {
 		const listItems = document.querySelectorAll('.msg_rcv'); // class로 선택
 
@@ -215,7 +241,7 @@
 					}
 				});
 			} catch (e) {
-				console.error("Parsing error:", e);
+				
 			}
 		}
 	}
@@ -252,8 +278,18 @@
 		const messagesDiv = document.getElementById('msg-ul'); // ul 요소를 선택
 		const receiver = document.getElementById('receiver').value; // 특정 리시버의 이름을 설정
 		const lastItem = messagesDiv.lastElementChild; // 마지막 li 요소 선택
-
 		const sender = document.getElementById('sender').value;
+		const timeFormatted = formatDate(message.timestamp, 'hh:mm');
+		const amPm = formatDate(message.timestamp, 'a') === '오후' ? 'pm'
+				: 'am';
+		const smalltime = timeFormatted + " " + amPm;
+		if(sender ===  message.sender_username){
+			moveSpecificValueToTopOfLeftUl(message.receiver_username,message.content,smalltime);
+			console.log("메시지 보낸 사람:", message.receiver_username);
+		}else{
+			moveSpecificValueToTopOfLeftUl(message.sender_username,message.content,smalltime);
+			console.log("메시지 보낸 사람:", message.sender_username);
+		}
 		
 		// 메시지를 보낼 사용자 이름 또는 수신자 이름이 세션 사용자와 일치하는지 확인
 		if ((receiver === message.sender_username
@@ -277,14 +313,12 @@
 			 } */
 
 			// 메시지 방향에 따라 클래스 추가
-			console.log("저장된 사용자 이름:", sessionStorage.getItem("username"));
-			console.log("메시지 보낸 사람:", message.sender_username);
 			if (message.sender_username === sender) {
 				listItem.classList.add('msg-right');
 			} else {
 				listItem.classList.add('msg-left');
 			}
-
+			
 			// 메시지 내용 추가
 			listItem.innerHTML += "<div class='msg-left-sub'>";
 			listItem.innerHTML += "<img src='/image/profile/default.jpg' />";
@@ -292,10 +326,7 @@
 					+ "</div>";
 
 			// 시간 포맷팅
-			const timeFormatted = formatDate(message.timestamp, 'hh:mm');
-			const amPm = formatDate(message.timestamp, 'a') === '오후' ? 'pm'
-					: 'am';
-
+			
 			listItem.innerHTML += "<small>" + timeFormatted + " " + amPm
 					+ "</small>";
 			listItem.innerHTML += "</div>";
@@ -306,6 +337,7 @@
 			newItem.style.height = '5px'; // 높이 5px 설정
 			messagesDiv.appendChild(newItem);
 			Scrollbarbottom()
+			
 		}
 	}
 
@@ -320,7 +352,36 @@
 			button.onclick = send();
 		}
 	}
+	
+	function moveSpecificValueToTopOfLeftUl(targetValue,newSmallValue,smallstr) {
+		  // msg_rcv 클래스를 가진 요소 선택
+		
+		  const ulElement = document.getElementById('left_ul');
 
+		    // ul이 존재하는지 확인
+		    if (ulElement) {
+		        // ul의 모든 li 요소 선택
+		        const liElements = ulElement.querySelectorAll('li');
+
+		        liElements.forEach(li => {
+		            // li의 value 속성과 targetValue 비교
+		            if (li.getAttribute('value') === targetValue) {
+		                // li 요소를 ul의 맨 위로 옮기기
+		                 const smallTag = li.querySelector('.contsm');
+		                 const smallTime = li.querySelector('.time');
+
+                // small 태그 내용 변경
+		                if (smallTag && smallTime) {
+		                    smallTag.textContent = newSmallValue;
+		                    smallTime.textContent = smallstr;
+		                }
+                
+		                ulElement.insertBefore(li, ulElement.firstChild);
+		            }
+		        });
+		    }
+	}
+	
 	function formatDate(timestamp, format) {
 		const date = new Date(timestamp);
 		let hours = date.getHours();
@@ -337,6 +398,13 @@
 		return '';
 	}
 	connect();
+	
+	document.getElementById('content').addEventListener('keypress', function(event) {
+	    if (event.key === 'Enter') {
+	        event.preventDefault(); // 기본 엔터 동작 방지
+	        sendMessage(); // sendMessage 함수 호출
+	    }
+	});
 </script>
 </body>
 </html>

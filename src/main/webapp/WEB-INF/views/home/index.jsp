@@ -450,7 +450,7 @@
     <div id="unfollowPopupBackground" onclick="onclickPopupCancel()">
         <div id="unfollowPopup">
             <div id="unfollowPopupInfo">
-                <img id="unfollowPopupInfoImg" src="/dynamicImage/profile/default.jpg">
+                <img id="unfollowPopupInfoImg" src="/image/profile/default.jpg">
                 <span id="unfollowPopupSpan" style="font-size: 14px"></span>
             </div>
             <hr />

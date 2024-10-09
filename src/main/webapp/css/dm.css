@@ -32,7 +32,7 @@ body {
 }
 
 .headLeft-section {
-	width: calc(25% - 1px);
+	width: calc(20% - 1px);
 	float: left;
 	border-right: 1px solid #e6e6e6;
 }
@@ -208,7 +208,7 @@ body {
 }
 
 .right-section {
-	width: 70%;
+	width: 100%;
 	float: left;
 	height: 850px;
 	background-color: #ffffff;
@@ -309,6 +309,10 @@ body {
 
 .msg-desc {
 	max-width: 40%;
+	min-width: 2%;
+    min-height: 20px;
+    overflow-wrap: break-word; /* 단어가 넘어가면 줄바꿈 */
+    white-space: pre-wrap;
 }
 
 .message ul li.msg-right .msg-desc:before {
@@ -454,4 +458,7 @@ body {
 #search_list li:hover {
 	background: rgb(237, 246, 255);
 	    cursor: pointer;
+}
+.contsm {
+    font-weight: 500; /* 숫자 값으로 두께 조절 */
 }
