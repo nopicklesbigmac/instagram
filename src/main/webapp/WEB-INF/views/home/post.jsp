@@ -230,101 +230,55 @@
                 </div>
 
                 <div id="post_infoBox_likes" style="margin-bottom: 4px">
-                    <span id="likeCounts" value="${post.likeCount}" style="font-weight: bold; display: block">좋아요 ${post.likeCount}개</span>
-                </div>
-<script>
-    $(document).ready(function() {
-        const accountId = "${user.email}"; // 로그인한 사용자의 이메일
-        const postId = ${post.postId}; // 현재 게시물 ID
-        
-        // 좋아요 상태 확인 AJAX 요청
-        $.ajax({
-            type: "GET",
-            url: "/post/getLike?accountId=" + accountId + "&postId=" + postId,
-            contentType: "application/json; charset=utf-8"
-        }).done(function(resp) {
-            if (resp === 1) { // 이미 좋아요한 경우
-                document.getElementById('likeOrUnlike').innerHTML = '<div id="unLikeButton" class="buttons" onclick="Unlike()"><span>❤️</span></div>';
-            } else { // 좋아요를 하지 않은 경우
-                document.getElementById('likeOrUnlike').innerHTML = '<div id="likeButton" class="buttons" onclick="Like()"><span>🤍</span></div>';
-            }
-        }).fail(function(error) {
-            console.log(JSON.stringify(error));
-        });
-    });
-
-    function Like() {
-        const accountId = "${user.email}";
-        const postId = ${post.postId};
-
-        // AJAX 요청으로 좋아요 추가
-        $.ajax({
-            type: "POST",
-            url: "/like",
-            contentType: "application/json",
-            data: JSON.stringify({ accountId: accountId, postId: postId }),
-            success: function(updatedLikeCount) {
-                // 성공 시 UI 업데이트
-                document.getElementById('likeOrUnlike').innerHTML = '<div id="unLikeButton" class="buttons" onclick="Unlike()"><span>❤️</span></div>';
-                updateLikeCount(updatedLikeCount); // 서버에서 받은 개수로 업데이트
-            },
-            error: function(error) {
-                console.log("좋아요 추가 실패:", error);
-            }
-        });
-    }
-
-    function Unlike() {
-        const accountId = "${user.email}";
-        const postId = ${post.postId};
-
-        // AJAX 요청으로 좋아요 취소
-        $.ajax({
-            type: "DELETE",
-            url: "/unlike",
-            contentType: "application/json",
-            data: JSON.stringify({ accountId: accountId, postId: postId }),
-            success: function(updatedLikeCount) {
-            	console.log("updatedLikeCount from Unlike:", updatedLikeCount); // 응답 확인
-                // 성공 시 UI 업데이트
-                document.getElementById('likeOrUnlike').innerHTML = '<div id="likeButton" class="buttons" onclick="Like()"><span>🤍</span></div>';
-                updateLikeCount(updatedLikeCount); // 서버에서 받은 개수로 업데이트
-            },
-            error: function(error) {
-                console.log("좋아요 취소 실패:", error);
-            }
-        });
-    }
-
-    function updateLikeCount(newCount) {
-        const likeCountElement = document.getElementById('likeCounts');
-        if (newCount < 0) {
-            likeCountElement.textContent = "좋아요 0개";
-        } else {
-            likeCountElement.textContent = `좋아요 ${newCount}개`; // newCount로 갱신된 값을 적용
-        }
-    }
-
-</script>
-
+                <input type="hidden" id="principalEmail" value="${user.email}">
+<input type="hidden" id="postId" value="${post.postId}">
                 
+                    <span id="likeCounts" style="font-weight: bold; display: block">좋아요 ${post.likeCount}개</span>
+                </div>
+
                 <div id="post_infoBox_createdAt" style="font-size: 14px; color: darkgray; display: block">
                     <span>${post.formattedCreatedAt}</span>
                 </div>
 
                 <!-- 댓글 입력창 -->
-				<div id="post_infoBox_replyBox" style="text-align: right;">
-                   <input type="text" id="replyInput${post.postId}" style="width: 100%; margin-bottom: 2px">
-                   <div style="width: 100%; display: flex; justify-content: right">
-	                   <input type="hidden" id="principalEmail" value="${user.email}"> <!-- 로그인된 사용자의 이메일 -->
-	                   <input type="hidden" id="principalUsername" value="${user.username}"> <!-- 로그인된 사용자의 사용자 이름 추가 -->
-	                   <input type="hidden" id="principalImg" value="${user.use_profile_img}">
-	                       <div id="replyButton" class="replyButton" onclick="postReply(${post.postId})">게시</div>
-                   </div>
+                <div id="post_infoBox_replyBox" style="text-align: right;">
+                    <input type="text" id="replyInput${post.postId}" style="width: 100%; margin-bottom: 2px">
+                    <div style="width: 100%; display: flex; justify-content: right">
+                        <input type="hidden" id="principalEmail" value="${user.email}"> <!-- 로그인된 사용자의 이메일 -->
+                        <input type="hidden" id="principalUsername" value="${user.username}"> <!-- 로그인된 사용자의 사용자 이름 추가 -->
+                        <input type="hidden" id="principalImg" value="${user.use_profile_img}">
+                        <div id="replyButton" class="replyButton" onclick="postReply(${post.postId})">게시</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-<script src="/js/post.js"></script>
+
+    <script src="/js/post.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            const accountId = "${user.email}"; // 로그인한 사용자의 이메일
+            const postId = ${post.postId}; // 현재 게시물 ID
+            
+            // 좋아요 상태 확인 AJAX 요청
+            $.ajax({
+                type: "GET",
+                url: "/post/getLike?accountId=" + accountId + "&postId=" + postId,
+                contentType: "application/json; charset=utf-8"
+            }).done(function(resp) {
+                if (resp === 1) { // 이미 좋아요한 경우
+                    document.getElementById('likeOrUnlike').innerHTML = '<div id="unLikeButton" class="buttons" onclick="Unlike()"><span>❤️</span></div>';
+                } else { // 좋아요를 하지 않은 경우
+                    document.getElementById('likeOrUnlike').innerHTML = '<div id="likeButton" class="buttons" onclick="Like()"><span>🤍</span></div>';
+                }
+            }).fail(function(error) {
+                console.log(JSON.stringify(error));
+            });
+        });
+    </script>
 </body>
+
+
 
 

@@ -80,3 +80,48 @@ function postReply(postId) {
         console.error('댓글 추가 중 오류 발생:', error);
     });
 }
+
+
+
+function Like() {
+    const accountId = document.getElementById('principalEmail').value;
+    const postId = document.getElementById('postId').value;
+
+    fetch('/like', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ accountId: accountId, postId: postId }),
+    })
+    .then(response => response.json())
+    .then(updatedLikeCount => {
+        document.getElementById('likeOrUnlike').innerHTML = '<div id="unLikeButton" class="buttons" onclick="Unlike()"><span>❤️</span></div>';
+        updateLikeCount(updatedLikeCount); // 좋아요 수 갱신
+    })
+    .catch(error => console.error('좋아요 추가 중 오류 발생:', error));
+}
+
+function Unlike() {
+    const accountId = document.getElementById('principalEmail').value;
+    const postId = document.getElementById('postId').value;
+
+    fetch('/unlike', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ accountId: accountId, postId: postId }),
+    })
+    .then(response => response.json())
+    .then(updatedLikeCount => {
+        document.getElementById('likeOrUnlike').innerHTML = '<div id="likeButton" class="buttons" onclick="Like()"><span>🤍</span></div>';
+        updateLikeCount(updatedLikeCount); // 좋아요 수 갱신
+    })
+    .catch(error => console.error('좋아요 취소 중 오류 발생:', error));
+}
+
+function updateLikeCount(newCount) {
+    const likeCountElement = document.getElementById('likeCounts');
+    likeCountElement.textContent = `좋아요 ${newCount}개`;
+}
